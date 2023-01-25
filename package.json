@@ -1,0 +1,13 @@
+{
+  "name": "seaport-sol",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "GitHub Actions Bot <<>>",
+  "license": "MIT",
+  "dependencies": {
+    "opensea-js": "^4.0.13",
+    "seaport-js": "^1.2.0",
+    "solc-typed-ast": "npm:@d1ll0n/solc-typed-ast@10.4.3",
+    "@solidity-parser/parser": "^0.14.5"
+  }
+}

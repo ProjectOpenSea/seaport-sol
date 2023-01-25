@@ -1,2 +1,8 @@
-ds-test/=lib/forge-std/lib/ds-test/src/
+@rari-capital/solmate/=lib/seaport/./lib/solmate/
+ds-test/=lib/seaport/./lib/ds-test/src/
 forge-std/=lib/forge-std/src/
+murky/=lib/murky/src/
+openzeppelin-contracts/=lib/seaport/lib/openzeppelin-contracts/
+seaport/=lib/seaport/contracts/
+solarray/=lib/solarray/src/
+solmate/=lib/seaport/./lib/solmate/src/
