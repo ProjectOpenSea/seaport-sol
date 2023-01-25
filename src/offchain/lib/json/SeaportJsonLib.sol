@@ -84,8 +84,6 @@ library JsonStructLib {
     using JsonStructLib for ExecutionJson;
     using JsonStructLib for ExecutionJson[];
 
-    using JsonStructLib for ProtocolDataJson;
-
     function toOrderParameters(ProtocolDataJson memory a) internal pure returns (OrderParameters memory) {
         return OrderParameters({
             conduitKey: a.conduitKey,
