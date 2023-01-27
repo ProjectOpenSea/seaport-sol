@@ -55,6 +55,14 @@ library OfferItemLib {
         });
     }
 
+    function copy(OfferItem[] memory items) internal pure returns (OfferItem[] memory) {
+        OfferItem[] memory copiedItems = new OfferItem[](items.length);
+        for (uint256 i = 0; i < items.length; i++) {
+            copiedItems[i] = copy(items[i]);
+        }
+        return copiedItems;
+    }
+
     /**
      * @notice gets the storage position of the default OfferItem map
      */

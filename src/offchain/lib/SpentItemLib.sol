@@ -48,6 +48,14 @@ library SpentItemLib {
         return SpentItem({itemType: item.itemType, token: item.token, identifier: item.identifier, amount: item.amount});
     }
 
+    function copy(SpentItem[] memory items) internal pure returns (SpentItem[] memory) {
+        SpentItem[] memory copiedItems = new SpentItem[](items.length);
+        for (uint256 i = 0; i < items.length; i++) {
+            copiedItems[i] = copy(items[i]);
+        }
+        return copiedItems;
+    }
+
     /**
      * @notice gets the storage position of the default SpentItem map
      */

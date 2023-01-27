@@ -11,9 +11,13 @@ import {
 } from "seaport/lib/ConsiderationStructs.sol";
 import { OrderType, ItemType, BasicOrderType } from "seaport/lib/ConsiderationEnums.sol";
 import { StructCopier } from "./StructCopier.sol";
+import { OfferItemLib } from "./OfferItemLib.sol";
+import { ConsiderationItemLib } from "./ConsiderationItemLib.sol";
 
 library OrderComponentsLib {
     using OrderComponentsLib for OrderComponents;
+    using OfferItemLib for OfferItem[];
+    using ConsiderationItemLib for ConsiderationItem[];
 
     bytes32 private constant OFFER_ITEM_MAP_POSITION = keccak256("seaport.OrderComponentsDefaults");
 
@@ -95,8 +99,8 @@ library OrderComponentsLib {
         return OrderComponents({
             offerer: item.offerer,
             zone: item.zone,
-            offer: item.offer,
-            consideration: item.consideration,
+            offer: item.offer.copy(),
+            consideration: item.consideration.copy(),
             orderType: item.orderType,
             startTime: item.startTime,
             endTime: item.endTime,

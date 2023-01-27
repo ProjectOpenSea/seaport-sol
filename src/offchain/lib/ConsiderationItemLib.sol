@@ -57,6 +57,21 @@ library ConsiderationItemLib {
         });
     }
 
+    function copy(ConsiderationItem[] memory item) internal pure returns (ConsiderationItem[] memory) {
+        ConsiderationItem[] memory copies = new ConsiderationItem[](item.length);
+        for (uint256 i = 0; i < item.length; i++) {
+            copies[i] = ConsiderationItem({
+                itemType: item[i].itemType,
+                token: item[i].token,
+                identifierOrCriteria: item[i].identifierOrCriteria,
+                startAmount: item[i].startAmount,
+                endAmount: item[i].endAmount,
+                recipient: item[i].recipient
+            });
+        }
+        return copies;
+    }
+
     /**
      * @notice gets the storage position of the default ConsiderationItem map
      */

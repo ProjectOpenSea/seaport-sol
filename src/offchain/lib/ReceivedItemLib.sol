@@ -55,6 +55,14 @@ library ReceivedItemLib {
         });
     }
 
+    function copy(ReceivedItem[] memory item) internal pure returns (ReceivedItem[] memory) {
+        ReceivedItem[] memory copies = new ReceivedItem[](item.length);
+        for (uint256 i = 0; i < item.length; i++) {
+            copies[i] = ReceivedItemLib.copy(item[i]);
+        }
+        return copies;
+    }
+
     /**
      * @notice gets the storage position of the default ReceivedItem map
      */
