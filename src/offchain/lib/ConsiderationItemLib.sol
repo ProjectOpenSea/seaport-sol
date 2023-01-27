@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import { ConsiderationItem } from "seaport/lib/ConsiderationStructs.sol";
+import { ConsiderationItem, ReceivedItem } from "seaport/lib/ConsiderationStructs.sol";
 import { ItemType } from "seaport/lib/ConsiderationEnums.sol";
 
 library ConsiderationItemLib {
-    bytes32 private constant OFFER_ITEM_MAP_POSITION = keccak256("seaport.ConsiderationItemDefaults");
+    bytes32 private constant CONSIDERATION_ITEM_MAP_POSITION = keccak256("seaport.ConsiderationItemDefaults");
 
     /**
      * @notice clears a default ConsiderationItem from storage
@@ -65,7 +65,7 @@ library ConsiderationItemLib {
         pure
         returns (mapping(string => ConsiderationItem) storage considerationItemMap)
     {
-        bytes32 position = OFFER_ITEM_MAP_POSITION;
+        bytes32 position = CONSIDERATION_ITEM_MAP_POSITION;
         assembly {
             considerationItemMap.slot := position
         }
@@ -174,5 +174,15 @@ library ConsiderationItemLib {
     {
         item.recipient = payable(recipient);
         return item;
+    }
+
+    function toReceivedItem(ConsiderationItem memory item) internal pure returns (ReceivedItem memory) {
+        return ReceivedItem({
+            itemType: item.itemType,
+            token: item.token,
+            identifier: item.identifierOrCriteria,
+            amount: item.startAmount,
+            recipient: item.recipient
+        });
     }
 }

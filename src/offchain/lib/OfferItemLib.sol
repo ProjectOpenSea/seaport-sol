@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import { OfferItem } from "seaport/lib/ConsiderationStructs.sol";
+import { OfferItem, SpentItem } from "seaport/lib/ConsiderationStructs.sol";
 import { ItemType } from "seaport/lib/ConsiderationEnums.sol";
 
 library OfferItemLib {
@@ -128,5 +128,14 @@ library OfferItemLib {
     function withEndAmount(OfferItem memory item, uint256 endAmount) internal pure returns (OfferItem memory) {
         item.endAmount = endAmount;
         return item;
+    }
+
+    function toSpentItem(OfferItem memory item) internal pure returns (SpentItem memory) {
+        return SpentItem({
+            itemType: item.itemType,
+            token: item.token,
+            identifier: item.identifierOrCriteria,
+            amount: item.startAmount
+        });
     }
 }
