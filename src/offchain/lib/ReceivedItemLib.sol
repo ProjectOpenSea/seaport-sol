@@ -22,6 +22,16 @@ library ReceivedItemLib {
         item.recipient = payable(address(0));
     }
 
+    function empty() internal pure returns (ReceivedItem memory) {
+        return ReceivedItem({
+            itemType: ItemType(0),
+            token: address(0),
+            identifier: 0,
+            amount: 0,
+            recipient: payable(address(0))
+        });
+    }
+
     /**
      * @notice gets a default ReceivedItem from storage
      * @param defaultName the name of the default for retrieval
