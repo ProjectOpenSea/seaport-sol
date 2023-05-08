@@ -5,7 +5,7 @@ import {
     BasicOrderType,
     ItemType,
     OrderType
-} from "../../../lib/ConsiderationEnums.sol";
+} from "seaport-types/lib/ConsiderationEnums.sol";
 
 library SeaportEnumsLib {
     /**

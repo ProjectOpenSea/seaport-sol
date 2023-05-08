@@ -5,7 +5,7 @@ import {
     Execution,
     ItemType,
     ReceivedItem
-} from "../../../lib/ConsiderationStructs.sol";
+} from "seaport-types/lib/ConsiderationStructs.sol";
 
 import { ReceivedItemLib } from "./ReceivedItemLib.sol";
 

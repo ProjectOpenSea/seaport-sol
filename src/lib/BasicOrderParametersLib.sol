@@ -5,9 +5,9 @@ import {
     AdditionalRecipient,
     BasicOrderParameters,
     OrderParameters
-} from "../../../lib/ConsiderationStructs.sol";
+} from "seaport-types/lib/ConsiderationStructs.sol";
 
-import { BasicOrderType } from "../../../lib/ConsiderationEnums.sol";
+import { BasicOrderType } from "seaport-types/lib/ConsiderationEnums.sol";
 
 import { StructCopier } from "./StructCopier.sol";
 

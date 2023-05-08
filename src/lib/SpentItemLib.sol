@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import { OfferItem, SpentItem } from "../../../lib/ConsiderationStructs.sol";
+import { OfferItem, SpentItem } from "seaport-types/lib/ConsiderationStructs.sol";
 
-import { ItemType } from "../../../lib/ConsiderationEnums.sol";
+import { ItemType } from "seaport-types/lib/ConsiderationEnums.sol";
 
 /**
  * @title SpentItemLib

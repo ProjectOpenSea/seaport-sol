@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import { ItemType, Side } from "../../../lib/ConsiderationEnums.sol";
+import { ItemType, Side } from "seaport-types/lib/ConsiderationEnums.sol";
 
 import {
     ConsiderationItem,
@@ -11,9 +11,9 @@ import {
     OfferItem,
     ReceivedItem,
     SpentItem
-} from "../../../lib/ConsiderationStructs.sol";
+} from "seaport-types/lib/ConsiderationStructs.sol";
 
-import { OrderType } from "../../../lib/ConsiderationEnums.sol";
+import { OrderType } from "seaport-types/lib/ConsiderationEnums.sol";
 
 import { StructCopier } from "./StructCopier.sol";
 

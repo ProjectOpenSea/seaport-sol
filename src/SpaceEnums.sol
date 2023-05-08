@@ -364,6 +364,7 @@ enum UnavailableReason {
     STARTS_IN_FUTURE,
     CANCELLED,
     ALREADY_FULFILLED,
+    MAX_FULFILLED_SATISFIED,
     GENERATE_ORDER_FAILURE
 }
 
@@ -379,33 +380,3 @@ enum ContractOrderRebate {
     LESS_CONSIDERATION_ITEMS,
     LESS_CONSIDERATION_ITEM_AMOUNTS
 }
-
-// TODO: maybe just validate everything in a passing case, avoid bloating state space?
-
-// // Zone.PASS/FAIL <- ZoneParams
-// enum ZoneValidationParams {
-//     NONE,
-//     ZONEHASH,
-//     EXTRADATA,
-//     BOTH
-// }
-
-// // ContractOfferer.PASS <- ContractOffererGenerateValidationParams
-// enum ContractOffererGenerateValidationParams {
-//     NONE,
-//     FULFILLER,
-//     MIN_RECEIVED,
-//     MAX_SPENT,
-//     CONTEXT
-// }
-
-// // ContractOfferer.PASS <- ContractOffererRatifyValidationParams
-
-// enum ContractOffererRatifyValidationParams {
-//     NONE,
-//     OFFER,
-//     CONSIDERATION,
-//     CONTEXT,
-//     ORDER_HASHES,
-//     CONTRACT_NONCE
-// }

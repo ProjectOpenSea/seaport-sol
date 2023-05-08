@@ -6,13 +6,13 @@ import {
     OfferItem,
     OrderComponents,
     OrderParameters
-} from "../../../lib/ConsiderationStructs.sol";
+} from "seaport-types/lib/ConsiderationStructs.sol";
 
 import {
     BasicOrderType,
     ItemType,
     OrderType
-} from "../../../lib/ConsiderationEnums.sol";
+} from "seaport-types/lib/ConsiderationEnums.sol";
 
 import { StructCopier } from "./StructCopier.sol";
 

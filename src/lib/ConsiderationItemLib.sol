@@ -1,16 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {
-    ConsiderationItem,
-    OfferItem,
-    ReceivedItem,
-    SpentItem
-} from "../../../lib/ConsiderationStructs.sol";
+import {ConsiderationItem, OfferItem, ReceivedItem, SpentItem} from "seaport-types/lib/ConsiderationStructs.sol";
 
-import { ItemType } from "../../../lib/ConsiderationEnums.sol";
+import {ItemType} from "seaport-types/lib/ConsiderationEnums.sol";
 
-import { StructCopier } from "./StructCopier.sol";
+import {StructCopier} from "./StructCopier.sol";
 
 /**
  * @title ConsiderationItemLib
@@ -20,23 +15,20 @@ import { StructCopier } from "./StructCopier.sol";
  *         struct creation more readable.
  */
 library ConsiderationItemLib {
-    bytes32 private constant CONSIDERATION_ITEM_MAP_POSITION =
-        keccak256("seaport.ConsiderationItemDefaults");
-    bytes32 private constant CONSIDERATION_ITEMS_MAP_POSITION =
-        keccak256("seaport.ConsiderationItemsDefaults");
-    bytes32 private constant EMPTY_CONSIDERATION_ITEM =
-        keccak256(
-            abi.encode(
-                ConsiderationItem({
-                    itemType: ItemType(0),
-                    token: address(0),
-                    identifierOrCriteria: 0,
-                    startAmount: 0,
-                    endAmount: 0,
-                    recipient: payable(address(0))
-                })
-            )
-        );
+    bytes32 private constant CONSIDERATION_ITEM_MAP_POSITION = keccak256("seaport.ConsiderationItemDefaults");
+    bytes32 private constant CONSIDERATION_ITEMS_MAP_POSITION = keccak256("seaport.ConsiderationItemsDefaults");
+    bytes32 private constant EMPTY_CONSIDERATION_ITEM = keccak256(
+        abi.encode(
+            ConsiderationItem({
+                itemType: ItemType(0),
+                token: address(0),
+                identifierOrCriteria: 0,
+                startAmount: 0,
+                endAmount: 0,
+                recipient: payable(address(0))
+            })
+        )
+    );
 
     /**
      * @dev Clears a ConsiderationItem from storage.
@@ -59,8 +51,7 @@ library ConsiderationItemLib {
      * @param defaultName the name of the default to clear
      */
     function clear(string memory defaultName) internal {
-        mapping(string => ConsiderationItem)
-            storage considerationItemMap = _considerationItemMap();
+        mapping(string => ConsiderationItem) storage considerationItemMap = _considerationItemMap();
         ConsiderationItem storage item = considerationItemMap[defaultName];
         _clear(item);
     }
@@ -71,8 +62,7 @@ library ConsiderationItemLib {
      * @param defaultsName the name of the array to clear
      */
     function clearMany(string memory defaultsName) internal {
-        mapping(string => ConsiderationItem[])
-            storage considerationItemsMap = _considerationItemsMap();
+        mapping(string => ConsiderationItem[]) storage considerationItemsMap = _considerationItemsMap();
         ConsiderationItem[] storage items = considerationItemsMap[defaultsName];
         while (items.length > 0) {
             _clear(items[items.length - 1]);
@@ -87,11 +77,8 @@ library ConsiderationItemLib {
      *
      * @return item the ConsiderationItem retrieved from storage
      */
-    function fromDefault(
-        string memory defaultName
-    ) internal view returns (ConsiderationItem memory item) {
-        mapping(string => ConsiderationItem)
-            storage considerationItemMap = _considerationItemMap();
+    function fromDefault(string memory defaultName) internal view returns (ConsiderationItem memory item) {
+        mapping(string => ConsiderationItem) storage considerationItemMap = _considerationItemMap();
         item = considerationItemMap[defaultName];
 
         if (keccak256(abi.encode(item)) == EMPTY_CONSIDERATION_ITEM) {
@@ -106,11 +93,8 @@ library ConsiderationItemLib {
      *
      * @return items the array of ConsiderationItems retrieved from storage
      */
-    function fromDefaultMany(
-        string memory defaultsName
-    ) internal view returns (ConsiderationItem[] memory items) {
-        mapping(string => ConsiderationItem[])
-            storage considerationItemsMap = _considerationItemsMap();
+    function fromDefaultMany(string memory defaultsName) internal view returns (ConsiderationItem[] memory items) {
+        mapping(string => ConsiderationItem[]) storage considerationItemsMap = _considerationItemsMap();
         items = considerationItemsMap[defaultsName];
 
         if (items.length == 0) {
@@ -125,15 +109,14 @@ library ConsiderationItemLib {
      *                                     ConsiderationItem map
      */
     function empty() internal pure returns (ConsiderationItem memory) {
-        return
-            ConsiderationItem({
-                itemType: ItemType(0),
-                token: address(0),
-                identifierOrCriteria: 0,
-                startAmount: 0,
-                endAmount: 0,
-                recipient: payable(address(0))
-            });
+        return ConsiderationItem({
+            itemType: ItemType(0),
+            token: address(0),
+            identifierOrCriteria: 0,
+            startAmount: 0,
+            endAmount: 0,
+            recipient: payable(address(0))
+        });
     }
 
     /**
@@ -144,12 +127,11 @@ library ConsiderationItemLib {
      *
      * @return _considerationItem the saved ConsiderationItem
      */
-    function saveDefault(
-        ConsiderationItem memory considerationItem,
-        string memory defaultName
-    ) internal returns (ConsiderationItem memory _considerationItem) {
-        mapping(string => ConsiderationItem)
-            storage considerationItemMap = _considerationItemMap();
+    function saveDefault(ConsiderationItem memory considerationItem, string memory defaultName)
+        internal
+        returns (ConsiderationItem memory _considerationItem)
+    {
+        mapping(string => ConsiderationItem) storage considerationItemMap = _considerationItemMap();
         considerationItemMap[defaultName] = considerationItem;
         return considerationItem;
     }
@@ -163,12 +145,11 @@ library ConsiderationItemLib {
      *
      * @return _considerationItems the saved array of ConsiderationItems
      */
-    function saveDefaultMany(
-        ConsiderationItem[] memory considerationItems,
-        string memory defaultsName
-    ) internal returns (ConsiderationItem[] memory _considerationItems) {
-        mapping(string => ConsiderationItem[])
-            storage considerationItemsMap = _considerationItemsMap();
+    function saveDefaultMany(ConsiderationItem[] memory considerationItems, string memory defaultsName)
+        internal
+        returns (ConsiderationItem[] memory _considerationItems)
+    {
+        mapping(string => ConsiderationItem[]) storage considerationItemsMap = _considerationItemsMap();
         ConsiderationItem[] storage items = considerationItemsMap[defaultsName];
         clearMany(defaultsName);
         StructCopier.setConsiderationItems(items, considerationItems);
@@ -182,18 +163,15 @@ library ConsiderationItemLib {
      *
      * @custom:return copy the copy of the ConsiderationItem
      */
-    function copy(
-        ConsiderationItem memory item
-    ) internal pure returns (ConsiderationItem memory) {
-        return
-            ConsiderationItem({
-                itemType: item.itemType,
-                token: item.token,
-                identifierOrCriteria: item.identifierOrCriteria,
-                startAmount: item.startAmount,
-                endAmount: item.endAmount,
-                recipient: item.recipient
-            });
+    function copy(ConsiderationItem memory item) internal pure returns (ConsiderationItem memory) {
+        return ConsiderationItem({
+            itemType: item.itemType,
+            token: item.token,
+            identifierOrCriteria: item.identifierOrCriteria,
+            startAmount: item.startAmount,
+            endAmount: item.endAmount,
+            recipient: item.recipient
+        });
     }
 
     /**
@@ -203,9 +181,7 @@ library ConsiderationItemLib {
      *
      * @custom:return copy the copy of the array of ConsiderationItems
      */
-    function copy(
-        ConsiderationItem[] memory items
-    ) internal pure returns (ConsiderationItem[] memory) {
+    function copy(ConsiderationItem[] memory items) internal pure returns (ConsiderationItem[] memory) {
         ConsiderationItem[] memory copies = new ConsiderationItem[](
             items.length
         );
@@ -231,9 +207,7 @@ library ConsiderationItemLib {
     function _considerationItemMap()
         private
         pure
-        returns (
-            mapping(string => ConsiderationItem) storage considerationItemMap
-        )
+        returns (mapping(string => ConsiderationItem) storage considerationItemMap)
     {
         bytes32 position = CONSIDERATION_ITEM_MAP_POSITION;
         assembly {
@@ -251,9 +225,7 @@ library ConsiderationItemLib {
     function _considerationItemsMap()
         private
         pure
-        returns (
-            mapping(string => ConsiderationItem[]) storage considerationItemsMap
-        )
+        returns (mapping(string => ConsiderationItem[]) storage considerationItemsMap)
     {
         bytes32 position = CONSIDERATION_ITEMS_MAP_POSITION;
         assembly {
@@ -272,10 +244,11 @@ library ConsiderationItemLib {
      *
      * @custom:return item the modified ConsiderationItem
      */
-    function withItemType(
-        ConsiderationItem memory item,
-        ItemType itemType
-    ) internal pure returns (ConsiderationItem memory) {
+    function withItemType(ConsiderationItem memory item, ItemType itemType)
+        internal
+        pure
+        returns (ConsiderationItem memory)
+    {
         item.itemType = itemType;
         return item;
     }
@@ -288,10 +261,7 @@ library ConsiderationItemLib {
      *
      * @custom:return item the modified ConsiderationItem
      */
-    function withToken(
-        ConsiderationItem memory item,
-        address token
-    ) internal pure returns (ConsiderationItem memory) {
+    function withToken(ConsiderationItem memory item, address token) internal pure returns (ConsiderationItem memory) {
         item.token = token;
         return item;
     }
@@ -304,10 +274,11 @@ library ConsiderationItemLib {
      *
      * @custom:return item the modified ConsiderationItem
      */
-    function withIdentifierOrCriteria(
-        ConsiderationItem memory item,
-        uint256 identifierOrCriteria
-    ) internal pure returns (ConsiderationItem memory) {
+    function withIdentifierOrCriteria(ConsiderationItem memory item, uint256 identifierOrCriteria)
+        internal
+        pure
+        returns (ConsiderationItem memory)
+    {
         item.identifierOrCriteria = identifierOrCriteria;
         return item;
     }
@@ -320,10 +291,11 @@ library ConsiderationItemLib {
      *
      * @custom:return item the modified ConsiderationItem
      */
-    function withStartAmount(
-        ConsiderationItem memory item,
-        uint256 startAmount
-    ) internal pure returns (ConsiderationItem memory) {
+    function withStartAmount(ConsiderationItem memory item, uint256 startAmount)
+        internal
+        pure
+        returns (ConsiderationItem memory)
+    {
         item.startAmount = startAmount;
         return item;
     }
@@ -336,10 +308,11 @@ library ConsiderationItemLib {
      *
      * @custom:return item the modified ConsiderationItem
      */
-    function withEndAmount(
-        ConsiderationItem memory item,
-        uint256 endAmount
-    ) internal pure returns (ConsiderationItem memory) {
+    function withEndAmount(ConsiderationItem memory item, uint256 endAmount)
+        internal
+        pure
+        returns (ConsiderationItem memory)
+    {
         item.endAmount = endAmount;
         return item;
     }
@@ -352,10 +325,11 @@ library ConsiderationItemLib {
      *
      * @custom:return item the modified ConsiderationItem
      */
-    function withAmount(
-        ConsiderationItem memory item,
-        uint256 amount
-    ) internal pure returns (ConsiderationItem memory) {
+    function withAmount(ConsiderationItem memory item, uint256 amount)
+        internal
+        pure
+        returns (ConsiderationItem memory)
+    {
         item.startAmount = amount;
         item.endAmount = amount;
         return item;
@@ -369,10 +343,11 @@ library ConsiderationItemLib {
      *
      * @custom:return item the modified ConsiderationItem
      */
-    function withRecipient(
-        ConsiderationItem memory item,
-        address recipient
-    ) internal pure returns (ConsiderationItem memory) {
+    function withRecipient(ConsiderationItem memory item, address recipient)
+        internal
+        pure
+        returns (ConsiderationItem memory)
+    {
         item.recipient = payable(recipient);
         return item;
     }
@@ -384,22 +359,17 @@ library ConsiderationItemLib {
      *
      * @custom:return receivedItem the converted ReceivedItem
      */
-    function toReceivedItem(
-        ConsiderationItem memory item
-    ) internal pure returns (ReceivedItem memory) {
-        return
-            ReceivedItem({
-                itemType: item.itemType,
-                token: item.token,
-                identifier: item.identifierOrCriteria,
-                amount: item.startAmount,
-                recipient: item.recipient
-            });
+    function toReceivedItem(ConsiderationItem memory item) internal pure returns (ReceivedItem memory) {
+        return ReceivedItem({
+            itemType: item.itemType,
+            token: item.token,
+            identifier: item.identifierOrCriteria,
+            amount: item.startAmount,
+            recipient: item.recipient
+        });
     }
 
-    function toReceivedItemArray(
-        ConsiderationItem[] memory items
-    ) internal pure returns (ReceivedItem[] memory) {
+    function toReceivedItemArray(ConsiderationItem[] memory items) internal pure returns (ReceivedItem[] memory) {
         ReceivedItem[] memory receivedItems = new ReceivedItem[](items.length);
         for (uint256 i = 0; i < items.length; i++) {
             receivedItems[i] = toReceivedItem(items[i]);
@@ -407,21 +377,16 @@ library ConsiderationItemLib {
         return receivedItems;
     }
 
-    function toSpentItem(
-        ConsiderationItem memory item
-    ) internal pure returns (SpentItem memory) {
-        return
-            SpentItem({
-                itemType: item.itemType,
-                token: item.token,
-                identifier: item.identifierOrCriteria,
-                amount: item.startAmount
-            });
+    function toSpentItem(ConsiderationItem memory item) internal pure returns (SpentItem memory) {
+        return SpentItem({
+            itemType: item.itemType,
+            token: item.token,
+            identifier: item.identifierOrCriteria,
+            amount: item.startAmount
+        });
     }
 
-    function toSpentItemArray(
-        ConsiderationItem[] memory items
-    ) internal pure returns (SpentItem[] memory) {
+    function toSpentItemArray(ConsiderationItem[] memory items) internal pure returns (SpentItem[] memory) {
         SpentItem[] memory spentItems = new SpentItem[](items.length);
         for (uint256 i = 0; i < items.length; i++) {
             spentItems[i] = toSpentItem(items[i]);
@@ -429,16 +394,13 @@ library ConsiderationItemLib {
         return spentItems;
     }
 
-    function toOfferItem(
-        ConsiderationItem memory item
-    ) internal pure returns (OfferItem memory) {
-        return
-            OfferItem({
-                itemType: item.itemType,
-                token: item.token,
-                identifierOrCriteria: item.identifierOrCriteria,
-                startAmount: item.startAmount,
-                endAmount: item.endAmount
-            });
+    function toOfferItem(ConsiderationItem memory item) internal pure returns (OfferItem memory) {
+        return OfferItem({
+            itemType: item.itemType,
+            token: item.token,
+            identifierOrCriteria: item.identifierOrCriteria,
+            startAmount: item.startAmount,
+            endAmount: item.endAmount
+        });
     }
 }

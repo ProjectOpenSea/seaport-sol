@@ -4,9 +4,9 @@ pragma solidity ^0.8.17;
 import {
     ConsiderationItem,
     ReceivedItem
-} from "../../../lib/ConsiderationStructs.sol";
+} from "seaport-types/lib/ConsiderationStructs.sol";
 
-import { ItemType } from "../../../lib/ConsiderationEnums.sol";
+import { ItemType } from "seaport-types/lib/ConsiderationEnums.sol";
 
 import { StructCopier } from "./StructCopier.sol";
 
