@@ -4,7 +4,7 @@ pragma solidity ^0.8.17;
 import {
     Fulfillment,
     FulfillmentComponent
-} from "seaport-types/lib/ConsiderationStructs.sol";
+} from "seaport-types/src/lib/ConsiderationStructs.sol";
 
 import { FulfillmentComponentLib } from "./FulfillmentComponentLib.sol";
 

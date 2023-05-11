@@ -15,7 +15,7 @@ import {
     OrderParameters,
     ReceivedItem,
     SpentItem
-} from "seaport-types/lib/ConsiderationStructs.sol";
+} from "seaport-types/src/lib/ConsiderationStructs.sol";
 
 library SeaportArrays {
     function Orders(Order memory a) internal pure returns (Order[] memory) {

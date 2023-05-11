@@ -14,9 +14,9 @@ import {
     OrderType,
     ReceivedItem,
     SpentItem
-} from "seaport-types/lib/ConsiderationStructs.sol";
+} from "seaport-types/src/lib/ConsiderationStructs.sol";
 
-import {BasicOrderType, ItemType} from "seaport-types/lib/ConsiderationEnums.sol";
+import {BasicOrderType, ItemType} from "seaport-types/src/lib/ConsiderationEnums.sol";
 
 import {UnavailableReason} from "../SpaceEnums.sol";
 

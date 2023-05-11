@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {ItemType, Side, OrderType} from "seaport-types/lib/ConsiderationEnums.sol";
+import {ItemType, Side, OrderType} from "seaport-types/src/lib/ConsiderationEnums.sol";
 
 import {
     AdvancedOrder,
@@ -15,7 +15,7 @@ import {
     ReceivedItem,
     ZoneParameters,
     CriteriaResolver
-} from "seaport-types/lib/ConsiderationStructs.sol";
+} from "seaport-types/src/lib/ConsiderationStructs.sol";
 
 import {SeaportInterface} from "../SeaportInterface.sol";
 

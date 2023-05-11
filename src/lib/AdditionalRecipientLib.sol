@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import { AdditionalRecipient } from "seaport-types/lib/ConsiderationStructs.sol";
+import { AdditionalRecipient } from "seaport-types/src/lib/ConsiderationStructs.sol";
 
 import { StructCopier } from "./StructCopier.sol";
 

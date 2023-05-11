@@ -10,9 +10,9 @@ import {
     Order,
     OrderParameters,
     OrderType
-} from "seaport-types/lib/ConsiderationStructs.sol";
+} from "seaport-types/src/lib/ConsiderationStructs.sol";
 
-import { BasicOrderType } from "seaport-types/lib/ConsiderationEnums.sol";
+import { BasicOrderType } from "seaport-types/src/lib/ConsiderationEnums.sol";
 
 import { OrderParametersLib } from "./OrderParametersLib.sol";
 

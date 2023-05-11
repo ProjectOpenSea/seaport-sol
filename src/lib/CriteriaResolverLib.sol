@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import { CriteriaResolver } from "seaport-types/lib/ConsiderationStructs.sol";
+import { CriteriaResolver } from "seaport-types/src/lib/ConsiderationStructs.sol";
 
-import { Side } from "seaport-types/lib/ConsiderationEnums.sol";
+import { Side } from "seaport-types/src/lib/ConsiderationEnums.sol";
 
 import { ArrayLib } from "./ArrayLib.sol";
 

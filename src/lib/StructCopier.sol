@@ -14,7 +14,7 @@ import {
     Order,
     OrderComponents,
     OrderParameters
-} from "seaport-types/lib/ConsiderationStructs.sol";
+} from "seaport-types/src/lib/ConsiderationStructs.sol";
 
 import { ArrayLib } from "./ArrayLib.sol";
 
