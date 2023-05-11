@@ -19,7 +19,7 @@ import {
 
 import {SeaportInterface} from "../SeaportInterface.sol";
 
-import {GettersAndDerivers} from "seaport-core/lib/GettersAndDerivers.sol";
+import {GettersAndDerivers} from "seaport-core/src/lib/GettersAndDerivers.sol";
 
 import {UnavailableReason} from "../SpaceEnums.sol";
 

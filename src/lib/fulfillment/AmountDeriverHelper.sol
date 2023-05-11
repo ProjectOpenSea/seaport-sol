@@ -2,7 +2,7 @@
 pragma solidity ^0.8.17;
 
 import {SeaportInterface} from "seaport-types/src/interfaces/SeaportInterface.sol";
-import {AmountDeriver} from "seaport-core/lib/AmountDeriver.sol";
+import {AmountDeriver} from "seaport-core/src/lib/AmountDeriver.sol";
 import {
     AdvancedOrder,
     ConsiderationItem,
