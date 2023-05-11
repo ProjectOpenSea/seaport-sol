@@ -12,5 +12,9 @@
     "src",
     "LICENSE",
     "README.md"
-]
+  ],
+  "dependencies": {
+    "seaport-core": "^0.0.1",
+    "seaport-types": "^0.0.1"
+  }
 }
