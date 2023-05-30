@@ -3,8 +3,8 @@ pragma solidity ^0.8.17;
 
 import {BaseTest} from "../BaseTest.sol";
 import {CriteriaResolverLib} from "../../src/lib/CriteriaResolverLib.sol";
-import {CriteriaResolver} from "seaport-types/lib/ConsiderationStructs.sol";
-import {Side} from "seaport-types/lib/ConsiderationEnums.sol";
+import {CriteriaResolver} from "seaport-types/src/lib/ConsiderationStructs.sol";
+import {Side} from "seaport-types/src/lib/ConsiderationEnums.sol";
 
 contract CriteriaResolverLibTest is BaseTest {
     using CriteriaResolverLib for CriteriaResolver;

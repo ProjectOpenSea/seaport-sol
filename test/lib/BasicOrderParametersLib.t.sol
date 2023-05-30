@@ -4,8 +4,10 @@ pragma solidity ^0.8.17;
 import {BaseTest} from "../BaseTest.sol";
 import {BasicOrderParametersLib} from "../../src/lib/BasicOrderParametersLib.sol";
 import {AdditionalRecipientLib} from "../../src/lib/AdditionalRecipientLib.sol";
-import {BasicOrderParameters, OrderParameters, AdditionalRecipient} from "seaport-types/lib/ConsiderationStructs.sol";
-import {ItemType, BasicOrderType} from "seaport-types/lib/ConsiderationEnums.sol";
+import {
+    BasicOrderParameters, OrderParameters, AdditionalRecipient
+} from "seaport-types/src/lib/ConsiderationStructs.sol";
+import {ItemType, BasicOrderType} from "seaport-types/src/lib/ConsiderationEnums.sol";
 import {OrderParametersLib} from "../../src/lib/OrderParametersLib.sol";
 import {SeaportArrays} from "../../src/lib/SeaportArrays.sol";
 

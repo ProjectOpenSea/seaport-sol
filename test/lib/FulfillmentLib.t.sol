@@ -3,8 +3,8 @@ pragma solidity ^0.8.17;
 
 import {BaseTest} from "../BaseTest.sol";
 import {FulfillmentLib, FulfillmentComponentLib} from "../../src/lib/FulfillmentLib.sol";
-import {Fulfillment, FulfillmentComponent} from "seaport-types/lib/ConsiderationStructs.sol";
-import {ItemType} from "seaport-types/lib/ConsiderationEnums.sol";
+import {Fulfillment, FulfillmentComponent} from "seaport-types/src/lib/ConsiderationStructs.sol";
+import {ItemType} from "seaport-types/src/lib/ConsiderationEnums.sol";
 import {SeaportArrays} from "../../src/lib/SeaportArrays.sol";
 
 contract FulfillmentLibTest is BaseTest {

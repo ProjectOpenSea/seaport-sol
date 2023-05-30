@@ -16,9 +16,9 @@ import {
     OrderParameters,
     ReceivedItem,
     SpentItem
-} from "seaport-types/lib/ConsiderationStructs.sol";
+} from "seaport-types/src/lib/ConsiderationStructs.sol";
 
-import {ItemType, OrderType} from "seaport-types/lib/ConsiderationEnums.sol";
+import {ItemType, OrderType} from "seaport-types/src/lib/ConsiderationEnums.sol";
 
 import {OrderComponentsLib} from "../src/lib/OrderComponentsLib.sol";
 

@@ -10,8 +10,8 @@ import {
     OfferItem,
     ConsiderationItem,
     AdditionalRecipient
-} from "seaport-types/lib/ConsiderationStructs.sol";
-import {ItemType, BasicOrderType, OrderType} from "seaport-types/lib/ConsiderationEnums.sol";
+} from "seaport-types/src/lib/ConsiderationStructs.sol";
+import {ItemType, BasicOrderType, OrderType} from "seaport-types/src/lib/ConsiderationEnums.sol";
 import {OrderParametersLib} from "../../src/lib/OrderParametersLib.sol";
 import {SeaportArrays} from "../../src/lib/SeaportArrays.sol";
 

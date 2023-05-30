@@ -3,8 +3,8 @@ pragma solidity ^0.8.17;
 
 import {BaseTest} from "../BaseTest.sol";
 import {SpentItemLib} from "../../src/lib/SpentItemLib.sol";
-import {SpentItem} from "seaport-types/lib/ConsiderationStructs.sol";
-import {ItemType} from "seaport-types/lib/ConsiderationEnums.sol";
+import {SpentItem} from "seaport-types/src/lib/ConsiderationStructs.sol";
+import {ItemType} from "seaport-types/src/lib/ConsiderationEnums.sol";
 
 contract SpentItemLibTest is BaseTest {
     using SpentItemLib for SpentItem;

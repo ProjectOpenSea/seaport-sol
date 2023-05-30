@@ -3,8 +3,8 @@ pragma solidity ^0.8.17;
 
 import {BaseTest} from "../BaseTest.sol";
 import {AdditionalRecipientLib} from "../../src/lib/AdditionalRecipientLib.sol";
-import {AdditionalRecipient} from "seaport-types/lib/ConsiderationStructs.sol";
-import {ItemType} from "seaport-types/lib/ConsiderationEnums.sol";
+import {AdditionalRecipient} from "seaport-types/src/lib/ConsiderationStructs.sol";
+import {ItemType} from "seaport-types/src/lib/ConsiderationEnums.sol";
 
 contract AdditionalRecipientLibTest is BaseTest {
     using AdditionalRecipientLib for AdditionalRecipient;

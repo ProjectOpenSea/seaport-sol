@@ -3,8 +3,8 @@ pragma solidity ^0.8.17;
 
 import {BaseTest} from "../BaseTest.sol";
 import {OrderLib} from "../../src/lib/OrderLib.sol";
-import {Order, OrderParameters} from "seaport-types/lib/ConsiderationStructs.sol";
-import {ItemType} from "seaport-types/lib/ConsiderationEnums.sol";
+import {Order, OrderParameters} from "seaport-types/src/lib/ConsiderationStructs.sol";
+import {ItemType} from "seaport-types/src/lib/ConsiderationEnums.sol";
 import {OrderParametersLib} from "../../src/lib/OrderParametersLib.sol";
 
 contract OrderLibTest is BaseTest {
