@@ -1,6 +1,6 @@
 {
   "name": "seaport-sol",
-  "version": "0.0.1",
+  "version": "1.5.0",
   "description": "Convenience libraries for working with Seaport",
   "main": "src/",
   "repository": "https://github.com/ProjectOpenSea/seaport-sol.git",
