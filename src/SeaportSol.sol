@@ -8,7 +8,7 @@ import "./lib/SeaportEnumsLib.sol";
 import "./fulfillments/lib/Structs.sol";
 import {SeaportArrays} from "./lib/SeaportArrays.sol";
 import {SeaportInterface} from "./SeaportInterface.sol";
-import {ConsiderationInterface} from "seaport-types/src/interfaces//ConsiderationInterface.sol";
+import {ConsiderationInterface} from "seaport-types/src/interfaces/ConsiderationInterface.sol";
 import {ConduitInterface} from "./ConduitInterface.sol";
 import {ConduitControllerInterface} from "./ConduitControllerInterface.sol";
 import {ZoneInterface} from "./ZoneInterface.sol";
