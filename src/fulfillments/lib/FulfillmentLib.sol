@@ -106,33 +106,9 @@ struct MatchDetails {
     uint256 totalItems;
 }
 
-library FulfillmentGeneratorLib {
-    using LibPRNG for LibPRNG.PRNG;
+library DefaultFulfillmentGeneratorLib {
     using ItemReferenceLib for OrderDetails[];
     using FulfillmentPrepLib for ItemReferenceLib.ItemReference[];
-
-    error UnsupportedFulfillAvailableStrategy();
-    error UnsupportedMatchStrategy();
-    error UnknownMatchAggregationStrategy();
-    error EmptyConsiderationArray();
-    error EmptyConsiderationItems();
-    error OutOfRangeConsiderationItemIndex();
-    error EmptyOfferArray();
-    error EmptyOfferItems();
-    error OutOfRangeOfferItemIndex();
-    error UnspentMatchItemAssignmentError();
-    error UnmetMatchItemAssignmentError();
-    error UnspentMatchAmountOfZero();
-    error UnmetMatchAmountOfZero();
-    error DidNotCompleteProcessing();
-    error MissingItemAmountsToConsume();
-    error DidNotConsumeExpectedAmount();
-    error DidNotCreditExpectedAmount();
-    error EmptyMatchComponentGenerated();
-    error DidNotFindConsumableItems();
-    error StrategyUnsupported();
-    error UnknownFulfillAvailableStrategy();
-    error UnknownAggregationStrategy();
 
     function getDefaultFulfillmentStrategy()
         internal
@@ -167,7 +143,7 @@ library FulfillmentGeneratorLib {
         uint256 seed = 0;
 
         return
-            getFulfillments(
+            FulfillmentGeneratorLib.getFulfillments(
                 orderDetails,
                 getDefaultFulfillmentStrategy(),
                 recipient,
@@ -175,6 +151,76 @@ library FulfillmentGeneratorLib {
                 seed
             );
     }
+
+    // This uses the "default" set of strategies, applies no randomization, and
+    // does not give a recipient & will not properly detect filtered executions.
+    function getMatchedFulfillments(
+        OrderDetails[] memory orderDetails
+    )
+        internal
+        pure
+        returns (
+            Fulfillment[] memory fulfillments,
+            MatchComponent[] memory unspentOfferComponents,
+            MatchComponent[] memory unmetConsiderationComponents
+        )
+    {
+        return
+            getMatchFulfillments(
+                orderDetails.getItemReferences(0).getMatchDetailsFromReferences(
+                    address(0)
+                )
+            );
+    }
+
+    // This uses the "default" set of strategies and applies no randomization.
+    function getMatchFulfillments(
+        MatchDetails memory matchDetails
+    )
+        internal
+        pure
+        returns (
+            Fulfillment[] memory fulfillments,
+            MatchComponent[] memory unspentOfferComponents,
+            MatchComponent[] memory unmetConsiderationComponents
+        )
+    {
+        uint256 seed = 0;
+
+        return
+            FulfillmentGeneratorLib.getMatchFulfillments(
+                matchDetails,
+                getDefaultFulfillmentStrategy(),
+                seed
+            );
+    }
+}
+
+library FulfillmentGeneratorLib {
+    using LibPRNG for LibPRNG.PRNG;
+    using ItemReferenceLib for OrderDetails[];
+    using FulfillmentPrepLib for ItemReferenceLib.ItemReference[];
+
+    error EmptyConsiderationArray();
+    error EmptyConsiderationItems();
+    error OutOfRangeConsiderationItemIndex();
+    error EmptyOfferArray();
+    error EmptyOfferItems();
+    error OutOfRangeOfferItemIndex();
+    error UnspentMatchItemAssignmentError();
+    error UnmetMatchItemAssignmentError();
+    error UnspentMatchAmountOfZero();
+    error UnmetMatchAmountOfZero();
+    error DidNotCompleteProcessing();
+    error MissingItemAmountsToConsume();
+    error DidNotConsumeExpectedAmount();
+    error DidNotCreditExpectedAmount();
+    error EmptyMatchComponentGenerated();
+    error DidNotFindConsumableItems();
+    error StrategyUnsupported();
+    error UnsupportedFulfillAvailableStrategy();
+    error UnsupportedAggregationStrategy();
+    error UnsupportedMatchStrategy();
 
     function getFulfillments(
         OrderDetails[] memory orderDetails,
@@ -300,27 +346,6 @@ library FulfillmentGeneratorLib {
                 : FulfillmentEligibility.NONE;
     }
 
-    // This uses the "default" set of strategies, applies no randomization, and
-    // does not give a recipient & will not properly detect filtered executions.
-    function getMatchedFulfillments(
-        OrderDetails[] memory orderDetails
-    )
-        internal
-        pure
-        returns (
-            Fulfillment[] memory fulfillments,
-            MatchComponent[] memory unspentOfferComponents,
-            MatchComponent[] memory unmetConsiderationComponents
-        )
-    {
-        return
-            getMatchFulfillments(
-                orderDetails.getItemReferences(0).getMatchDetailsFromReferences(
-                    address(0)
-                )
-            );
-    }
-
     // This does not give a recipient & so will not detect filtered executions.
     function getMatchedFulfillments(
         OrderDetails[] memory orderDetails,
@@ -365,28 +390,6 @@ library FulfillmentGeneratorLib {
                     .getItemReferences(seed)
                     .getMatchDetailsFromReferences(recipient),
                 strategy,
-                seed
-            );
-    }
-
-    // This uses the "default" set of strategies and applies no randomization.
-    function getMatchFulfillments(
-        MatchDetails memory matchDetails
-    )
-        internal
-        pure
-        returns (
-            Fulfillment[] memory fulfillments,
-            MatchComponent[] memory unspentOfferComponents,
-            MatchComponent[] memory unmetConsiderationComponents
-        )
-    {
-        uint256 seed = 0;
-
-        return
-            getMatchFulfillments(
-                matchDetails,
-                getDefaultFulfillmentStrategy(),
                 seed
             );
     }
@@ -440,7 +443,7 @@ library FulfillmentGeneratorLib {
         } else if (aggregationStrategy == AggregationStrategy.RANDOM) {
             return consumeRandomItemsAndGetFulfillment;
         } else {
-            revert UnknownMatchAggregationStrategy();
+            revert UnsupportedAggregationStrategy();
         }
     }
 
@@ -1105,7 +1108,7 @@ library FulfillmentGeneratorLib {
             revert StrategyUnsupported();
         }
 
-        revert UnknownFulfillAvailableStrategy();
+        revert UnsupportedFulfillAvailableStrategy();
     }
 
     function dropSingle(
@@ -1209,7 +1212,7 @@ library FulfillmentGeneratorLib {
         } else if (aggregationStrategy == AggregationStrategy.RANDOM) {
             return getRandomFulfillmentComponents;
         } else {
-            revert UnknownAggregationStrategy();
+            revert UnsupportedAggregationStrategy();
         }
     }
 
