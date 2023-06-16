@@ -1783,7 +1783,6 @@ library ItemReferenceGroupLib {
 
     error MissingItemReferenceInGroup();
     error NoItemsInGroup();
-    error InvalidSideLocated();
     error EmptyItemReferenceGroupSupplied();
     error InvalidMatchSideLocated();
 
@@ -1855,10 +1854,8 @@ library ItemReferenceGroupLib {
 
             if (side == Side.OFFER) {
                 offerGroups[offerItems++] = group;
-            } else if (side == Side.CONSIDERATION) {
-                considerationGroups[considerationItems++] = group;
             } else {
-                revert InvalidSideLocated();
+                considerationGroups[considerationItems++] = group;
             }
         }
 
@@ -2084,9 +2081,6 @@ library ItemReferenceLib {
     using LibPRNG for LibPRNG.PRNG;
     using LibSort for uint256[];
 
-    error InvalidItemTypeLocated();
-    error InvalidSideLocated();
-
     struct ItemReference {
         uint256 orderIndex;
         uint256 itemIndex;
@@ -2231,10 +2225,8 @@ library ItemReferenceLib {
             fullHash = keccak256(
                 abi.encodePacked(dataHash, account, conduitKey)
             );
-        } else if (side == Side.CONSIDERATION) {
-            fullHash = keccak256(abi.encodePacked(dataHash, account));
         } else {
-            revert InvalidSideLocated();
+            fullHash = keccak256(abi.encodePacked(dataHash, account));
         }
 
         ItemCategory itemCategory;
@@ -2242,15 +2234,8 @@ library ItemReferenceLib {
             itemCategory = ItemCategory.NATIVE;
         } else if (itemType == ItemType.ERC721) {
             itemCategory = ItemCategory.ERC721;
-        } else if (
-            itemType == ItemType.ERC20 ||
-            itemType == ItemType.ERC1155 ||
-            itemType == ItemType.ERC1155_WITH_CRITERIA ||
-            itemType == ItemType.ERC721_WITH_CRITERIA
-        ) {
-            itemCategory = ItemCategory.OTHER;
         } else {
-            revert InvalidItemTypeLocated();
+            itemCategory = ItemCategory.OTHER;
         }
 
         return

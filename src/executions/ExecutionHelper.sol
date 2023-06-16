@@ -1,13 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {AmountDeriverHelper} from "../lib/fulfillment/AmountDeriverHelper.sol";
+import {
+    AmountDeriverHelper
+} from "../lib/fulfillment/AmountDeriverHelper.sol";
 
-import {AdvancedOrderLib} from "../lib/AdvancedOrderLib.sol";
+import { AdvancedOrderLib } from "../lib/AdvancedOrderLib.sol";
 
-import {SpentItemLib} from "../lib/SpentItemLib.sol";
+import { SpentItemLib } from "../lib/SpentItemLib.sol";
 
-import {ReceivedItemLib} from "../lib/ReceivedItemLib.sol";
+import { ReceivedItemLib } from "../lib/ReceivedItemLib.sol";
 
 import {
     AdvancedOrder,
@@ -20,11 +22,14 @@ import {
     SpentItem
 } from "seaport-types/src/lib/ConsiderationStructs.sol";
 
-import {ItemType, Side} from "seaport-types/src/lib/ConsiderationEnums.sol";
+import { ItemType, Side } from "seaport-types/src/lib/ConsiderationEnums.sol";
 
-import {FulfillmentDetails, OrderDetails} from "../fulfillments/lib/Structs.sol";
+import {
+    FulfillmentDetails,
+    OrderDetails
+} from "../fulfillments/lib/Structs.sol";
 
-import {UnavailableReason} from "../SpaceEnums.sol";
+import { UnavailableReason } from "../SpaceEnums.sol";
 
 /**
  * @dev Helper contract for deriving explicit and executions from orders and
@@ -56,7 +61,7 @@ library ExecutionHelper {
         FulfillmentComponent[][] memory considerationFulfillments,
         OrderDetails[] memory orderDetails
     )
-        public
+        internal
         pure
         returns (
             Execution[] memory explicitExecutions,
@@ -70,19 +75,34 @@ library ExecutionHelper {
         bool[] memory availableOrders = new bool[](orderDetails.length);
 
         for (uint256 i = 0; i < orderDetails.length; ++i) {
-            availableOrders[i] = orderDetails[i].unavailableReason == UnavailableReason.AVAILABLE;
+            availableOrders[i] =
+                orderDetails[i].unavailableReason ==
+                UnavailableReason.AVAILABLE;
         }
 
-        implicitExecutionsPre = processImplicitPreOrderExecutions(details, availableOrders);
-
-        explicitExecutions = processExplicitExecutionsFromAggregatedComponents(
-            details, offerFulfillments, considerationFulfillments, availableOrders
+        implicitExecutionsPre = processImplicitPreOrderExecutions(
+            details,
+            availableOrders
         );
 
-        implicitExecutionsPost = processImplicitPostOrderExecutions(details, availableOrders);
+        explicitExecutions = processExplicitExecutionsFromAggregatedComponents(
+            details,
+            offerFulfillments,
+            considerationFulfillments,
+            availableOrders
+        );
 
-        nativeTokensReturned =
-            _handleExcessNativeTokens(details, explicitExecutions, implicitExecutionsPre, implicitExecutionsPost);
+        implicitExecutionsPost = processImplicitPostOrderExecutions(
+            details,
+            availableOrders
+        );
+
+        nativeTokensReturned = _handleExcessNativeTokens(
+            details,
+            explicitExecutions,
+            implicitExecutionsPre,
+            implicitExecutionsPost
+        );
     }
 
     /**
@@ -96,7 +116,10 @@ library ExecutionHelper {
      * @return implicitExecutionsPre The implicit executions
      * @return implicitExecutionsPost The implicit executions
      */
-    function getMatchExecutions(FulfillmentDetails memory fulfillmentDetails, Fulfillment[] memory fulfillments)
+    function getMatchExecutions(
+        FulfillmentDetails memory fulfillmentDetails,
+        Fulfillment[] memory fulfillments
+    )
         internal
         pure
         returns (
@@ -118,12 +141,21 @@ library ExecutionHelper {
             availableOrders[i] = true;
         }
 
-        implicitExecutionsPre = processImplicitPreOrderExecutions(details, availableOrders);
+        implicitExecutionsPre = processImplicitPreOrderExecutions(
+            details,
+            availableOrders
+        );
 
         for (uint256 i = 0; i < fulfillments.length; i++) {
-            Execution memory execution = processExecutionFromFulfillment(details, fulfillments[i]);
+            Execution memory execution = processExecutionFromFulfillment(
+                details,
+                fulfillments[i]
+            );
 
-            if (execution.item.recipient == execution.offerer && execution.item.itemType != ItemType.NATIVE) {
+            if (
+                execution.item.recipient == execution.offerer &&
+                execution.item.itemType != ItemType.NATIVE
+            ) {
                 filteredExecutions++;
             } else {
                 explicitExecutions[i - filteredExecutions] = execution;
@@ -134,14 +166,24 @@ library ExecutionHelper {
         if (filteredExecutions != 0) {
             // reduce the total length of the executions array.
             assembly {
-                mstore(explicitExecutions, sub(mload(explicitExecutions), filteredExecutions))
+                mstore(
+                    explicitExecutions,
+                    sub(mload(explicitExecutions), filteredExecutions)
+                )
             }
         }
 
-        implicitExecutionsPost = processImplicitPostOrderExecutions(details, availableOrders);
+        implicitExecutionsPost = processImplicitPostOrderExecutions(
+            details,
+            availableOrders
+        );
 
-        nativeTokensReturned =
-            _handleExcessNativeTokens(details, explicitExecutions, implicitExecutionsPre, implicitExecutionsPost);
+        nativeTokensReturned = _handleExcessNativeTokens(
+            details,
+            explicitExecutions,
+            implicitExecutionsPre,
+            implicitExecutionsPost
+        );
     }
 
     function processExcessNativeTokens(
@@ -156,7 +198,9 @@ library ExecutionHelper {
             ReceivedItem memory item = explicitExecutions[i].item;
             if (item.itemType == ItemType.NATIVE) {
                 if (item.amount > excessNativeTokens) {
-                    revert("ExecutionsHelper: explicit execution amount exceeds seaport balance");
+                    revert(
+                        "ExecutionsHelper: explicit execution amount exceeds seaport balance"
+                    );
                 }
                 excessNativeTokens -= item.amount;
             }
@@ -165,30 +209,38 @@ library ExecutionHelper {
             ReceivedItem memory item = implicitExecutionsPost[i].item;
             if (item.itemType == ItemType.NATIVE) {
                 if (item.amount > excessNativeTokens) {
-                    revert("ExecutionsHelper: post execution amount exceeds seaport balance");
+                    revert(
+                        "ExecutionsHelper: post execution amount exceeds seaport balance"
+                    );
                 }
                 excessNativeTokens -= item.amount;
             }
         }
     }
 
-    function getStandardExecutions(FulfillmentDetails memory details)
-        public
+    function getStandardExecutions(
+        FulfillmentDetails memory details
+    )
+        internal
         pure
-        returns (Execution[] memory implicitExecutions, uint256 nativeTokensReturned)
+        returns (
+            Execution[] memory implicitExecutions,
+            uint256 nativeTokensReturned
+        )
     {
         if (details.orders.length != 1) {
             revert("ExecutionHelper: bad orderDetails length for standard");
         }
 
-        return getStandardExecutions(
-            details.orders[0],
-            details.fulfiller,
-            details.fulfillerConduitKey,
-            details.recipient,
-            details.nativeTokensSupplied,
-            details.seaport
-        );
+        return
+            getStandardExecutions(
+                details.orders[0],
+                details.fulfiller,
+                details.fulfillerConduitKey,
+                details.recipient,
+                details.nativeTokensSupplied,
+                details.seaport
+            );
     }
 
     /**
@@ -201,7 +253,14 @@ library ExecutionHelper {
         address recipient,
         uint256 nativeTokensSupplied,
         address seaport
-    ) public pure returns (Execution[] memory implicitExecutions, uint256 nativeTokensReturned) {
+    )
+        internal
+        pure
+        returns (
+            Execution[] memory implicitExecutions,
+            uint256 nativeTokensReturned
+        )
+    {
         uint256 currentSeaportBalance = 0;
 
         // implicit executions (use max and resize at end):
@@ -257,7 +316,9 @@ library ExecutionHelper {
         for (uint256 i = 0; i < orderDetails.offer.length; i++) {
             SpentItem memory item = orderDetails.offer[i];
             implicitExecutions[executionIndex++] = Execution({
-                offerer: item.itemType == ItemType.NATIVE ? seaport : orderDetails.offerer,
+                offerer: item.itemType == ItemType.NATIVE
+                    ? seaport
+                    : orderDetails.offerer,
                 conduitKey: orderDetails.conduitKey,
                 item: ReceivedItem({
                     itemType: item.itemType,
@@ -269,7 +330,9 @@ library ExecutionHelper {
             });
             if (item.itemType == ItemType.NATIVE) {
                 if (item.amount > currentSeaportBalance) {
-                    revert("ExecutionHelper: offer item amount exceeds seaport balance");
+                    revert(
+                        "ExecutionHelper: offer item amount exceeds seaport balance"
+                    );
                 }
 
                 currentSeaportBalance -= item.amount;
@@ -285,7 +348,9 @@ library ExecutionHelper {
             });
             if (item.itemType == ItemType.NATIVE) {
                 if (item.amount > currentSeaportBalance) {
-                    revert("ExecutionHelper: consideration item amount exceeds seaport balance");
+                    revert(
+                        "ExecutionHelper: consideration item amount exceeds seaport balance"
+                    );
                 }
 
                 currentSeaportBalance -= item.amount;
@@ -314,22 +379,28 @@ library ExecutionHelper {
         }
     }
 
-    function getBasicExecutions(FulfillmentDetails memory details)
-        public
+    function getBasicExecutions(
+        FulfillmentDetails memory details
+    )
+        internal
         pure
-        returns (Execution[] memory implicitExecutions, uint256 nativeTokensReturned)
+        returns (
+            Execution[] memory implicitExecutions,
+            uint256 nativeTokensReturned
+        )
     {
         if (details.orders.length != 1) {
             revert("ExecutionHelper: bad orderDetails length for basic");
         }
 
-        return getBasicExecutions(
-            details.orders[0],
-            details.fulfiller,
-            details.fulfillerConduitKey,
-            details.nativeTokensSupplied,
-            details.seaport
-        );
+        return
+            getBasicExecutions(
+                details.orders[0],
+                details.fulfiller,
+                details.fulfillerConduitKey,
+                details.nativeTokensSupplied,
+                details.seaport
+            );
     }
 
     /**
@@ -342,7 +413,14 @@ library ExecutionHelper {
         bytes32 fulfillerConduitKey,
         uint256 nativeTokensSupplied,
         address seaport
-    ) public pure returns (Execution[] memory implicitExecutions, uint256 nativeTokensReturned) {
+    )
+        internal
+        pure
+        returns (
+            Execution[] memory implicitExecutions,
+            uint256 nativeTokensReturned
+        )
+    {
         if (orderDetails.offer.length != 1) {
             revert("not a basic order");
         }
@@ -355,8 +433,11 @@ library ExecutionHelper {
                 1 + orderDetails.consideration.length
             );
 
-            implicitExecutions[0] =
-                Execution({offerer: fulfiller, conduitKey: fulfillerConduitKey, item: orderDetails.consideration[0]});
+            implicitExecutions[0] = Execution({
+                offerer: fulfiller,
+                conduitKey: fulfillerConduitKey,
+                item: orderDetails.consideration[0]
+            });
 
             uint256 additionalAmounts = 0;
 
@@ -431,13 +512,17 @@ library ExecutionHelper {
             for (uint256 i = 1; i < orderDetails.consideration.length; i++) {
                 ReceivedItem memory item = orderDetails.consideration[i];
                 implicitExecutions[executionIndex++] = Execution({
-                    offerer: item.itemType == ItemType.NATIVE ? seaport : fulfiller,
+                    offerer: item.itemType == ItemType.NATIVE
+                        ? seaport
+                        : fulfiller,
                     conduitKey: fulfillerConduitKey,
                     item: item
                 });
                 if (item.itemType == ItemType.NATIVE) {
                     if (item.amount > currentSeaportBalance) {
-                        revert("ExecutionHelper: basic consideration item amount exceeds seaport balance");
+                        revert(
+                            "ExecutionHelper: basic consideration item amount exceeds seaport balance"
+                        );
                     }
 
                     currentSeaportBalance -= item.amount;
@@ -446,17 +531,23 @@ library ExecutionHelper {
 
             {
                 if (orderDetails.consideration.length < 1) {
-                    revert("ExecutionHelper: wrong length for basic consideration");
+                    revert(
+                        "ExecutionHelper: wrong length for basic consideration"
+                    );
                 }
                 ReceivedItem memory item = orderDetails.consideration[0];
                 implicitExecutions[executionIndex++] = Execution({
-                    offerer: item.itemType == ItemType.NATIVE ? seaport : fulfiller,
+                    offerer: item.itemType == ItemType.NATIVE
+                        ? seaport
+                        : fulfiller,
                     conduitKey: fulfillerConduitKey,
                     item: item
                 });
                 if (item.itemType == ItemType.NATIVE) {
                     if (item.amount > currentSeaportBalance) {
-                        revert("ExecutionHelper: first basic consideration item amount exceeds seaport balance");
+                        revert(
+                            "ExecutionHelper: first basic consideration item amount exceeds seaport balance"
+                        );
                     }
 
                     currentSeaportBalance -= item.amount;
@@ -502,14 +593,22 @@ library ExecutionHelper {
         address payable offerRecipient,
         FulfillmentComponent memory component,
         Side side
-    ) internal pure returns (SpentItem memory item, address payable trueRecipient) {
-        OrderDetails memory details = fulfillmentDetails.orders[component.orderIndex];
+    )
+        internal
+        pure
+        returns (SpentItem memory item, address payable trueRecipient)
+    {
+        OrderDetails memory details = fulfillmentDetails.orders[
+            component.orderIndex
+        ];
 
         if (side == Side.OFFER) {
             item = details.offer[component.itemIndex];
             trueRecipient = offerRecipient;
         } else {
-            ReceivedItem memory _item = details.consideration[component.itemIndex];
+            ReceivedItem memory _item = details.consideration[
+                component.itemIndex
+            ];
             // cast to SpentItem
             assembly {
                 item := _item
@@ -540,28 +639,46 @@ library ExecutionHelper {
         // aggregate the amounts of each item
         uint256 aggregatedAmount;
         for (uint256 j = 0; j < aggregatedComponents.length; j++) {
-            (SpentItem memory item,) =
-                getItemAndRecipient(fulfillmentDetails, offerRecipient, aggregatedComponents[j], side);
+            (SpentItem memory item, ) = getItemAndRecipient(
+                fulfillmentDetails,
+                offerRecipient,
+                aggregatedComponents[j],
+                side
+            );
             aggregatedAmount += item.amount;
         }
 
         // use the first fulfillment component to get the order details
         FulfillmentComponent memory first = aggregatedComponents[0];
-        (SpentItem memory firstItem, address payable trueRecipient) =
-            getItemAndRecipient(fulfillmentDetails, offerRecipient, first, side);
-        OrderDetails memory details = fulfillmentDetails.orders[first.orderIndex];
+        (
+            SpentItem memory firstItem,
+            address payable trueRecipient
+        ) = getItemAndRecipient(
+                fulfillmentDetails,
+                offerRecipient,
+                first,
+                side
+            );
+        OrderDetails memory details = fulfillmentDetails.orders[
+            first.orderIndex
+        ];
 
-        return Execution({
-            offerer: side == Side.OFFER ? details.offerer : fulfillmentDetails.fulfiller,
-            conduitKey: side == Side.OFFER ? details.conduitKey : fulfillmentDetails.fulfillerConduitKey,
-            item: ReceivedItem({
-                itemType: firstItem.itemType,
-                token: firstItem.token,
-                identifier: firstItem.identifier,
-                amount: aggregatedAmount,
-                recipient: trueRecipient
-            })
-        });
+        return
+            Execution({
+                offerer: side == Side.OFFER
+                    ? details.offerer
+                    : fulfillmentDetails.fulfiller,
+                conduitKey: side == Side.OFFER
+                    ? details.conduitKey
+                    : fulfillmentDetails.fulfillerConduitKey,
+                item: ReceivedItem({
+                    itemType: firstItem.itemType,
+                    token: firstItem.token,
+                    identifier: firstItem.identifier,
+                    amount: aggregatedAmount,
+                    recipient: trueRecipient
+                })
+            });
     }
 
     /**
@@ -590,7 +707,8 @@ library ExecutionHelper {
         // process offer components
         // iterate over each array of fulfillment components
         for (uint256 i = 0; i < offerComponents.length; i++) {
-            FulfillmentComponent[] memory aggregatedComponents = offerComponents[i];
+            FulfillmentComponent[]
+                memory aggregatedComponents = offerComponents[i];
 
             // aggregate & zero-out the amounts of each offer item
             uint256 aggregatedAmount;
@@ -601,10 +719,13 @@ library ExecutionHelper {
                     continue;
                 }
 
-                OrderDetails memory offerOrderDetails = fulfillmentDetails.orders[component.orderIndex];
+                OrderDetails memory offerOrderDetails = fulfillmentDetails
+                    .orders[component.orderIndex];
 
                 if (component.itemIndex < offerOrderDetails.offer.length) {
-                    SpentItem memory item = offerOrderDetails.offer[component.itemIndex];
+                    SpentItem memory item = offerOrderDetails.offer[
+                        component.itemIndex
+                    ];
 
                     aggregatedAmount += item.amount;
 
@@ -619,10 +740,15 @@ library ExecutionHelper {
 
             // use the first fulfillment component to get the order details
             FulfillmentComponent memory first = aggregatedComponents[0];
-            OrderDetails memory details = fulfillmentDetails.orders[first.orderIndex];
+            OrderDetails memory details = fulfillmentDetails.orders[
+                first.orderIndex
+            ];
             SpentItem memory firstItem = details.offer[first.itemIndex];
 
-            if (fulfillmentDetails.recipient == details.offerer && firstItem.itemType != ItemType.NATIVE) {
+            if (
+                fulfillmentDetails.recipient == details.offerer &&
+                firstItem.itemType != ItemType.NATIVE
+            ) {
                 filteredExecutions++;
             } else {
                 explicitExecutions[i - filteredExecutions] = Execution({
@@ -642,7 +768,8 @@ library ExecutionHelper {
         // process consideration components
         // iterate over each array of fulfillment components
         for (uint256 i; i < considerationComponents.length; i++) {
-            FulfillmentComponent[] memory aggregatedComponents = considerationComponents[i];
+            FulfillmentComponent[]
+                memory aggregatedComponents = considerationComponents[i];
 
             // aggregate & zero-out the amounts of each offer item
             uint256 aggregatedAmount;
@@ -653,10 +780,16 @@ library ExecutionHelper {
                     continue;
                 }
 
-                OrderDetails memory considerationOrderDetails = fulfillmentDetails.orders[component.orderIndex];
+                OrderDetails
+                    memory considerationOrderDetails = fulfillmentDetails
+                        .orders[component.orderIndex];
 
-                if (component.itemIndex < considerationOrderDetails.consideration.length) {
-                    ReceivedItem memory item = considerationOrderDetails.consideration[component.itemIndex];
+                if (
+                    component.itemIndex <
+                    considerationOrderDetails.consideration.length
+                ) {
+                    ReceivedItem memory item = considerationOrderDetails
+                        .consideration[component.itemIndex];
 
                     aggregatedAmount += item.amount;
 
@@ -671,13 +804,22 @@ library ExecutionHelper {
 
             // use the first fulfillment component to get the order details
             FulfillmentComponent memory first = aggregatedComponents[0];
-            OrderDetails memory details = fulfillmentDetails.orders[first.orderIndex];
-            ReceivedItem memory firstItem = details.consideration[first.itemIndex];
+            OrderDetails memory details = fulfillmentDetails.orders[
+                first.orderIndex
+            ];
+            ReceivedItem memory firstItem = details.consideration[
+                first.itemIndex
+            ];
 
-            if (firstItem.recipient == fulfillmentDetails.fulfiller && firstItem.itemType != ItemType.NATIVE) {
+            if (
+                firstItem.recipient == fulfillmentDetails.fulfiller &&
+                firstItem.itemType != ItemType.NATIVE
+            ) {
                 filteredExecutions++;
             } else {
-                explicitExecutions[i + offerComponents.length - filteredExecutions] = Execution({
+                explicitExecutions[
+                    i + offerComponents.length - filteredExecutions
+                ] = Execution({
                     offerer: fulfillmentDetails.fulfiller,
                     conduitKey: fulfillmentDetails.fulfillerConduitKey,
                     item: ReceivedItem({
@@ -695,7 +837,10 @@ library ExecutionHelper {
         if (filteredExecutions != 0) {
             // reduce the total length of the executions array.
             assembly {
-                mstore(explicitExecutions, sub(mload(explicitExecutions), filteredExecutions))
+                mstore(
+                    explicitExecutions,
+                    sub(mload(explicitExecutions), filteredExecutions)
+                )
             }
         }
     }
@@ -840,7 +985,9 @@ library ExecutionHelper {
                 if (item.amount != 0) {
                     // Insert the item and increment insertion index.
                     implicitExecutions[insertionIndex++] = Execution({
-                        offerer: item.itemType == ItemType.NATIVE ? fulfillmentDetails.seaport : details.offerer,
+                        offerer: item.itemType == ItemType.NATIVE
+                            ? fulfillmentDetails.seaport
+                            : details.offerer,
                         conduitKey: details.conduitKey,
                         item: ReceivedItem({
                             itemType: item.itemType,
@@ -876,12 +1023,18 @@ library ExecutionHelper {
         // aggregate & zero-out the amounts of each offer item
         uint256 aggregatedOfferAmount;
         for (uint256 j = 0; j < fulfillment.offerComponents.length; j++) {
-            FulfillmentComponent memory component = fulfillment.offerComponents[j];
+            FulfillmentComponent memory component = fulfillment.offerComponents[
+                j
+            ];
 
-            OrderDetails memory details = fulfillmentDetails.orders[component.orderIndex];
+            OrderDetails memory details = fulfillmentDetails.orders[
+                component.orderIndex
+            ];
 
             if (component.itemIndex < details.offer.length) {
-                SpentItem memory offerSpentItem = details.offer[component.itemIndex];
+                SpentItem memory offerSpentItem = details.offer[
+                    component.itemIndex
+                ];
 
                 aggregatedOfferAmount += offerSpentItem.amount;
 
@@ -891,13 +1044,21 @@ library ExecutionHelper {
 
         // aggregate & zero-out the amounts of each offer item
         uint256 aggregatedConsiderationAmount;
-        for (uint256 j = 0; j < fulfillment.considerationComponents.length; j++) {
-            FulfillmentComponent memory component = fulfillment.considerationComponents[j];
+        for (
+            uint256 j = 0;
+            j < fulfillment.considerationComponents.length;
+            j++
+        ) {
+            FulfillmentComponent memory component = fulfillment
+                .considerationComponents[j];
 
-            OrderDetails memory details = fulfillmentDetails.orders[component.orderIndex];
+            OrderDetails memory details = fulfillmentDetails.orders[
+                component.orderIndex
+            ];
 
             if (component.itemIndex < details.consideration.length) {
-                ReceivedItem memory considerationSpentItem = details.consideration[component.itemIndex];
+                ReceivedItem memory considerationSpentItem = details
+                    .consideration[component.itemIndex];
 
                 aggregatedConsiderationAmount += considerationSpentItem.amount;
 
@@ -906,34 +1067,43 @@ library ExecutionHelper {
         }
 
         // Get the first item on each side
-        FulfillmentComponent memory firstOfferComponent = fulfillment.offerComponents[0];
-        OrderDetails memory sourceOrder = fulfillmentDetails.orders[firstOfferComponent.orderIndex];
+        FulfillmentComponent memory firstOfferComponent = fulfillment
+            .offerComponents[0];
+        OrderDetails memory sourceOrder = fulfillmentDetails.orders[
+            firstOfferComponent.orderIndex
+        ];
 
-        FulfillmentComponent memory firstConsiderationComponent = fulfillment.considerationComponents[0];
-        ReceivedItem memory item = fulfillmentDetails.orders[firstConsiderationComponent.orderIndex].consideration[firstConsiderationComponent
-            .itemIndex];
+        FulfillmentComponent memory firstConsiderationComponent = fulfillment
+            .considerationComponents[0];
+        ReceivedItem memory item = fulfillmentDetails
+            .orders[firstConsiderationComponent.orderIndex]
+            .consideration[firstConsiderationComponent.itemIndex];
 
         // put back any extra (TODO: put it on first *in-range* item)
         uint256 amount = aggregatedOfferAmount;
         if (aggregatedOfferAmount > aggregatedConsiderationAmount) {
-            sourceOrder.offer[firstOfferComponent.itemIndex].amount +=
-                (aggregatedOfferAmount - aggregatedConsiderationAmount);
+            sourceOrder
+                .offer[firstOfferComponent.itemIndex]
+                .amount += (aggregatedOfferAmount -
+                aggregatedConsiderationAmount);
             amount = aggregatedConsiderationAmount;
         } else if (aggregatedOfferAmount < aggregatedConsiderationAmount) {
-            item.amount += (aggregatedConsiderationAmount - aggregatedOfferAmount);
+            item.amount += (aggregatedConsiderationAmount -
+                aggregatedOfferAmount);
         }
 
-        return Execution({
-            offerer: sourceOrder.offerer,
-            conduitKey: sourceOrder.conduitKey,
-            item: ReceivedItem({
-                itemType: item.itemType,
-                token: item.token,
-                identifier: item.identifier,
-                amount: amount,
-                recipient: item.recipient
-            })
-        });
+        return
+            Execution({
+                offerer: sourceOrder.offerer,
+                conduitKey: sourceOrder.conduitKey,
+                item: ReceivedItem({
+                    itemType: item.itemType,
+                    token: item.token,
+                    identifier: item.identifier,
+                    amount: amount,
+                    recipient: item.recipient
+                })
+            });
     }
 
     /**
@@ -952,11 +1122,16 @@ library ExecutionHelper {
         Execution[] memory implicitExecutionsPre,
         Execution[] memory implicitExecutionsPost
     ) internal pure returns (uint256 excessNativeTokens) {
-        excessNativeTokens =
-            processExcessNativeTokens(explicitExecutions, implicitExecutionsPre, implicitExecutionsPost);
+        excessNativeTokens = processExcessNativeTokens(
+            explicitExecutions,
+            implicitExecutionsPre,
+            implicitExecutionsPost
+        );
 
         if (excessNativeTokens > 0) {
-            implicitExecutionsPost[implicitExecutionsPost.length - 1] = Execution({
+            implicitExecutionsPost[
+                implicitExecutionsPost.length - 1
+            ] = Execution({
                 offerer: fulfillmentDetails.seaport,
                 conduitKey: bytes32(0),
                 item: ReceivedItem({
@@ -970,16 +1145,17 @@ library ExecutionHelper {
         } else {
             // Reduce length of the implicit executions array by one.
             assembly {
-                mstore(implicitExecutionsPost, sub(mload(implicitExecutionsPost), 1))
+                mstore(
+                    implicitExecutionsPost,
+                    sub(mload(implicitExecutionsPost), 1)
+                )
             }
         }
     }
 
-    function copy(OrderDetails[] memory orderDetails)
-        internal
-        pure
-        returns (OrderDetails[] memory copiedOrderDetails)
-    {
+    function copy(
+        OrderDetails[] memory orderDetails
+    ) internal pure returns (OrderDetails[] memory copiedOrderDetails) {
         copiedOrderDetails = new OrderDetails[](orderDetails.length);
         for (uint256 i = 0; i < orderDetails.length; ++i) {
             OrderDetails memory order = orderDetails[i];
@@ -996,14 +1172,17 @@ library ExecutionHelper {
         }
     }
 
-    function copy(FulfillmentDetails memory fulfillmentDetails) internal pure returns (FulfillmentDetails memory) {
-        return FulfillmentDetails({
-            orders: copy(fulfillmentDetails.orders),
-            recipient: fulfillmentDetails.recipient,
-            fulfiller: fulfillmentDetails.fulfiller,
-            nativeTokensSupplied: fulfillmentDetails.nativeTokensSupplied,
-            fulfillerConduitKey: fulfillmentDetails.fulfillerConduitKey,
-            seaport: fulfillmentDetails.seaport
-        });
+    function copy(
+        FulfillmentDetails memory fulfillmentDetails
+    ) internal pure returns (FulfillmentDetails memory) {
+        return
+            FulfillmentDetails({
+                orders: copy(fulfillmentDetails.orders),
+                recipient: fulfillmentDetails.recipient,
+                fulfiller: fulfillmentDetails.fulfiller,
+                nativeTokensSupplied: fulfillmentDetails.nativeTokensSupplied,
+                fulfillerConduitKey: fulfillmentDetails.fulfillerConduitKey,
+                seaport: fulfillmentDetails.seaport
+            });
     }
 }
