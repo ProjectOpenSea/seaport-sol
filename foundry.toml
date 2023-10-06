@@ -4,7 +4,7 @@ out = "out"
 libs = ["lib", "node_modules"]
 remappings = [
     'seaport-types/=lib/seaport-types/',
-    'seaport-core/=lib/seaport-core/',
+    'seaport-core/=lib/seaport-core-tstore/',
     'solady/=lib/solady/',
 ]
 
