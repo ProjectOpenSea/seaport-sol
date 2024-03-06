@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import { CriteriaResolver } from "seaport-types/src/lib/ConsiderationStructs.sol";
+import { CriteriaResolver } from
+    "seaport-types/src/lib/ConsiderationStructs.sol";
 
 import { Side } from "seaport-types/src/lib/ConsiderationEnums.sol";
 
@@ -21,18 +22,17 @@ library CriteriaResolverLib {
         keccak256("seaport.CriteriaResolverDefaults");
     bytes32 private constant CRITERIA_RESOLVERS_MAP_POSITION =
         keccak256("seaport.CriteriaResolversDefaults");
-    bytes32 private constant EMPTY_CRITERIA_RESOLVER =
-        keccak256(
-            abi.encode(
-                CriteriaResolver({
-                    orderIndex: 0,
-                    side: Side(0),
-                    index: 0,
-                    identifier: 0,
-                    criteriaProof: new bytes32[](0)
-                })
-            )
-        );
+    bytes32 private constant EMPTY_CRITERIA_RESOLVER = keccak256(
+        abi.encode(
+            CriteriaResolver({
+                orderIndex: 0,
+                side: Side(0),
+                index: 0,
+                identifier: 0,
+                criteriaProof: new bytes32[](0)
+            })
+        )
+    );
 
     using ArrayLib for bytes32[];
 
@@ -42,8 +42,8 @@ library CriteriaResolverLib {
      * @param defaultName the name of the default to clear
      */
     function clear(string memory defaultName) internal {
-        mapping(string => CriteriaResolver)
-            storage criteriaResolverMap = _criteriaResolverMap();
+        mapping(string => CriteriaResolver) storage criteriaResolverMap =
+            _criteriaResolverMap();
         CriteriaResolver storage resolver = criteriaResolverMap[defaultName];
         // clear all fields
         clear(resolver);
@@ -80,11 +80,13 @@ library CriteriaResolverLib {
      *
      * @param item the name of the default for retrieval
      */
-    function fromDefault(
-        string memory defaultName
-    ) internal view returns (CriteriaResolver memory item) {
-        mapping(string => CriteriaResolver)
-            storage criteriaResolverMap = _criteriaResolverMap();
+    function fromDefault(string memory defaultName)
+        internal
+        view
+        returns (CriteriaResolver memory item)
+    {
+        mapping(string => CriteriaResolver) storage criteriaResolverMap =
+            _criteriaResolverMap();
         item = criteriaResolverMap[defaultName];
 
         if (keccak256(abi.encode(item)) == EMPTY_CRITERIA_RESOLVER) {
@@ -99,11 +101,13 @@ library CriteriaResolverLib {
      *
      * @return items the CriteriaResolvers retrieved from storage
      */
-    function fromDefaultMany(
-        string memory defaultsName
-    ) internal view returns (CriteriaResolver[] memory items) {
-        mapping(string => CriteriaResolver[])
-            storage criteriaResolversMap = _criteriaResolversMap();
+    function fromDefaultMany(string memory defaultsName)
+        internal
+        view
+        returns (CriteriaResolver[] memory items)
+    {
+        mapping(string => CriteriaResolver[]) storage criteriaResolversMap =
+            _criteriaResolversMap();
         items = criteriaResolversMap[defaultsName];
 
         if (items.length == 0) {
@@ -123,16 +127,15 @@ library CriteriaResolverLib {
         CriteriaResolver memory criteriaResolver,
         string memory defaultName
     ) internal returns (CriteriaResolver memory _criteriaResolver) {
-        mapping(string => CriteriaResolver)
-            storage criteriaResolverMap = _criteriaResolverMap();
+        mapping(string => CriteriaResolver) storage criteriaResolverMap =
+            _criteriaResolverMap();
         CriteriaResolver storage resolver = criteriaResolverMap[defaultName];
         resolver.orderIndex = criteriaResolver.orderIndex;
         resolver.side = criteriaResolver.side;
         resolver.index = criteriaResolver.index;
         resolver.identifier = criteriaResolver.identifier;
         ArrayLib.setBytes32s(
-            resolver.criteriaProof,
-            criteriaResolver.criteriaProof
+            resolver.criteriaProof, criteriaResolver.criteriaProof
         );
         return criteriaResolver;
     }
@@ -149,11 +152,9 @@ library CriteriaResolverLib {
         CriteriaResolver[] memory criteriaResolvers,
         string memory defaultName
     ) internal returns (CriteriaResolver[] memory _criteriaResolvers) {
-        mapping(string => CriteriaResolver[])
-            storage criteriaResolversMap = _criteriaResolversMap();
-        CriteriaResolver[] storage resolvers = criteriaResolversMap[
-            defaultName
-        ];
+        mapping(string => CriteriaResolver[]) storage criteriaResolversMap =
+            _criteriaResolversMap();
+        CriteriaResolver[] storage resolvers = criteriaResolversMap[defaultName];
         // todo: make sure we do this elsewhere
         clear(resolvers);
         StructCopier.setCriteriaResolvers(resolvers, criteriaResolvers);
@@ -167,17 +168,18 @@ library CriteriaResolverLib {
      *
      * @custom:return copiedItem the copied CriteriaResolver
      */
-    function copy(
-        CriteriaResolver memory resolver
-    ) internal pure returns (CriteriaResolver memory) {
-        return
-            CriteriaResolver({
-                orderIndex: resolver.orderIndex,
-                side: resolver.side,
-                index: resolver.index,
-                identifier: resolver.identifier,
-                criteriaProof: resolver.criteriaProof.copy()
-            });
+    function copy(CriteriaResolver memory resolver)
+        internal
+        pure
+        returns (CriteriaResolver memory)
+    {
+        return CriteriaResolver({
+            orderIndex: resolver.orderIndex,
+            side: resolver.side,
+            index: resolver.index,
+            identifier: resolver.identifier,
+            criteriaProof: resolver.criteriaProof.copy()
+        });
     }
 
     /**
@@ -187,12 +189,13 @@ library CriteriaResolverLib {
      *
      * @custom:return copiedItems the copied CriteriaResolvers
      */
-    function copy(
-        CriteriaResolver[] memory resolvers
-    ) internal pure returns (CriteriaResolver[] memory) {
-        CriteriaResolver[] memory copiedItems = new CriteriaResolver[](
-            resolvers.length
-        );
+    function copy(CriteriaResolver[] memory resolvers)
+        internal
+        pure
+        returns (CriteriaResolver[] memory)
+    {
+        CriteriaResolver[] memory copiedItems =
+            new CriteriaResolver[](resolvers.length);
         for (uint256 i = 0; i < resolvers.length; i++) {
             copiedItems[i] = copy(resolvers[i]);
         }
@@ -206,14 +209,13 @@ library CriteriaResolverLib {
      */
     function empty() internal pure returns (CriteriaResolver memory) {
         bytes32[] memory proof;
-        return
-            CriteriaResolver({
-                orderIndex: 0,
-                side: Side(0),
-                index: 0,
-                identifier: 0,
-                criteriaProof: proof
-            });
+        return CriteriaResolver({
+            orderIndex: 0,
+            side: Side(0),
+            index: 0,
+            identifier: 0,
+            criteriaProof: proof
+        });
     }
 
     /**
@@ -283,10 +285,11 @@ library CriteriaResolverLib {
      *
      * @return _resolver the CriteriaResolver with the side set
      */
-    function withSide(
-        CriteriaResolver memory resolver,
-        Side side
-    ) internal pure returns (CriteriaResolver memory) {
+    function withSide(CriteriaResolver memory resolver, Side side)
+        internal
+        pure
+        returns (CriteriaResolver memory)
+    {
         resolver.side = side;
         return resolver;
     }
@@ -299,10 +302,11 @@ library CriteriaResolverLib {
      *
      * @return _resolver the CriteriaResolver with the index set
      */
-    function withIndex(
-        CriteriaResolver memory resolver,
-        uint256 index
-    ) internal pure returns (CriteriaResolver memory) {
+    function withIndex(CriteriaResolver memory resolver, uint256 index)
+        internal
+        pure
+        returns (CriteriaResolver memory)
+    {
         resolver.index = index;
         return resolver;
     }

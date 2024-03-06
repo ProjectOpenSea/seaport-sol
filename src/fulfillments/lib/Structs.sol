@@ -1,11 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {MatchComponent, MatchComponentType} from "../../lib/types/MatchComponentType.sol";
+import {
+    MatchComponent,
+    MatchComponentType
+} from "../../lib/types/MatchComponentType.sol";
 
-import {FulfillmentComponent, SpentItem, ReceivedItem} from "../../SeaportStructs.sol";
+import {
+    FulfillmentComponent,
+    SpentItem,
+    ReceivedItem
+} from "../../SeaportStructs.sol";
 
-import {UnavailableReason} from "../../SpaceEnums.sol";
+import { UnavailableReason } from "../../SpaceEnums.sol";
 
 struct FulfillmentHelperCounterLayout {
     uint256 fulfillmentCounter;
@@ -19,17 +26,29 @@ struct MatchFulfillmentStorageLayout {
             => mapping(
                 uint256 /*identifier*/
                     => mapping(
-                        address /*offerer*/ => mapping(bytes32 /*conduitKey*/ => MatchComponent[] /*components*/)
+                        address /*offerer*/
+                            => mapping(
+                                bytes32 /*conduitKey*/ => MatchComponent[] /*components*/
+                            )
                     )
             )
         ) offerMap;
     mapping(
         address /*recipient*/
-            => mapping(address /*tokenContract*/ => mapping(uint256 /*identifier*/ => MatchComponent[] /*components*/))
+            => mapping(
+                address /*tokenContract*/
+                    => mapping(
+                        uint256 /*identifier*/ => MatchComponent[] /*components*/
+                    )
+            )
         ) considerationMap;
     // a given aggregatable consideration component will have its own set of aggregatable offer components
-    mapping(address /*token*/ => mapping(uint256 /*tokenId*/ => AggregatableOfferer[] /*offererEnumeration*/))
-        tokenToOffererEnumeration;
+    mapping(
+        address /*token*/
+            => mapping(
+                uint256 /*tokenId*/ => AggregatableOfferer[] /*offererEnumeration*/
+            )
+        ) tokenToOffererEnumeration;
     // aggregatable consideration components can be enumerated normally
     AggregatableConsideration[] considerationEnumeration;
 }
@@ -40,14 +59,20 @@ struct FulfillAvailableHelperStorageLayout {
             => mapping(
                 uint256 /*identifier*/
                     => mapping(
-                        address /*offerer*/ => mapping(bytes32 /*conduitKey*/ => FulfillmentComponent[] /*components*/)
+                        address /*offerer*/
+                            => mapping(
+                                bytes32 /*conduitKey*/ => FulfillmentComponent[] /*components*/
+                            )
                     )
             )
         ) offerMap;
     mapping(
         address /*recipient*/
             => mapping(
-                address /*tokenContract*/ => mapping(uint256 /*identifier*/ => FulfillmentComponent[] /*components*/)
+                address /*tokenContract*/
+                    => mapping(
+                        uint256 /*identifier*/ => FulfillmentComponent[] /*components*/
+                    )
             )
         ) considerationMap;
     // a given aggregatable consideration component will have its own set of aggregatable offer components

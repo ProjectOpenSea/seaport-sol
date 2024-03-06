@@ -1,20 +1,31 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {MatchComponent, MatchComponentType} from "../../lib/types/MatchComponentType.sol";
+import {
+    MatchComponent,
+    MatchComponentType
+} from "../../lib/types/MatchComponentType.sol";
 import {
     MatchFulfillmentStorageLayout,
     FulfillmentHelperCounterLayout,
     AggregatableConsideration
 } from "../lib/Structs.sol";
-import {MATCH_FULFILLMENT_COUNTER_KEY, MATCH_FULFILLMENT_STORAGE_BASE_KEY} from "../lib/Constants.sol";
+import {
+    MATCH_FULFILLMENT_COUNTER_KEY,
+    MATCH_FULFILLMENT_STORAGE_BASE_KEY
+} from "../lib/Constants.sol";
 
 library MatchFulfillmentLayout {
     /**
      * @notice load storage layout for the current fulfillmentCounter
      */
-    function getStorageLayout() internal view returns (MatchFulfillmentStorageLayout storage layout) {
-        FulfillmentHelperCounterLayout storage counterLayout = getCounterLayout();
+    function getStorageLayout()
+        internal
+        view
+        returns (MatchFulfillmentStorageLayout storage layout)
+    {
+        FulfillmentHelperCounterLayout storage counterLayout =
+            getCounterLayout();
         uint256 counter = counterLayout.fulfillmentCounter;
         bytes32 storageLayoutKey = MATCH_FULFILLMENT_STORAGE_BASE_KEY;
         assembly {
@@ -27,7 +38,11 @@ library MatchFulfillmentLayout {
     /**
      * @notice load storage layout for the counter itself
      */
-    function getCounterLayout() internal pure returns (FulfillmentHelperCounterLayout storage layout) {
+    function getCounterLayout()
+        internal
+        pure
+        returns (FulfillmentHelperCounterLayout storage layout)
+    {
         bytes32 counterLayoutKey = MATCH_FULFILLMENT_COUNTER_KEY;
         assembly {
             layout.slot := counterLayoutKey
@@ -38,7 +53,8 @@ library MatchFulfillmentLayout {
      * @notice increment the fulfillmentCounter to effectively clear the mappings and enumerations between calls
      */
     function incrementFulfillmentCounter() internal {
-        FulfillmentHelperCounterLayout storage counterLayout = getCounterLayout();
+        FulfillmentHelperCounterLayout storage counterLayout =
+            getCounterLayout();
         counterLayout.fulfillmentCounter += 1;
     }
 
@@ -52,7 +68,12 @@ library MatchFulfillmentLayout {
         returns (
             mapping(
                 address /*offererOrRecipient*/
-                    => mapping(address /*tokenContract*/ => mapping(uint256 /*identifier*/ => MatchComponent[] /*components*/))
+                    => mapping(
+                        address /*tokenContract*/
+                            => mapping(
+                                uint256 /*identifier*/ => MatchComponent[] /*components*/
+                            )
+                    )
                 ) storage map
         )
     {
@@ -68,7 +89,11 @@ library MatchFulfillmentLayout {
      * @notice Get the enumeration of AggregatableConsiderations for a given key (offer or consideration), derived from the hash of the key and the current fulfillmentCounter value
      * @param key Original key used to derive the slot of the enumeration
      */
-    function getEnumeration(bytes32 key) internal view returns (AggregatableConsideration[] storage tokens) {
+    function getEnumeration(bytes32 key)
+        internal
+        view
+        returns (AggregatableConsideration[] storage tokens)
+    {
         bytes32 counterKey = MATCH_FULFILLMENT_COUNTER_KEY;
         assembly {
             mstore(0, key)

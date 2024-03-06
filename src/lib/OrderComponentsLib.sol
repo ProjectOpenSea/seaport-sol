@@ -36,24 +36,23 @@ library OrderComponentsLib {
         keccak256("seaport.OrderComponentsDefaults");
     bytes32 private constant ORDER_COMPONENTS_ARRAY_MAP_POSITION =
         keccak256("seaport.OrderComponentsArrayDefaults");
-    bytes32 private constant EMPTY_ORDER_COMPONENTS =
-        keccak256(
-            abi.encode(
-                OrderComponents({
-                    offerer: address(0),
-                    zone: address(0),
-                    offer: new OfferItem[](0),
-                    consideration: new ConsiderationItem[](0),
-                    orderType: OrderType(0),
-                    startTime: 0,
-                    endTime: 0,
-                    zoneHash: bytes32(0),
-                    salt: 0,
-                    conduitKey: bytes32(0),
-                    counter: 0
-                })
-            )
-        );
+    bytes32 private constant EMPTY_ORDER_COMPONENTS = keccak256(
+        abi.encode(
+            OrderComponents({
+                offerer: address(0),
+                zone: address(0),
+                offer: new OfferItem[](0),
+                consideration: new ConsiderationItem[](0),
+                orderType: OrderType(0),
+                startTime: 0,
+                endTime: 0,
+                zoneHash: bytes32(0),
+                salt: 0,
+                conduitKey: bytes32(0),
+                counter: 0
+            })
+        )
+    );
 
     /**
      * @dev Clears anOrderComponents from storage.
@@ -70,8 +69,7 @@ library OrderComponentsLib {
         components.zone = address(0);
         StructCopier.setOfferItems(components.offer, offer);
         StructCopier.setConsiderationItems(
-            components.consideration,
-            consideration
+            components.consideration, consideration
         );
         components.orderType = OrderType(0);
         components.startTime = 0;
@@ -100,8 +98,8 @@ library OrderComponentsLib {
      * @param defaultName the name of the default to clear
      */
     function clear(string memory defaultName) internal {
-        mapping(string => OrderComponents)
-            storage orderComponentsMap = _orderComponentsMap();
+        mapping(string => OrderComponents) storage orderComponentsMap =
+            _orderComponentsMap();
         OrderComponents storage components = orderComponentsMap[defaultName];
         components.clear();
     }
@@ -136,11 +134,13 @@ library OrderComponentsLib {
      *
      * @return item the default OrderComponents
      */
-    function fromDefault(
-        string memory defaultName
-    ) internal view returns (OrderComponents memory item) {
-        mapping(string => OrderComponents)
-            storage orderComponentsMap = _orderComponentsMap();
+    function fromDefault(string memory defaultName)
+        internal
+        view
+        returns (OrderComponents memory item)
+    {
+        mapping(string => OrderComponents) storage orderComponentsMap =
+            _orderComponentsMap();
         item = orderComponentsMap[defaultName];
 
         if (keccak256(abi.encode(item)) == EMPTY_ORDER_COMPONENTS) {
@@ -155,11 +155,13 @@ library OrderComponentsLib {
      *
      * @return items the default OrderComponents array
      */
-    function fromDefaultMany(
-        string memory defaultName
-    ) internal view returns (OrderComponents[] memory items) {
-        mapping(string => OrderComponents[])
-            storage orderComponentsArrayMap = _orderComponentsArrayMap();
+    function fromDefaultMany(string memory defaultName)
+        internal
+        view
+        returns (OrderComponents[] memory items)
+    {
+        mapping(string => OrderComponents[]) storage orderComponentsArrayMap =
+            _orderComponentsArrayMap();
         items = orderComponentsArrayMap[defaultName];
 
         if (items.length == 0) {
@@ -179,8 +181,8 @@ library OrderComponentsLib {
         OrderComponents memory orderComponents,
         string memory defaultName
     ) internal returns (OrderComponents memory _orderComponents) {
-        mapping(string => OrderComponents)
-            storage orderComponentsMap = _orderComponentsMap();
+        mapping(string => OrderComponents) storage orderComponentsMap =
+            _orderComponentsMap();
         OrderComponents storage destination = orderComponentsMap[defaultName];
         StructCopier.setOrderComponents(destination, orderComponents);
         return orderComponents;
@@ -198,11 +200,10 @@ library OrderComponentsLib {
         OrderComponents[] memory orderComponents,
         string memory defaultName
     ) internal returns (OrderComponents[] memory _orderComponents) {
-        mapping(string => OrderComponents[])
-            storage orderComponentsArrayMap = _orderComponentsArrayMap();
-        OrderComponents[] storage destination = orderComponentsArrayMap[
-            defaultName
-        ];
+        mapping(string => OrderComponents[]) storage orderComponentsArrayMap =
+            _orderComponentsArrayMap();
+        OrderComponents[] storage destination =
+            orderComponentsArrayMap[defaultName];
         StructCopier.setOrderComponents(destination, orderComponents);
         return orderComponents;
     }
@@ -214,23 +215,24 @@ library OrderComponentsLib {
      *
      * @return the copy of the OrderComponents
      */
-    function copy(
-        OrderComponents memory item
-    ) internal pure returns (OrderComponents memory) {
-        return
-            OrderComponents({
-                offerer: item.offerer,
-                zone: item.zone,
-                offer: item.offer.copy(),
-                consideration: item.consideration.copy(),
-                orderType: item.orderType,
-                startTime: item.startTime,
-                endTime: item.endTime,
-                zoneHash: item.zoneHash,
-                salt: item.salt,
-                conduitKey: item.conduitKey,
-                counter: item.counter
-            });
+    function copy(OrderComponents memory item)
+        internal
+        pure
+        returns (OrderComponents memory)
+    {
+        return OrderComponents({
+            offerer: item.offerer,
+            zone: item.zone,
+            offer: item.offer.copy(),
+            consideration: item.consideration.copy(),
+            orderType: item.orderType,
+            startTime: item.startTime,
+            endTime: item.endTime,
+            zoneHash: item.zoneHash,
+            salt: item.salt,
+            conduitKey: item.conduitKey,
+            counter: item.counter
+        });
     }
 
     /**
@@ -280,10 +282,11 @@ library OrderComponentsLib {
      *
      * @custom:return _orderComponents the modified OrderComponents struct
      */
-    function withOfferer(
-        OrderComponents memory components,
-        address offerer
-    ) internal pure returns (OrderComponents memory) {
+    function withOfferer(OrderComponents memory components, address offerer)
+        internal
+        pure
+        returns (OrderComponents memory)
+    {
         components.offerer = offerer;
         return components;
     }
@@ -296,10 +299,11 @@ library OrderComponentsLib {
      *
      * @custom:return _orderComponents the modified OrderComponents struct
      */
-    function withZone(
-        OrderComponents memory components,
-        address zone
-    ) internal pure returns (OrderComponents memory) {
+    function withZone(OrderComponents memory components, address zone)
+        internal
+        pure
+        returns (OrderComponents memory)
+    {
         components.zone = zone;
         return components;
     }
@@ -360,10 +364,11 @@ library OrderComponentsLib {
      *
      * @custom:return _orderComponents the modified OrderComponents struct
      */
-    function withStartTime(
-        OrderComponents memory components,
-        uint256 startTime
-    ) internal pure returns (OrderComponents memory) {
+    function withStartTime(OrderComponents memory components, uint256 startTime)
+        internal
+        pure
+        returns (OrderComponents memory)
+    {
         components.startTime = startTime;
         return components;
     }
@@ -376,10 +381,11 @@ library OrderComponentsLib {
      *
      * @custom:return _orderComponents the modified OrderComponents struct
      */
-    function withEndTime(
-        OrderComponents memory components,
-        uint256 endTime
-    ) internal pure returns (OrderComponents memory) {
+    function withEndTime(OrderComponents memory components, uint256 endTime)
+        internal
+        pure
+        returns (OrderComponents memory)
+    {
         components.endTime = endTime;
         return components;
     }
@@ -392,10 +398,11 @@ library OrderComponentsLib {
      *
      * @custom:return _orderComponents the modified OrderComponents struct
      */
-    function withZoneHash(
-        OrderComponents memory components,
-        bytes32 zoneHash
-    ) internal pure returns (OrderComponents memory) {
+    function withZoneHash(OrderComponents memory components, bytes32 zoneHash)
+        internal
+        pure
+        returns (OrderComponents memory)
+    {
         components.zoneHash = zoneHash;
         return components;
     }
@@ -408,10 +415,11 @@ library OrderComponentsLib {
      *
      * @custom:return _orderComponents the modified OrderComponents struct
      */
-    function withSalt(
-        OrderComponents memory components,
-        uint256 salt
-    ) internal pure returns (OrderComponents memory) {
+    function withSalt(OrderComponents memory components, uint256 salt)
+        internal
+        pure
+        returns (OrderComponents memory)
+    {
         components.salt = salt;
         return components;
     }
@@ -440,10 +448,11 @@ library OrderComponentsLib {
      *
      * @custom:return _orderComponents the modified OrderComponents struct
      */
-    function withCounter(
-        OrderComponents memory components,
-        uint256 counter
-    ) internal pure returns (OrderComponents memory) {
+    function withCounter(OrderComponents memory components, uint256 counter)
+        internal
+        pure
+        returns (OrderComponents memory)
+    {
         components.counter = counter;
         return components;
     }
@@ -455,9 +464,11 @@ library OrderComponentsLib {
      *
      * @custom:return _orderParameters the converted OrderParameters struct
      */
-    function toOrderParameters(
-        OrderComponents memory components
-    ) internal pure returns (OrderParameters memory parameters) {
+    function toOrderParameters(OrderComponents memory components)
+        internal
+        pure
+        returns (OrderParameters memory parameters)
+    {
         parameters.offerer = components.offerer;
         parameters.zone = components.zone;
         parameters.offer = components.offer.copy();
@@ -468,8 +479,7 @@ library OrderComponentsLib {
         parameters.zoneHash = components.zoneHash;
         parameters.salt = components.salt;
         parameters.conduitKey = components.conduitKey;
-        parameters.totalOriginalConsiderationItems = components
-            .consideration
-            .length;
+        parameters.totalOriginalConsiderationItems =
+            components.consideration.length;
     }
 }
