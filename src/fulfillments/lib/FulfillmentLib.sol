@@ -404,10 +404,7 @@ library FulfillmentGeneratorLib {
         internal
         pure
         returns (
-            function(FulfillmentItems memory, FulfillmentItems memory, uint256)
-            internal
-            pure
-            returns (Fulfillment memory)
+            function(FulfillmentItems memory, FulfillmentItems memory, uint256) internal pure returns (Fulfillment memory)
         )
     {
         if (aggregationStrategy == AggregationStrategy.MAXIMUM) {
@@ -1124,10 +1121,7 @@ library FulfillmentGeneratorLib {
         internal
         pure
         returns (
-            function(FulfillmentItems[] memory, uint256)
-            internal
-            pure
-            returns (FulfillmentComponent[][] memory, ItemCategory[] memory)
+            function(FulfillmentItems[] memory, uint256) internal pure returns (FulfillmentComponent[][] memory, ItemCategory[] memory)
         )
     {
         if (aggregationStrategy == AggregationStrategy.MAXIMUM) {

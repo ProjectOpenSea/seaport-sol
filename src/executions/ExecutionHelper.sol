@@ -125,8 +125,6 @@ library ExecutionHelper {
 
         explicitExecutions = new Execution[](fulfillments.length);
 
-        uint256 filteredExecutions = 0;
-
         bool[] memory availableOrders = new bool[](details.orders.length);
 
         for (uint256 i = 0; i < details.orders.length; ++i) {
@@ -137,28 +135,8 @@ library ExecutionHelper {
             processImplicitPreOrderExecutions(details, availableOrders);
 
         for (uint256 i = 0; i < fulfillments.length; i++) {
-            Execution memory execution =
+            explicitExecutions[i] =
                 processExecutionFromFulfillment(details, fulfillments[i]);
-
-            if (
-                execution.item.recipient == execution.offerer
-                    && execution.item.itemType != ItemType.NATIVE
-            ) {
-                filteredExecutions++;
-            } else {
-                explicitExecutions[i - filteredExecutions] = execution;
-            }
-        }
-
-        // If some number of executions have been filtered...
-        if (filteredExecutions != 0) {
-            // reduce the total length of the executions array.
-            assembly {
-                mstore(
-                    explicitExecutions,
-                    sub(mload(explicitExecutions), filteredExecutions)
-                )
-            }
         }
 
         implicitExecutionsPost =
@@ -663,8 +641,6 @@ library ExecutionHelper {
             offerComponents.length + considerationComponents.length
         );
 
-        uint256 filteredExecutions = 0;
-
         // process offer components
         // iterate over each array of fulfillment components
         for (uint256 i = 0; i < offerComponents.length; i++) {
@@ -693,35 +669,23 @@ library ExecutionHelper {
                 }
             }
 
-            if (aggregatedAmount == 0) {
-                filteredExecutions++;
-                continue;
-            }
-
             // use the first fulfillment component to get the order details
             FulfillmentComponent memory first = aggregatedComponents[0];
             OrderDetails memory details =
                 fulfillmentDetails.orders[first.orderIndex];
             SpentItem memory firstItem = details.offer[first.itemIndex];
 
-            if (
-                fulfillmentDetails.recipient == details.offerer
-                    && firstItem.itemType != ItemType.NATIVE
-            ) {
-                filteredExecutions++;
-            } else {
-                explicitExecutions[i - filteredExecutions] = Execution({
-                    offerer: details.offerer,
-                    conduitKey: details.conduitKey,
-                    item: ReceivedItem({
-                        itemType: firstItem.itemType,
-                        token: firstItem.token,
-                        identifier: firstItem.identifier,
-                        amount: aggregatedAmount,
-                        recipient: fulfillmentDetails.recipient
-                    })
-                });
-            }
+            explicitExecutions[i] = Execution({
+                offerer: details.offerer,
+                conduitKey: details.conduitKey,
+                item: ReceivedItem({
+                    itemType: firstItem.itemType,
+                    token: firstItem.token,
+                    identifier: firstItem.identifier,
+                    amount: aggregatedAmount,
+                    recipient: fulfillmentDetails.recipient
+                })
+            });
         }
 
         // process consideration components
@@ -755,11 +719,6 @@ library ExecutionHelper {
                 }
             }
 
-            if (aggregatedAmount == 0) {
-                filteredExecutions++;
-                continue;
-            }
-
             // use the first fulfillment component to get the order details
             FulfillmentComponent memory first = aggregatedComponents[0];
             OrderDetails memory details =
@@ -767,35 +726,33 @@ library ExecutionHelper {
             ReceivedItem memory firstItem =
                 details.consideration[first.itemIndex];
 
-            if (
-                firstItem.recipient == fulfillmentDetails.fulfiller
-                    && firstItem.itemType != ItemType.NATIVE
-            ) {
-                filteredExecutions++;
-            } else {
-                explicitExecutions[i + offerComponents.length
-                    - filteredExecutions] = Execution({
-                    offerer: fulfillmentDetails.fulfiller,
-                    conduitKey: fulfillmentDetails.fulfillerConduitKey,
-                    item: ReceivedItem({
-                        itemType: firstItem.itemType,
-                        token: firstItem.token,
-                        identifier: firstItem.identifier,
-                        amount: aggregatedAmount,
-                        recipient: firstItem.recipient
-                    })
-                });
-            }
+            explicitExecutions[i + offerComponents.length] = Execution({
+                offerer: fulfillmentDetails.fulfiller,
+                conduitKey: fulfillmentDetails.fulfillerConduitKey,
+                item: ReceivedItem({
+                    itemType: firstItem.itemType,
+                    token: firstItem.token,
+                    identifier: firstItem.identifier,
+                    amount: aggregatedAmount,
+                    recipient: firstItem.recipient
+                })
+            });
         }
 
-        // If some number of executions have been filtered...
-        if (filteredExecutions != 0) {
-            // reduce the total length of the executions array.
-            assembly {
-                mstore(
-                    explicitExecutions,
-                    sub(mload(explicitExecutions), filteredExecutions)
-                )
+        // zero out any executions with zero amount items.
+        for (uint256 i = 0; i < explicitExecutions.length; i++) {
+            if (explicitExecutions[i].item.amount == 0) {
+                explicitExecutions[i] = Execution({
+                    offerer: address(0),
+                    conduitKey: bytes32(0),
+                    item: ReceivedItem({
+                        itemType: ItemType.NATIVE,
+                        token: address(0),
+                        identifier: 0,
+                        amount: 0,
+                        recipient: payable(address(0))
+                    })
+                });
             }
         }
     }
@@ -1036,6 +993,22 @@ library ExecutionHelper {
                 (aggregatedConsiderationAmount - aggregatedOfferAmount);
         }
 
+        // Return an empty execution if aggregated amount equals zero.
+        if (amount == 0) {
+            return Execution({
+                offerer: address(0),
+                conduitKey: bytes32(0),
+                item: ReceivedItem({
+                    itemType: ItemType.NATIVE,
+                    token: address(0),
+                    identifier: 0,
+                    amount: 0,
+                    recipient: payable(address(0))
+                })
+            });
+        }
+
+        // Otherwise, return the full derived execution.
         return Execution({
             offerer: sourceOrder.offerer,
             conduitKey: sourceOrder.conduitKey,
