@@ -39,24 +39,23 @@ library OrderParametersLib {
         keccak256("seaport.OrderParametersDefaults");
     bytes32 private constant ORDER_PARAMETERS_ARRAY_MAP_POSITION =
         keccak256("seaport.OrderParametersArrayDefaults");
-    bytes32 private constant EMPTY_ORDER_PARAMETERS =
-        keccak256(
-            abi.encode(
-                OrderParameters({
-                    offerer: address(0),
-                    zone: address(0),
-                    offer: new OfferItem[](0),
-                    consideration: new ConsiderationItem[](0),
-                    orderType: OrderType(0),
-                    startTime: 0,
-                    endTime: 0,
-                    zoneHash: bytes32(0),
-                    salt: 0,
-                    conduitKey: bytes32(0),
-                    totalOriginalConsiderationItems: 0
-                })
-            )
-        );
+    bytes32 private constant EMPTY_ORDER_PARAMETERS = keccak256(
+        abi.encode(
+            OrderParameters({
+                offerer: address(0),
+                zone: address(0),
+                offer: new OfferItem[](0),
+                consideration: new ConsiderationItem[](0),
+                orderType: OrderType(0),
+                startTime: 0,
+                endTime: 0,
+                zoneHash: bytes32(0),
+                salt: 0,
+                conduitKey: bytes32(0),
+                totalOriginalConsiderationItems: 0
+            })
+        )
+    );
 
     /**
      * @dev Clears an OrderParameters from storage.
@@ -73,8 +72,7 @@ library OrderParametersLib {
         parameters.zone = address(0);
         StructCopier.setOfferItems(parameters.offer, offer);
         StructCopier.setConsiderationItems(
-            parameters.consideration,
-            consideration
+            parameters.consideration, consideration
         );
         parameters.orderType = OrderType(0);
         parameters.startTime = 0;
@@ -103,8 +101,8 @@ library OrderParametersLib {
      * @param defaultName the name of the default to clear
      */
     function clear(string memory defaultName) internal {
-        mapping(string => OrderParameters)
-            storage orderParametersMap = _orderParametersMap();
+        mapping(string => OrderParameters) storage orderParametersMap =
+            _orderParametersMap();
         OrderParameters storage parameters = orderParametersMap[defaultName];
         parameters.clear();
     }
@@ -139,11 +137,13 @@ library OrderParametersLib {
      *
      * @return item the default OrderParameters
      */
-    function fromDefault(
-        string memory defaultName
-    ) internal view returns (OrderParameters memory item) {
-        mapping(string => OrderParameters)
-            storage orderParametersMap = _orderParametersMap();
+    function fromDefault(string memory defaultName)
+        internal
+        view
+        returns (OrderParameters memory item)
+    {
+        mapping(string => OrderParameters) storage orderParametersMap =
+            _orderParametersMap();
         item = orderParametersMap[defaultName];
 
         if (keccak256(abi.encode(item)) == EMPTY_ORDER_PARAMETERS) {
@@ -158,11 +158,13 @@ library OrderParametersLib {
      *
      * @return items the default OrderParameters array
      */
-    function fromDefaultMany(
-        string memory defaultName
-    ) internal view returns (OrderParameters[] memory items) {
-        mapping(string => OrderParameters[])
-            storage orderParametersArrayMap = _orderParametersArrayMap();
+    function fromDefaultMany(string memory defaultName)
+        internal
+        view
+        returns (OrderParameters[] memory items)
+    {
+        mapping(string => OrderParameters[]) storage orderParametersArrayMap =
+            _orderParametersArrayMap();
         items = orderParametersArrayMap[defaultName];
 
         if (items.length == 0) {
@@ -182,8 +184,8 @@ library OrderParametersLib {
         OrderParameters memory orderParameters,
         string memory defaultName
     ) internal returns (OrderParameters memory _orderParameters) {
-        mapping(string => OrderParameters)
-            storage orderParametersMap = _orderParametersMap();
+        mapping(string => OrderParameters) storage orderParametersMap =
+            _orderParametersMap();
         OrderParameters storage destination = orderParametersMap[defaultName];
         StructCopier.setOrderParameters(destination, orderParameters);
         return orderParameters;
@@ -201,11 +203,10 @@ library OrderParametersLib {
         OrderParameters[] memory orderParameters,
         string memory defaultName
     ) internal returns (OrderParameters[] memory _orderParameters) {
-        mapping(string => OrderParameters[])
-            storage orderParametersArrayMap = _orderParametersArrayMap();
-        OrderParameters[] storage destination = orderParametersArrayMap[
-            defaultName
-        ];
+        mapping(string => OrderParameters[]) storage orderParametersArrayMap =
+            _orderParametersArrayMap();
+        OrderParameters[] storage destination =
+            orderParametersArrayMap[defaultName];
         StructCopier.setOrderParameters(destination, orderParameters);
         return orderParameters;
     }
@@ -217,24 +218,24 @@ library OrderParametersLib {
      *
      * @custom:return copiedOrderParameters the copied OrderParameters
      */
-    function copy(
-        OrderParameters memory item
-    ) internal pure returns (OrderParameters memory) {
-        return
-            OrderParameters({
-                offerer: item.offerer,
-                zone: item.zone,
-                offer: item.offer.copy(),
-                consideration: item.consideration.copy(),
-                orderType: item.orderType,
-                startTime: item.startTime,
-                endTime: item.endTime,
-                zoneHash: item.zoneHash,
-                salt: item.salt,
-                conduitKey: item.conduitKey,
-                totalOriginalConsiderationItems: item
-                    .totalOriginalConsiderationItems
-            });
+    function copy(OrderParameters memory item)
+        internal
+        pure
+        returns (OrderParameters memory)
+    {
+        return OrderParameters({
+            offerer: item.offerer,
+            zone: item.zone,
+            offer: item.offer.copy(),
+            consideration: item.consideration.copy(),
+            orderType: item.orderType,
+            startTime: item.startTime,
+            endTime: item.endTime,
+            zoneHash: item.zoneHash,
+            salt: item.salt,
+            conduitKey: item.conduitKey,
+            totalOriginalConsiderationItems: item.totalOriginalConsiderationItems
+        });
     }
 
     /**
@@ -284,10 +285,11 @@ library OrderParametersLib {
      *
      * @custom:return _parameters the modified OrderParameters struct
      */
-    function withOfferer(
-        OrderParameters memory parameters,
-        address offerer
-    ) internal pure returns (OrderParameters memory) {
+    function withOfferer(OrderParameters memory parameters, address offerer)
+        internal
+        pure
+        returns (OrderParameters memory)
+    {
         parameters.offerer = offerer;
         return parameters;
     }
@@ -300,10 +302,11 @@ library OrderParametersLib {
      *
      * @custom:return _parameters the modified OrderParameters struct
      */
-    function withZone(
-        OrderParameters memory parameters,
-        address zone
-    ) internal pure returns (OrderParameters memory) {
+    function withZone(OrderParameters memory parameters, address zone)
+        internal
+        pure
+        returns (OrderParameters memory)
+    {
         parameters.zone = zone;
         return parameters;
     }
@@ -382,10 +385,11 @@ library OrderParametersLib {
      *
      * @custom:return _parameters the modified OrderParameters struct
      */
-    function withStartTime(
-        OrderParameters memory parameters,
-        uint256 startTime
-    ) internal pure returns (OrderParameters memory) {
+    function withStartTime(OrderParameters memory parameters, uint256 startTime)
+        internal
+        pure
+        returns (OrderParameters memory)
+    {
         parameters.startTime = startTime;
         return parameters;
     }
@@ -398,10 +402,11 @@ library OrderParametersLib {
      *
      * @custom:return _parameters the modified OrderParameters struct
      */
-    function withEndTime(
-        OrderParameters memory parameters,
-        uint256 endTime
-    ) internal pure returns (OrderParameters memory) {
+    function withEndTime(OrderParameters memory parameters, uint256 endTime)
+        internal
+        pure
+        returns (OrderParameters memory)
+    {
         parameters.endTime = endTime;
         return parameters;
     }
@@ -414,10 +419,11 @@ library OrderParametersLib {
      *
      * @custom:return _parameters the modified OrderParameters struct
      */
-    function withZoneHash(
-        OrderParameters memory parameters,
-        bytes32 zoneHash
-    ) internal pure returns (OrderParameters memory) {
+    function withZoneHash(OrderParameters memory parameters, bytes32 zoneHash)
+        internal
+        pure
+        returns (OrderParameters memory)
+    {
         parameters.zoneHash = zoneHash;
         return parameters;
     }
@@ -430,10 +436,11 @@ library OrderParametersLib {
      *
      * @custom:return _parameters the modified OrderParameters struct
      */
-    function withSalt(
-        OrderParameters memory parameters,
-        uint256 salt
-    ) internal pure returns (OrderParameters memory) {
+    function withSalt(OrderParameters memory parameters, uint256 salt)
+        internal
+        pure
+        returns (OrderParameters memory)
+    {
         parameters.salt = salt;
         return parameters;
     }
@@ -470,8 +477,8 @@ library OrderParametersLib {
         OrderParameters memory parameters,
         uint256 totalOriginalConsiderationItems
     ) internal pure returns (OrderParameters memory) {
-        parameters
-            .totalOriginalConsiderationItems = totalOriginalConsiderationItems;
+        parameters.totalOriginalConsiderationItems =
+            totalOriginalConsiderationItems;
         return parameters;
     }
 
@@ -500,12 +507,13 @@ library OrderParametersLib {
         components.counter = counter;
     }
 
-    function isAvailable(
-        OrderParameters memory parameters
-    ) internal view returns (bool) {
-        return
-            block.timestamp >= parameters.startTime &&
-            block.timestamp < parameters.endTime;
+    function isAvailable(OrderParameters memory parameters)
+        internal
+        view
+        returns (bool)
+    {
+        return block.timestamp >= parameters.startTime
+            && block.timestamp < parameters.endTime;
     }
 
     function getSpentAndReceivedItems(
@@ -524,10 +532,7 @@ library OrderParametersLib {
             received = getReceivedItems(parameters, numerator, denominator);
 
             applyCriteriaResolvers(
-                spent,
-                received,
-                orderIndex,
-                criteriaResolvers
+                spent, received, orderIndex, criteriaResolvers
             );
         }
     }
@@ -555,9 +560,11 @@ library OrderParametersLib {
         }
     }
 
-    function convertCriteriaItemType(
-        ItemType itemType
-    ) internal pure returns (ItemType) {
+    function convertCriteriaItemType(ItemType itemType)
+        internal
+        pure
+        returns (ItemType)
+    {
         if (itemType == ItemType.ERC721_WITH_CRITERIA) {
             return ItemType.ERC721;
         } else if (itemType == ItemType.ERC1155_WITH_CRITERIA) {
@@ -574,14 +581,13 @@ library OrderParametersLib {
         uint256 numerator,
         uint256 denominator
     ) internal view returns (SpentItem[] memory) {
-        return
-            getSpentItems(
-                parameters.offer,
-                parameters.startTime,
-                parameters.endTime,
-                numerator,
-                denominator
-            );
+        return getSpentItems(
+            parameters.offer,
+            parameters.startTime,
+            parameters.endTime,
+            numerator,
+            denominator
+        );
     }
 
     function getReceivedItems(
@@ -589,14 +595,13 @@ library OrderParametersLib {
         uint256 numerator,
         uint256 denominator
     ) internal view returns (ReceivedItem[] memory) {
-        return
-            getReceivedItems(
-                parameters.consideration,
-                parameters.startTime,
-                parameters.endTime,
-                numerator,
-                denominator
-            );
+        return getReceivedItems(
+            parameters.consideration,
+            parameters.startTime,
+            parameters.endTime,
+            numerator,
+            denominator
+        );
     }
 
     function getSpentItems(
@@ -609,11 +614,7 @@ library OrderParametersLib {
         SpentItem[] memory spentItems = new SpentItem[](items.length);
         for (uint256 i = 0; i < items.length; i++) {
             spentItems[i] = getSpentItem(
-                items[i],
-                startTime,
-                endTime,
-                numerator,
-                denominator
+                items[i], startTime, endTime, numerator, denominator
             );
         }
         return spentItems;
@@ -626,9 +627,8 @@ library OrderParametersLib {
         uint256 numerator,
         uint256 denominator
     ) internal view returns (ReceivedItem[] memory) {
-        ReceivedItem[] memory receivedItems = new ReceivedItem[](
-            considerationItems.length
-        );
+        ReceivedItem[] memory receivedItems =
+            new ReceivedItem[](considerationItems.length);
         for (uint256 i = 0; i < considerationItems.length; i++) {
             receivedItems[i] = getReceivedItem(
                 considerationItems[i],
@@ -713,11 +713,11 @@ library OrderParametersLib {
         }
     }
 
-    function _getFraction(
-        uint256 numerator,
-        uint256 denominator,
-        uint256 value
-    ) internal pure returns (uint256 newValue) {
+    function _getFraction(uint256 numerator, uint256 denominator, uint256 value)
+        internal
+        pure
+        returns (uint256 newValue)
+    {
         // Return value early in cases where the fraction resolves to 1.
         if (numerator == denominator) {
             return value;
@@ -730,9 +730,7 @@ library OrderParametersLib {
         assembly {
             // Ensure new value contains no remainder via mulmod operator.
             // Credit to @hrkrshnn + @axic for proposing this optimal solution.
-            if mulmod(value, numerator, denominator) {
-                failure := true
-            }
+            if mulmod(value, numerator, denominator) { failure := true }
         }
 
         if (failure) {
@@ -776,25 +774,26 @@ library OrderParametersLib {
             }
 
             // Aggregate new amounts weighted by time with rounding factor.
-            uint256 totalBeforeDivision = ((startAmount * remaining) +
-                (endAmount * elapsed));
+            uint256 totalBeforeDivision =
+                ((startAmount * remaining) + (endAmount * elapsed));
 
             // Use assembly to combine operations and skip divide-by-zero check.
             assembly {
                 // Multiply by iszero(iszero(totalBeforeDivision)) to ensure
                 // amount is set to zero if totalBeforeDivision is zero,
                 // as intermediate overflow can occur if it is zero.
-                amount := mul(
-                    iszero(iszero(totalBeforeDivision)),
-                    // Subtract 1 from the numerator and add 1 to the result if
-                    // roundUp is true to get the proper rounding direction.
-                    // Division is performed with no zero check as duration
-                    // cannot be zero as long as startTime < endTime.
-                    add(
-                        div(sub(totalBeforeDivision, roundUp), duration),
-                        roundUp
+                amount :=
+                    mul(
+                        iszero(iszero(totalBeforeDivision)),
+                        // Subtract 1 from the numerator and add 1 to the result if
+                        // roundUp is true to get the proper rounding direction.
+                        // Division is performed with no zero check as duration
+                        // cannot be zero as long as startTime < endTime.
+                        add(
+                            div(sub(totalBeforeDivision, roundUp), duration),
+                            roundUp
+                        )
                     )
-                )
             }
 
             // Return the current amount.

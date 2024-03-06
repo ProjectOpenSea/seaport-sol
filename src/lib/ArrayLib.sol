@@ -13,10 +13,9 @@ library ArrayLib {
      * @param array  the array to set
      * @param values the values to set
      */
-    function setBytes32s(
-        bytes32[] storage array,
-        bytes32[] memory values
-    ) internal {
+    function setBytes32s(bytes32[] storage array, bytes32[] memory values)
+        internal
+    {
         while (array.length > 0) {
             array.pop();
         }
@@ -32,9 +31,11 @@ library ArrayLib {
      *
      * @custom:return copiedArray the copied array
      */
-    function copy(
-        bytes32[] memory array
-    ) internal pure returns (bytes32[] memory) {
+    function copy(bytes32[] memory array)
+        internal
+        pure
+        returns (bytes32[] memory)
+    {
         bytes32[] memory copiedArray = new bytes32[](array.length);
         for (uint256 i = 0; i < array.length; i++) {
             copiedArray[i] = array[i];

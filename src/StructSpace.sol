@@ -24,9 +24,7 @@ import {
     ZoneHash
 } from "./SpaceEnums.sol";
 
-import {
-    FulfillmentStrategy
-} from "./fulfillments/lib/FulfillmentLib.sol";
+import { FulfillmentStrategy } from "./fulfillments/lib/FulfillmentLib.sol";
 
 struct OfferItemSpace {
     ItemType itemType;

@@ -27,6 +27,7 @@ enum OrderStatusEnum {
     CANCELLED_EXPLICIT, // explicit cancellation
     CANCELLED_COUNTER, // canceled via counter increment (reverts due to invalid sig)
     REVERT // fulfilling reverts
+
 }
 
 enum BroadOrderType {
@@ -58,6 +59,7 @@ enum OrdersComposition {
 enum OrderStatusRevertReason {
     NATIVE, // receive hook fails
     ERC1155 // receive hook fails
+
 }
 
 // ItemType.ERC20/ERC1155/ERC721 <- TokenIndex
@@ -71,6 +73,7 @@ enum TokenIndex {
 enum Criteria {
     MERKLE, // non-zero criteria
     WILDCARD // criteria zero
+
 }
 
 // Criteria.WILDCARD/MERKLE <- CriteriaResolved
@@ -78,6 +81,7 @@ enum CriteriaResolved {
     VALID, // correctly resolved
     INVALID, // incorrectly resolved
     UNAVAILABLE // resolved but not owned/approved
+
 }
 
 enum Amount {
@@ -109,8 +113,8 @@ enum Recipient {
     DILLON,
     EVE,
     FRANK
-    // INVALID
 }
+// INVALID
 
 enum RecipientDirty {
     CLEAN,
@@ -268,6 +272,7 @@ enum BulkSignatureSize {
 enum Salt {
     VALID,
     DUPLICATE // ?
+
 }
 
 enum ConduitChoice {
@@ -311,12 +316,14 @@ enum InvalidFraction {
     INVALID, // order is a full order
     UNEVEN, // cannot divide into amount
     IRREGULAR // N/M where N > M
+
 }
 
 enum CriteriaProofs {
     LESS, // too few proofs
     EQUAL, // sufficient number of proofs
     GREATER // extra proofs
+
 }
 
 // Method.FULFILL_AVAILABLE* <= FulfillAvailableFulfillments
@@ -338,6 +345,7 @@ enum InvalidFulfillAvailableFulfillmentsCondition {
     INVALID, // ie not correctly constructed, duplicates, etc
     LESS, // ie missing fulfillments
     GREATER // ie including duplicates
+
 }
 
 // FulfillAvailableFulfillments.AGGREGATED <- AggregatedFulfillAvailableFulfillments

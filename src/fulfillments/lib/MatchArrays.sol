@@ -15,11 +15,10 @@ library MatchArrays {
         return arr;
     }
 
-    function FulfillmentComponents(FulfillmentComponent memory a, FulfillmentComponent memory b)
-        internal
-        pure
-        returns (FulfillmentComponent[] memory)
-    {
+    function FulfillmentComponents(
+        FulfillmentComponent memory a,
+        FulfillmentComponent memory b
+    ) internal pure returns (FulfillmentComponent[] memory) {
         FulfillmentComponent[] memory arr = new FulfillmentComponent[](2);
         arr[0] = a;
         arr[1] = b;
@@ -106,14 +105,12 @@ library MatchArrays {
         return arr;
     }
 
-    function FulfillmentComponentsWithMaxLength(uint256 maxLength, FulfillmentComponent memory a)
-        internal
-        pure
-        returns (FulfillmentComponent[] memory)
-    {
-        FulfillmentComponent[] memory arr = new FulfillmentComponent[](
-            maxLength
-        );
+    function FulfillmentComponentsWithMaxLength(
+        uint256 maxLength,
+        FulfillmentComponent memory a
+    ) internal pure returns (FulfillmentComponent[] memory) {
+        FulfillmentComponent[] memory arr =
+            new FulfillmentComponent[](maxLength);
         assembly {
             mstore(arr, 1)
         }
@@ -126,9 +123,8 @@ library MatchArrays {
         FulfillmentComponent memory a,
         FulfillmentComponent memory b
     ) internal pure returns (FulfillmentComponent[] memory) {
-        FulfillmentComponent[] memory arr = new FulfillmentComponent[](
-            maxLength
-        );
+        FulfillmentComponent[] memory arr =
+            new FulfillmentComponent[](maxLength);
         assembly {
             mstore(arr, 2)
         }
@@ -143,9 +139,8 @@ library MatchArrays {
         FulfillmentComponent memory b,
         FulfillmentComponent memory c
     ) internal pure returns (FulfillmentComponent[] memory) {
-        FulfillmentComponent[] memory arr = new FulfillmentComponent[](
-            maxLength
-        );
+        FulfillmentComponent[] memory arr =
+            new FulfillmentComponent[](maxLength);
         assembly {
             mstore(arr, 3)
         }
@@ -162,9 +157,8 @@ library MatchArrays {
         FulfillmentComponent memory c,
         FulfillmentComponent memory d
     ) internal pure returns (FulfillmentComponent[] memory) {
-        FulfillmentComponent[] memory arr = new FulfillmentComponent[](
-            maxLength
-        );
+        FulfillmentComponent[] memory arr =
+            new FulfillmentComponent[](maxLength);
         assembly {
             mstore(arr, 4)
         }
@@ -183,9 +177,8 @@ library MatchArrays {
         FulfillmentComponent memory d,
         FulfillmentComponent memory e
     ) internal pure returns (FulfillmentComponent[] memory) {
-        FulfillmentComponent[] memory arr = new FulfillmentComponent[](
-            maxLength
-        );
+        FulfillmentComponent[] memory arr =
+            new FulfillmentComponent[](maxLength);
         assembly {
             mstore(arr, 5)
         }
@@ -206,9 +199,8 @@ library MatchArrays {
         FulfillmentComponent memory e,
         FulfillmentComponent memory f
     ) internal pure returns (FulfillmentComponent[] memory) {
-        FulfillmentComponent[] memory arr = new FulfillmentComponent[](
-            maxLength
-        );
+        FulfillmentComponent[] memory arr =
+            new FulfillmentComponent[](maxLength);
         assembly {
             mstore(arr, 6)
         }
@@ -231,9 +223,8 @@ library MatchArrays {
         FulfillmentComponent memory f,
         FulfillmentComponent memory g
     ) internal pure returns (FulfillmentComponent[] memory) {
-        FulfillmentComponent[] memory arr = new FulfillmentComponent[](
-            maxLength
-        );
+        FulfillmentComponent[] memory arr =
+            new FulfillmentComponent[](maxLength);
         assembly {
             mstore(arr, 7)
         }
@@ -247,11 +238,10 @@ library MatchArrays {
         return arr;
     }
 
-    function extend(FulfillmentComponent[] memory arr1, FulfillmentComponent[] memory arr2)
-        internal
-        pure
-        returns (FulfillmentComponent[] memory newArr)
-    {
+    function extend(
+        FulfillmentComponent[] memory arr1,
+        FulfillmentComponent[] memory arr2
+    ) internal pure returns (FulfillmentComponent[] memory newArr) {
         uint256 length1 = arr1.length;
         uint256 length2 = arr2.length;
         newArr = new FulfillmentComponent[](length1 + length2);
@@ -273,7 +263,11 @@ library MatchArrays {
         }
     }
 
-    function allocateFulfillmentComponents(uint256 length) internal pure returns (FulfillmentComponent[] memory arr) {
+    function allocateFulfillmentComponents(uint256 length)
+        internal
+        pure
+        returns (FulfillmentComponent[] memory arr)
+    {
         arr = new FulfillmentComponent[](length);
         assembly {
             mstore(arr, 0)
@@ -288,17 +282,18 @@ library MatchArrays {
         // truncate the array
         assembly {
             let oldLength := mload(arr)
-            returndatacopy(returndatasize(), returndatasize(), gt(newLength, oldLength))
+            returndatacopy(
+                returndatasize(), returndatasize(), gt(newLength, oldLength)
+            )
             mstore(arr, newLength)
             _arr := arr
         }
     }
 
-    function truncateUnsafe(FulfillmentComponent[] memory arr, uint256 newLength)
-        internal
-        pure
-        returns (FulfillmentComponent[] memory _arr)
-    {
+    function truncateUnsafe(
+        FulfillmentComponent[] memory arr,
+        uint256 newLength
+    ) internal pure returns (FulfillmentComponent[] memory _arr) {
         // truncate the array
         assembly {
             mstore(arr, newLength)
@@ -306,11 +301,10 @@ library MatchArrays {
         }
     }
 
-    function append(FulfillmentComponent[] memory arr, FulfillmentComponent memory value)
-        internal
-        pure
-        returns (FulfillmentComponent[] memory newArr)
-    {
+    function append(
+        FulfillmentComponent[] memory arr,
+        FulfillmentComponent memory value
+    ) internal pure returns (FulfillmentComponent[] memory newArr) {
         uint256 length = arr.length;
         newArr = new FulfillmentComponent[](length + 1);
         newArr[length] = value;
@@ -322,11 +316,10 @@ library MatchArrays {
         }
     }
 
-    function appendUnsafe(FulfillmentComponent[] memory arr, FulfillmentComponent memory value)
-        internal
-        pure
-        returns (FulfillmentComponent[] memory modifiedArr)
-    {
+    function appendUnsafe(
+        FulfillmentComponent[] memory arr,
+        FulfillmentComponent memory value
+    ) internal pure returns (FulfillmentComponent[] memory modifiedArr) {
         uint256 length = arr.length;
         modifiedArr = arr;
         assembly {
@@ -335,7 +328,11 @@ library MatchArrays {
         }
     }
 
-    function copy(FulfillmentComponent[] memory arr) internal pure returns (FulfillmentComponent[] memory newArr) {
+    function copy(FulfillmentComponent[] memory arr)
+        internal
+        pure
+        returns (FulfillmentComponent[] memory newArr)
+    {
         uint256 length = arr.length;
         newArr = new FulfillmentComponent[](length);
         for (uint256 i = 0; i < length;) {
@@ -364,11 +361,10 @@ library MatchArrays {
         // TODO: consider writing 0-pointer to the rest of the array if longer for dynamic elements
     }
 
-    function copyAndAllocate(FulfillmentComponent[] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (FulfillmentComponent[] memory newArr)
-    {
+    function copyAndAllocate(
+        FulfillmentComponent[] memory arr,
+        uint256 maxLength
+    ) internal pure returns (FulfillmentComponent[] memory newArr) {
         newArr = new FulfillmentComponent[](maxLength);
         uint256 originalLength = arr.length;
         for (uint256 i = 0; i < originalLength;) {
@@ -382,7 +378,11 @@ library MatchArrays {
         }
     }
 
-    function pop(FulfillmentComponent[] memory arr) internal pure returns (FulfillmentComponent memory value) {
+    function pop(FulfillmentComponent[] memory arr)
+        internal
+        pure
+        returns (FulfillmentComponent memory value)
+    {
         assembly {
             let length := mload(arr)
             returndatacopy(returndatasize(), returndatasize(), iszero(length))
@@ -391,7 +391,11 @@ library MatchArrays {
         }
     }
 
-    function popUnsafe(FulfillmentComponent[] memory arr) internal pure returns (FulfillmentComponent memory value) {
+    function popUnsafe(FulfillmentComponent[] memory arr)
+        internal
+        pure
+        returns (FulfillmentComponent memory value)
+    {
         // This function is unsafe because it does not check if the array is empty.
         assembly {
             let length := mload(arr)
@@ -403,7 +407,10 @@ library MatchArrays {
     function popLeft(FulfillmentComponent[] memory arr)
         internal
         pure
-        returns (FulfillmentComponent[] memory newArr, FulfillmentComponent memory value)
+        returns (
+            FulfillmentComponent[] memory newArr,
+            FulfillmentComponent memory value
+        )
     {
         assembly {
             let length := mload(arr)
@@ -417,7 +424,10 @@ library MatchArrays {
     function popLeftUnsafe(FulfillmentComponent[] memory arr)
         internal
         pure
-        returns (FulfillmentComponent[] memory newArr, FulfillmentComponent memory value)
+        returns (
+            FulfillmentComponent[] memory newArr,
+            FulfillmentComponent memory value
+        )
     {
         // This function is unsafe because it does not check if the array is empty.
         assembly {
@@ -442,11 +452,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(FulfillmentComponent[1] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (FulfillmentComponent[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        FulfillmentComponent[1] memory arr,
+        uint256 maxLength
+    ) internal pure returns (FulfillmentComponent[] memory newArr) {
         newArr = new FulfillmentComponent[](maxLength);
         for (uint256 i = 0; i < 1;) {
             newArr[i] = arr[i];
@@ -473,11 +482,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(FulfillmentComponent[2] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (FulfillmentComponent[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        FulfillmentComponent[2] memory arr,
+        uint256 maxLength
+    ) internal pure returns (FulfillmentComponent[] memory newArr) {
         newArr = new FulfillmentComponent[](maxLength);
         for (uint256 i = 0; i < 2;) {
             newArr[i] = arr[i];
@@ -504,11 +512,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(FulfillmentComponent[3] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (FulfillmentComponent[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        FulfillmentComponent[3] memory arr,
+        uint256 maxLength
+    ) internal pure returns (FulfillmentComponent[] memory newArr) {
         newArr = new FulfillmentComponent[](maxLength);
         for (uint256 i = 0; i < 3;) {
             newArr[i] = arr[i];
@@ -535,11 +542,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(FulfillmentComponent[4] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (FulfillmentComponent[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        FulfillmentComponent[4] memory arr,
+        uint256 maxLength
+    ) internal pure returns (FulfillmentComponent[] memory newArr) {
         newArr = new FulfillmentComponent[](maxLength);
         for (uint256 i = 0; i < 4;) {
             newArr[i] = arr[i];
@@ -566,11 +572,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(FulfillmentComponent[5] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (FulfillmentComponent[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        FulfillmentComponent[5] memory arr,
+        uint256 maxLength
+    ) internal pure returns (FulfillmentComponent[] memory newArr) {
         newArr = new FulfillmentComponent[](maxLength);
         for (uint256 i = 0; i < 5;) {
             newArr[i] = arr[i];
@@ -597,11 +602,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(FulfillmentComponent[6] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (FulfillmentComponent[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        FulfillmentComponent[6] memory arr,
+        uint256 maxLength
+    ) internal pure returns (FulfillmentComponent[] memory newArr) {
         newArr = new FulfillmentComponent[](maxLength);
         for (uint256 i = 0; i < 6;) {
             newArr[i] = arr[i];
@@ -628,11 +632,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(FulfillmentComponent[7] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (FulfillmentComponent[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        FulfillmentComponent[7] memory arr,
+        uint256 maxLength
+    ) internal pure returns (FulfillmentComponent[] memory newArr) {
         newArr = new FulfillmentComponent[](maxLength);
         for (uint256 i = 0; i < 7;) {
             newArr[i] = arr[i];
@@ -655,11 +658,10 @@ library MatchArrays {
         return arr;
     }
 
-    function FulfillmentComponentArrays(FulfillmentComponent[] memory a, FulfillmentComponent[] memory b)
-        internal
-        pure
-        returns (FulfillmentComponent[][] memory)
-    {
+    function FulfillmentComponentArrays(
+        FulfillmentComponent[] memory a,
+        FulfillmentComponent[] memory b
+    ) internal pure returns (FulfillmentComponent[][] memory) {
         FulfillmentComponent[][] memory arr = new FulfillmentComponent[][](2);
         arr[0] = a;
         arr[1] = b;
@@ -746,14 +748,12 @@ library MatchArrays {
         return arr;
     }
 
-    function FulfillmentComponentArraysWithMaxLength(uint256 maxLength, FulfillmentComponent[] memory a)
-        internal
-        pure
-        returns (FulfillmentComponent[][] memory)
-    {
-        FulfillmentComponent[][] memory arr = new FulfillmentComponent[][](
-            maxLength
-        );
+    function FulfillmentComponentArraysWithMaxLength(
+        uint256 maxLength,
+        FulfillmentComponent[] memory a
+    ) internal pure returns (FulfillmentComponent[][] memory) {
+        FulfillmentComponent[][] memory arr =
+            new FulfillmentComponent[][](maxLength);
         assembly {
             mstore(arr, 1)
         }
@@ -766,9 +766,8 @@ library MatchArrays {
         FulfillmentComponent[] memory a,
         FulfillmentComponent[] memory b
     ) internal pure returns (FulfillmentComponent[][] memory) {
-        FulfillmentComponent[][] memory arr = new FulfillmentComponent[][](
-            maxLength
-        );
+        FulfillmentComponent[][] memory arr =
+            new FulfillmentComponent[][](maxLength);
         assembly {
             mstore(arr, 2)
         }
@@ -783,9 +782,8 @@ library MatchArrays {
         FulfillmentComponent[] memory b,
         FulfillmentComponent[] memory c
     ) internal pure returns (FulfillmentComponent[][] memory) {
-        FulfillmentComponent[][] memory arr = new FulfillmentComponent[][](
-            maxLength
-        );
+        FulfillmentComponent[][] memory arr =
+            new FulfillmentComponent[][](maxLength);
         assembly {
             mstore(arr, 3)
         }
@@ -802,9 +800,8 @@ library MatchArrays {
         FulfillmentComponent[] memory c,
         FulfillmentComponent[] memory d
     ) internal pure returns (FulfillmentComponent[][] memory) {
-        FulfillmentComponent[][] memory arr = new FulfillmentComponent[][](
-            maxLength
-        );
+        FulfillmentComponent[][] memory arr =
+            new FulfillmentComponent[][](maxLength);
         assembly {
             mstore(arr, 4)
         }
@@ -823,9 +820,8 @@ library MatchArrays {
         FulfillmentComponent[] memory d,
         FulfillmentComponent[] memory e
     ) internal pure returns (FulfillmentComponent[][] memory) {
-        FulfillmentComponent[][] memory arr = new FulfillmentComponent[][](
-            maxLength
-        );
+        FulfillmentComponent[][] memory arr =
+            new FulfillmentComponent[][](maxLength);
         assembly {
             mstore(arr, 5)
         }
@@ -846,9 +842,8 @@ library MatchArrays {
         FulfillmentComponent[] memory e,
         FulfillmentComponent[] memory f
     ) internal pure returns (FulfillmentComponent[][] memory) {
-        FulfillmentComponent[][] memory arr = new FulfillmentComponent[][](
-            maxLength
-        );
+        FulfillmentComponent[][] memory arr =
+            new FulfillmentComponent[][](maxLength);
         assembly {
             mstore(arr, 6)
         }
@@ -871,9 +866,8 @@ library MatchArrays {
         FulfillmentComponent[] memory f,
         FulfillmentComponent[] memory g
     ) internal pure returns (FulfillmentComponent[][] memory) {
-        FulfillmentComponent[][] memory arr = new FulfillmentComponent[][](
-            maxLength
-        );
+        FulfillmentComponent[][] memory arr =
+            new FulfillmentComponent[][](maxLength);
         assembly {
             mstore(arr, 7)
         }
@@ -887,11 +881,10 @@ library MatchArrays {
         return arr;
     }
 
-    function extend(FulfillmentComponent[][] memory arr1, FulfillmentComponent[][] memory arr2)
-        internal
-        pure
-        returns (FulfillmentComponent[][] memory newArr)
-    {
+    function extend(
+        FulfillmentComponent[][] memory arr1,
+        FulfillmentComponent[][] memory arr2
+    ) internal pure returns (FulfillmentComponent[][] memory newArr) {
         uint256 length1 = arr1.length;
         uint256 length2 = arr2.length;
         newArr = new FulfillmentComponent[][](length1 + length2);
@@ -932,17 +925,18 @@ library MatchArrays {
         // truncate the array
         assembly {
             let oldLength := mload(arr)
-            returndatacopy(returndatasize(), returndatasize(), gt(newLength, oldLength))
+            returndatacopy(
+                returndatasize(), returndatasize(), gt(newLength, oldLength)
+            )
             mstore(arr, newLength)
             _arr := arr
         }
     }
 
-    function truncateUnsafe(FulfillmentComponent[][] memory arr, uint256 newLength)
-        internal
-        pure
-        returns (FulfillmentComponent[][] memory _arr)
-    {
+    function truncateUnsafe(
+        FulfillmentComponent[][] memory arr,
+        uint256 newLength
+    ) internal pure returns (FulfillmentComponent[][] memory _arr) {
         // truncate the array
         assembly {
             mstore(arr, newLength)
@@ -950,11 +944,10 @@ library MatchArrays {
         }
     }
 
-    function append(FulfillmentComponent[][] memory arr, FulfillmentComponent[] memory value)
-        internal
-        pure
-        returns (FulfillmentComponent[][] memory newArr)
-    {
+    function append(
+        FulfillmentComponent[][] memory arr,
+        FulfillmentComponent[] memory value
+    ) internal pure returns (FulfillmentComponent[][] memory newArr) {
         uint256 length = arr.length;
         newArr = new FulfillmentComponent[][](length + 1);
         newArr[length] = value;
@@ -966,11 +959,10 @@ library MatchArrays {
         }
     }
 
-    function appendUnsafe(FulfillmentComponent[][] memory arr, FulfillmentComponent[] memory value)
-        internal
-        pure
-        returns (FulfillmentComponent[][] memory modifiedArr)
-    {
+    function appendUnsafe(
+        FulfillmentComponent[][] memory arr,
+        FulfillmentComponent[] memory value
+    ) internal pure returns (FulfillmentComponent[][] memory modifiedArr) {
         uint256 length = arr.length;
         modifiedArr = arr;
         assembly {
@@ -979,7 +971,11 @@ library MatchArrays {
         }
     }
 
-    function copy(FulfillmentComponent[][] memory arr) internal pure returns (FulfillmentComponent[][] memory newArr) {
+    function copy(FulfillmentComponent[][] memory arr)
+        internal
+        pure
+        returns (FulfillmentComponent[][] memory newArr)
+    {
         uint256 length = arr.length;
         newArr = new FulfillmentComponent[][](length);
         for (uint256 i = 0; i < length;) {
@@ -990,11 +986,10 @@ library MatchArrays {
         }
     }
 
-    function copyAndResize(FulfillmentComponent[][] memory arr, uint256 newLength)
-        internal
-        pure
-        returns (FulfillmentComponent[][] memory newArr)
-    {
+    function copyAndResize(
+        FulfillmentComponent[][] memory arr,
+        uint256 newLength
+    ) internal pure returns (FulfillmentComponent[][] memory newArr) {
         newArr = new FulfillmentComponent[][](newLength);
         uint256 length = arr.length;
         // allow shrinking a copy without copying extra members
@@ -1008,11 +1003,10 @@ library MatchArrays {
         // TODO: consider writing 0-pointer to the rest of the array if longer for dynamic elements
     }
 
-    function copyAndAllocate(FulfillmentComponent[][] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (FulfillmentComponent[][] memory newArr)
-    {
+    function copyAndAllocate(
+        FulfillmentComponent[][] memory arr,
+        uint256 maxLength
+    ) internal pure returns (FulfillmentComponent[][] memory newArr) {
         newArr = new FulfillmentComponent[][](maxLength);
         uint256 originalLength = arr.length;
         for (uint256 i = 0; i < originalLength;) {
@@ -1026,7 +1020,11 @@ library MatchArrays {
         }
     }
 
-    function pop(FulfillmentComponent[][] memory arr) internal pure returns (FulfillmentComponent[] memory value) {
+    function pop(FulfillmentComponent[][] memory arr)
+        internal
+        pure
+        returns (FulfillmentComponent[] memory value)
+    {
         assembly {
             let length := mload(arr)
             returndatacopy(returndatasize(), returndatasize(), iszero(length))
@@ -1051,7 +1049,10 @@ library MatchArrays {
     function popLeft(FulfillmentComponent[][] memory arr)
         internal
         pure
-        returns (FulfillmentComponent[][] memory newArr, FulfillmentComponent[] memory value)
+        returns (
+            FulfillmentComponent[][] memory newArr,
+            FulfillmentComponent[] memory value
+        )
     {
         assembly {
             let length := mload(arr)
@@ -1065,7 +1066,10 @@ library MatchArrays {
     function popLeftUnsafe(FulfillmentComponent[][] memory arr)
         internal
         pure
-        returns (FulfillmentComponent[][] memory newArr, FulfillmentComponent[] memory value)
+        returns (
+            FulfillmentComponent[][] memory newArr,
+            FulfillmentComponent[] memory value
+        )
     {
         // This function is unsafe because it does not check if the array is empty.
         assembly {
@@ -1090,11 +1094,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(FulfillmentComponent[][1] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (FulfillmentComponent[][] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        FulfillmentComponent[][1] memory arr,
+        uint256 maxLength
+    ) internal pure returns (FulfillmentComponent[][] memory newArr) {
         newArr = new FulfillmentComponent[][](maxLength);
         for (uint256 i = 0; i < 1;) {
             newArr[i] = arr[i];
@@ -1121,11 +1124,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(FulfillmentComponent[][2] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (FulfillmentComponent[][] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        FulfillmentComponent[][2] memory arr,
+        uint256 maxLength
+    ) internal pure returns (FulfillmentComponent[][] memory newArr) {
         newArr = new FulfillmentComponent[][](maxLength);
         for (uint256 i = 0; i < 2;) {
             newArr[i] = arr[i];
@@ -1152,11 +1154,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(FulfillmentComponent[][3] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (FulfillmentComponent[][] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        FulfillmentComponent[][3] memory arr,
+        uint256 maxLength
+    ) internal pure returns (FulfillmentComponent[][] memory newArr) {
         newArr = new FulfillmentComponent[][](maxLength);
         for (uint256 i = 0; i < 3;) {
             newArr[i] = arr[i];
@@ -1183,11 +1184,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(FulfillmentComponent[][4] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (FulfillmentComponent[][] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        FulfillmentComponent[][4] memory arr,
+        uint256 maxLength
+    ) internal pure returns (FulfillmentComponent[][] memory newArr) {
         newArr = new FulfillmentComponent[][](maxLength);
         for (uint256 i = 0; i < 4;) {
             newArr[i] = arr[i];
@@ -1214,11 +1214,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(FulfillmentComponent[][5] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (FulfillmentComponent[][] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        FulfillmentComponent[][5] memory arr,
+        uint256 maxLength
+    ) internal pure returns (FulfillmentComponent[][] memory newArr) {
         newArr = new FulfillmentComponent[][](maxLength);
         for (uint256 i = 0; i < 5;) {
             newArr[i] = arr[i];
@@ -1245,11 +1244,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(FulfillmentComponent[][6] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (FulfillmentComponent[][] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        FulfillmentComponent[][6] memory arr,
+        uint256 maxLength
+    ) internal pure returns (FulfillmentComponent[][] memory newArr) {
         newArr = new FulfillmentComponent[][](maxLength);
         for (uint256 i = 0; i < 6;) {
             newArr[i] = arr[i];
@@ -1276,11 +1274,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(FulfillmentComponent[][7] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (FulfillmentComponent[][] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        FulfillmentComponent[][7] memory arr,
+        uint256 maxLength
+    ) internal pure returns (FulfillmentComponent[][] memory newArr) {
         newArr = new FulfillmentComponent[][](maxLength);
         for (uint256 i = 0; i < 7;) {
             newArr[i] = arr[i];
@@ -1293,24 +1290,32 @@ library MatchArrays {
         }
     }
 
-    function Fulfillments(Fulfillment memory a) internal pure returns (Fulfillment[] memory) {
+    function Fulfillments(Fulfillment memory a)
+        internal
+        pure
+        returns (Fulfillment[] memory)
+    {
         Fulfillment[] memory arr = new Fulfillment[](1);
         arr[0] = a;
         return arr;
     }
 
-    function Fulfillments(Fulfillment memory a, Fulfillment memory b) internal pure returns (Fulfillment[] memory) {
+    function Fulfillments(Fulfillment memory a, Fulfillment memory b)
+        internal
+        pure
+        returns (Fulfillment[] memory)
+    {
         Fulfillment[] memory arr = new Fulfillment[](2);
         arr[0] = a;
         arr[1] = b;
         return arr;
     }
 
-    function Fulfillments(Fulfillment memory a, Fulfillment memory b, Fulfillment memory c)
-        internal
-        pure
-        returns (Fulfillment[] memory)
-    {
+    function Fulfillments(
+        Fulfillment memory a,
+        Fulfillment memory b,
+        Fulfillment memory c
+    ) internal pure returns (Fulfillment[] memory) {
         Fulfillment[] memory arr = new Fulfillment[](3);
         arr[0] = a;
         arr[1] = b;
@@ -1318,11 +1323,12 @@ library MatchArrays {
         return arr;
     }
 
-    function Fulfillments(Fulfillment memory a, Fulfillment memory b, Fulfillment memory c, Fulfillment memory d)
-        internal
-        pure
-        returns (Fulfillment[] memory)
-    {
+    function Fulfillments(
+        Fulfillment memory a,
+        Fulfillment memory b,
+        Fulfillment memory c,
+        Fulfillment memory d
+    ) internal pure returns (Fulfillment[] memory) {
         Fulfillment[] memory arr = new Fulfillment[](4);
         arr[0] = a;
         arr[1] = b;
@@ -1398,11 +1404,11 @@ library MatchArrays {
         return arr;
     }
 
-    function FulfillmentsWithMaxLength(uint256 maxLength, Fulfillment memory a, Fulfillment memory b)
-        internal
-        pure
-        returns (Fulfillment[] memory)
-    {
+    function FulfillmentsWithMaxLength(
+        uint256 maxLength,
+        Fulfillment memory a,
+        Fulfillment memory b
+    ) internal pure returns (Fulfillment[] memory) {
         Fulfillment[] memory arr = new Fulfillment[](maxLength);
         assembly {
             mstore(arr, 2)
@@ -1538,18 +1544,28 @@ library MatchArrays {
         }
     }
 
-    function allocateFulfillments(uint256 length) internal pure returns (Fulfillment[] memory arr) {
+    function allocateFulfillments(uint256 length)
+        internal
+        pure
+        returns (Fulfillment[] memory arr)
+    {
         arr = new Fulfillment[](length);
         assembly {
             mstore(arr, 0)
         }
     }
 
-    function truncate(Fulfillment[] memory arr, uint256 newLength) internal pure returns (Fulfillment[] memory _arr) {
+    function truncate(Fulfillment[] memory arr, uint256 newLength)
+        internal
+        pure
+        returns (Fulfillment[] memory _arr)
+    {
         // truncate the array
         assembly {
             let oldLength := mload(arr)
-            returndatacopy(returndatasize(), returndatasize(), gt(newLength, oldLength))
+            returndatacopy(
+                returndatasize(), returndatasize(), gt(newLength, oldLength)
+            )
             mstore(arr, newLength)
             _arr := arr
         }
@@ -1596,7 +1612,11 @@ library MatchArrays {
         }
     }
 
-    function copy(Fulfillment[] memory arr) internal pure returns (Fulfillment[] memory newArr) {
+    function copy(Fulfillment[] memory arr)
+        internal
+        pure
+        returns (Fulfillment[] memory newArr)
+    {
         uint256 length = arr.length;
         newArr = new Fulfillment[](length);
         for (uint256 i = 0; i < length;) {
@@ -1643,7 +1663,11 @@ library MatchArrays {
         }
     }
 
-    function pop(Fulfillment[] memory arr) internal pure returns (Fulfillment memory value) {
+    function pop(Fulfillment[] memory arr)
+        internal
+        pure
+        returns (Fulfillment memory value)
+    {
         assembly {
             let length := mload(arr)
             returndatacopy(returndatasize(), returndatasize(), iszero(length))
@@ -1652,7 +1676,11 @@ library MatchArrays {
         }
     }
 
-    function popUnsafe(Fulfillment[] memory arr) internal pure returns (Fulfillment memory value) {
+    function popUnsafe(Fulfillment[] memory arr)
+        internal
+        pure
+        returns (Fulfillment memory value)
+    {
         // This function is unsafe because it does not check if the array is empty.
         assembly {
             let length := mload(arr)
@@ -1689,7 +1717,11 @@ library MatchArrays {
         }
     }
 
-    function fromFixed(Fulfillment[1] memory arr) internal pure returns (Fulfillment[] memory newArr) {
+    function fromFixed(Fulfillment[1] memory arr)
+        internal
+        pure
+        returns (Fulfillment[] memory newArr)
+    {
         newArr = new Fulfillment[](1);
         for (uint256 i = 0; i < 1;) {
             newArr[i] = arr[i];
@@ -1699,11 +1731,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(Fulfillment[1] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (Fulfillment[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        Fulfillment[1] memory arr,
+        uint256 maxLength
+    ) internal pure returns (Fulfillment[] memory newArr) {
         newArr = new Fulfillment[](maxLength);
         for (uint256 i = 0; i < 1;) {
             newArr[i] = arr[i];
@@ -1716,7 +1747,11 @@ library MatchArrays {
         }
     }
 
-    function fromFixed(Fulfillment[2] memory arr) internal pure returns (Fulfillment[] memory newArr) {
+    function fromFixed(Fulfillment[2] memory arr)
+        internal
+        pure
+        returns (Fulfillment[] memory newArr)
+    {
         newArr = new Fulfillment[](2);
         for (uint256 i = 0; i < 2;) {
             newArr[i] = arr[i];
@@ -1726,11 +1761,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(Fulfillment[2] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (Fulfillment[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        Fulfillment[2] memory arr,
+        uint256 maxLength
+    ) internal pure returns (Fulfillment[] memory newArr) {
         newArr = new Fulfillment[](maxLength);
         for (uint256 i = 0; i < 2;) {
             newArr[i] = arr[i];
@@ -1743,7 +1777,11 @@ library MatchArrays {
         }
     }
 
-    function fromFixed(Fulfillment[3] memory arr) internal pure returns (Fulfillment[] memory newArr) {
+    function fromFixed(Fulfillment[3] memory arr)
+        internal
+        pure
+        returns (Fulfillment[] memory newArr)
+    {
         newArr = new Fulfillment[](3);
         for (uint256 i = 0; i < 3;) {
             newArr[i] = arr[i];
@@ -1753,11 +1791,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(Fulfillment[3] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (Fulfillment[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        Fulfillment[3] memory arr,
+        uint256 maxLength
+    ) internal pure returns (Fulfillment[] memory newArr) {
         newArr = new Fulfillment[](maxLength);
         for (uint256 i = 0; i < 3;) {
             newArr[i] = arr[i];
@@ -1770,7 +1807,11 @@ library MatchArrays {
         }
     }
 
-    function fromFixed(Fulfillment[4] memory arr) internal pure returns (Fulfillment[] memory newArr) {
+    function fromFixed(Fulfillment[4] memory arr)
+        internal
+        pure
+        returns (Fulfillment[] memory newArr)
+    {
         newArr = new Fulfillment[](4);
         for (uint256 i = 0; i < 4;) {
             newArr[i] = arr[i];
@@ -1780,11 +1821,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(Fulfillment[4] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (Fulfillment[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        Fulfillment[4] memory arr,
+        uint256 maxLength
+    ) internal pure returns (Fulfillment[] memory newArr) {
         newArr = new Fulfillment[](maxLength);
         for (uint256 i = 0; i < 4;) {
             newArr[i] = arr[i];
@@ -1797,7 +1837,11 @@ library MatchArrays {
         }
     }
 
-    function fromFixed(Fulfillment[5] memory arr) internal pure returns (Fulfillment[] memory newArr) {
+    function fromFixed(Fulfillment[5] memory arr)
+        internal
+        pure
+        returns (Fulfillment[] memory newArr)
+    {
         newArr = new Fulfillment[](5);
         for (uint256 i = 0; i < 5;) {
             newArr[i] = arr[i];
@@ -1807,11 +1851,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(Fulfillment[5] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (Fulfillment[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        Fulfillment[5] memory arr,
+        uint256 maxLength
+    ) internal pure returns (Fulfillment[] memory newArr) {
         newArr = new Fulfillment[](maxLength);
         for (uint256 i = 0; i < 5;) {
             newArr[i] = arr[i];
@@ -1824,7 +1867,11 @@ library MatchArrays {
         }
     }
 
-    function fromFixed(Fulfillment[6] memory arr) internal pure returns (Fulfillment[] memory newArr) {
+    function fromFixed(Fulfillment[6] memory arr)
+        internal
+        pure
+        returns (Fulfillment[] memory newArr)
+    {
         newArr = new Fulfillment[](6);
         for (uint256 i = 0; i < 6;) {
             newArr[i] = arr[i];
@@ -1834,11 +1881,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(Fulfillment[6] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (Fulfillment[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        Fulfillment[6] memory arr,
+        uint256 maxLength
+    ) internal pure returns (Fulfillment[] memory newArr) {
         newArr = new Fulfillment[](maxLength);
         for (uint256 i = 0; i < 6;) {
             newArr[i] = arr[i];
@@ -1851,7 +1897,11 @@ library MatchArrays {
         }
     }
 
-    function fromFixed(Fulfillment[7] memory arr) internal pure returns (Fulfillment[] memory newArr) {
+    function fromFixed(Fulfillment[7] memory arr)
+        internal
+        pure
+        returns (Fulfillment[] memory newArr)
+    {
         newArr = new Fulfillment[](7);
         for (uint256 i = 0; i < 7;) {
             newArr[i] = arr[i];
@@ -1861,11 +1911,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(Fulfillment[7] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (Fulfillment[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        Fulfillment[7] memory arr,
+        uint256 maxLength
+    ) internal pure returns (Fulfillment[] memory newArr) {
         newArr = new Fulfillment[](maxLength);
         for (uint256 i = 0; i < 7;) {
             newArr[i] = arr[i];
@@ -1878,7 +1927,11 @@ library MatchArrays {
         }
     }
 
-    function MatchComponents(MatchComponent memory a) internal pure returns (MatchComponent[] memory) {
+    function MatchComponents(MatchComponent memory a)
+        internal
+        pure
+        returns (MatchComponent[] memory)
+    {
         MatchComponent[] memory arr = new MatchComponent[](1);
         arr[0] = a;
         return arr;
@@ -1895,11 +1948,11 @@ library MatchArrays {
         return arr;
     }
 
-    function MatchComponents(MatchComponent memory a, MatchComponent memory b, MatchComponent memory c)
-        internal
-        pure
-        returns (MatchComponent[] memory)
-    {
+    function MatchComponents(
+        MatchComponent memory a,
+        MatchComponent memory b,
+        MatchComponent memory c
+    ) internal pure returns (MatchComponent[] memory) {
         MatchComponent[] memory arr = new MatchComponent[](3);
         arr[0] = a;
         arr[1] = b;
@@ -1975,11 +2028,10 @@ library MatchArrays {
         return arr;
     }
 
-    function MatchComponentsWithMaxLength(uint256 maxLength, MatchComponent memory a)
-        internal
-        pure
-        returns (MatchComponent[] memory)
-    {
+    function MatchComponentsWithMaxLength(
+        uint256 maxLength,
+        MatchComponent memory a
+    ) internal pure returns (MatchComponent[] memory) {
         MatchComponent[] memory arr = new MatchComponent[](maxLength);
         assembly {
             mstore(arr, 1)
@@ -1988,11 +2040,11 @@ library MatchArrays {
         return arr;
     }
 
-    function MatchComponentsWithMaxLength(uint256 maxLength, MatchComponent memory a, MatchComponent memory b)
-        internal
-        pure
-        returns (MatchComponent[] memory)
-    {
+    function MatchComponentsWithMaxLength(
+        uint256 maxLength,
+        MatchComponent memory a,
+        MatchComponent memory b
+    ) internal pure returns (MatchComponent[] memory) {
         MatchComponent[] memory arr = new MatchComponent[](maxLength);
         assembly {
             mstore(arr, 2)
@@ -2128,7 +2180,11 @@ library MatchArrays {
         }
     }
 
-    function allocateMatchComponents(uint256 length) internal pure returns (MatchComponent[] memory arr) {
+    function allocateMatchComponents(uint256 length)
+        internal
+        pure
+        returns (MatchComponent[] memory arr)
+    {
         arr = new MatchComponent[](length);
         assembly {
             mstore(arr, 0)
@@ -2143,7 +2199,9 @@ library MatchArrays {
         // truncate the array
         assembly {
             let oldLength := mload(arr)
-            returndatacopy(returndatasize(), returndatasize(), gt(newLength, oldLength))
+            returndatacopy(
+                returndatasize(), returndatasize(), gt(newLength, oldLength)
+            )
             mstore(arr, newLength)
             _arr := arr
         }
@@ -2177,11 +2235,10 @@ library MatchArrays {
         }
     }
 
-    function appendUnsafe(MatchComponent[] memory arr, MatchComponent memory value)
-        internal
-        pure
-        returns (MatchComponent[] memory modifiedArr)
-    {
+    function appendUnsafe(
+        MatchComponent[] memory arr,
+        MatchComponent memory value
+    ) internal pure returns (MatchComponent[] memory modifiedArr) {
         uint256 length = arr.length;
         modifiedArr = arr;
         assembly {
@@ -2190,7 +2247,11 @@ library MatchArrays {
         }
     }
 
-    function copy(MatchComponent[] memory arr) internal pure returns (MatchComponent[] memory newArr) {
+    function copy(MatchComponent[] memory arr)
+        internal
+        pure
+        returns (MatchComponent[] memory newArr)
+    {
         uint256 length = arr.length;
         newArr = new MatchComponent[](length);
         for (uint256 i = 0; i < length;) {
@@ -2237,7 +2298,11 @@ library MatchArrays {
         }
     }
 
-    function pop(MatchComponent[] memory arr) internal pure returns (MatchComponent memory value) {
+    function pop(MatchComponent[] memory arr)
+        internal
+        pure
+        returns (MatchComponent memory value)
+    {
         assembly {
             let length := mload(arr)
             returndatacopy(returndatasize(), returndatasize(), iszero(length))
@@ -2246,7 +2311,11 @@ library MatchArrays {
         }
     }
 
-    function popUnsafe(MatchComponent[] memory arr) internal pure returns (MatchComponent memory value) {
+    function popUnsafe(MatchComponent[] memory arr)
+        internal
+        pure
+        returns (MatchComponent memory value)
+    {
         // This function is unsafe because it does not check if the array is empty.
         assembly {
             let length := mload(arr)
@@ -2283,7 +2352,11 @@ library MatchArrays {
         }
     }
 
-    function fromFixed(MatchComponent[1] memory arr) internal pure returns (MatchComponent[] memory newArr) {
+    function fromFixed(MatchComponent[1] memory arr)
+        internal
+        pure
+        returns (MatchComponent[] memory newArr)
+    {
         newArr = new MatchComponent[](1);
         for (uint256 i = 0; i < 1;) {
             newArr[i] = arr[i];
@@ -2293,11 +2366,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(MatchComponent[1] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (MatchComponent[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        MatchComponent[1] memory arr,
+        uint256 maxLength
+    ) internal pure returns (MatchComponent[] memory newArr) {
         newArr = new MatchComponent[](maxLength);
         for (uint256 i = 0; i < 1;) {
             newArr[i] = arr[i];
@@ -2310,7 +2382,11 @@ library MatchArrays {
         }
     }
 
-    function fromFixed(MatchComponent[2] memory arr) internal pure returns (MatchComponent[] memory newArr) {
+    function fromFixed(MatchComponent[2] memory arr)
+        internal
+        pure
+        returns (MatchComponent[] memory newArr)
+    {
         newArr = new MatchComponent[](2);
         for (uint256 i = 0; i < 2;) {
             newArr[i] = arr[i];
@@ -2320,11 +2396,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(MatchComponent[2] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (MatchComponent[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        MatchComponent[2] memory arr,
+        uint256 maxLength
+    ) internal pure returns (MatchComponent[] memory newArr) {
         newArr = new MatchComponent[](maxLength);
         for (uint256 i = 0; i < 2;) {
             newArr[i] = arr[i];
@@ -2337,7 +2412,11 @@ library MatchArrays {
         }
     }
 
-    function fromFixed(MatchComponent[3] memory arr) internal pure returns (MatchComponent[] memory newArr) {
+    function fromFixed(MatchComponent[3] memory arr)
+        internal
+        pure
+        returns (MatchComponent[] memory newArr)
+    {
         newArr = new MatchComponent[](3);
         for (uint256 i = 0; i < 3;) {
             newArr[i] = arr[i];
@@ -2347,11 +2426,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(MatchComponent[3] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (MatchComponent[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        MatchComponent[3] memory arr,
+        uint256 maxLength
+    ) internal pure returns (MatchComponent[] memory newArr) {
         newArr = new MatchComponent[](maxLength);
         for (uint256 i = 0; i < 3;) {
             newArr[i] = arr[i];
@@ -2364,7 +2442,11 @@ library MatchArrays {
         }
     }
 
-    function fromFixed(MatchComponent[4] memory arr) internal pure returns (MatchComponent[] memory newArr) {
+    function fromFixed(MatchComponent[4] memory arr)
+        internal
+        pure
+        returns (MatchComponent[] memory newArr)
+    {
         newArr = new MatchComponent[](4);
         for (uint256 i = 0; i < 4;) {
             newArr[i] = arr[i];
@@ -2374,11 +2456,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(MatchComponent[4] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (MatchComponent[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        MatchComponent[4] memory arr,
+        uint256 maxLength
+    ) internal pure returns (MatchComponent[] memory newArr) {
         newArr = new MatchComponent[](maxLength);
         for (uint256 i = 0; i < 4;) {
             newArr[i] = arr[i];
@@ -2391,7 +2472,11 @@ library MatchArrays {
         }
     }
 
-    function fromFixed(MatchComponent[5] memory arr) internal pure returns (MatchComponent[] memory newArr) {
+    function fromFixed(MatchComponent[5] memory arr)
+        internal
+        pure
+        returns (MatchComponent[] memory newArr)
+    {
         newArr = new MatchComponent[](5);
         for (uint256 i = 0; i < 5;) {
             newArr[i] = arr[i];
@@ -2401,11 +2486,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(MatchComponent[5] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (MatchComponent[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        MatchComponent[5] memory arr,
+        uint256 maxLength
+    ) internal pure returns (MatchComponent[] memory newArr) {
         newArr = new MatchComponent[](maxLength);
         for (uint256 i = 0; i < 5;) {
             newArr[i] = arr[i];
@@ -2418,7 +2502,11 @@ library MatchArrays {
         }
     }
 
-    function fromFixed(MatchComponent[6] memory arr) internal pure returns (MatchComponent[] memory newArr) {
+    function fromFixed(MatchComponent[6] memory arr)
+        internal
+        pure
+        returns (MatchComponent[] memory newArr)
+    {
         newArr = new MatchComponent[](6);
         for (uint256 i = 0; i < 6;) {
             newArr[i] = arr[i];
@@ -2428,11 +2516,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(MatchComponent[6] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (MatchComponent[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        MatchComponent[6] memory arr,
+        uint256 maxLength
+    ) internal pure returns (MatchComponent[] memory newArr) {
         newArr = new MatchComponent[](maxLength);
         for (uint256 i = 0; i < 6;) {
             newArr[i] = arr[i];
@@ -2445,7 +2532,11 @@ library MatchArrays {
         }
     }
 
-    function fromFixed(MatchComponent[7] memory arr) internal pure returns (MatchComponent[] memory newArr) {
+    function fromFixed(MatchComponent[7] memory arr)
+        internal
+        pure
+        returns (MatchComponent[] memory newArr)
+    {
         newArr = new MatchComponent[](7);
         for (uint256 i = 0; i < 7;) {
             newArr[i] = arr[i];
@@ -2455,11 +2546,10 @@ library MatchArrays {
         }
     }
 
-    function fromFixedWithMaxLength(MatchComponent[7] memory arr, uint256 maxLength)
-        internal
-        pure
-        returns (MatchComponent[] memory newArr)
-    {
+    function fromFixedWithMaxLength(
+        MatchComponent[7] memory arr,
+        uint256 maxLength
+    ) internal pure returns (MatchComponent[] memory newArr) {
         newArr = new MatchComponent[](maxLength);
         for (uint256 i = 0; i < 7;) {
             newArr[i] = arr[i];
@@ -2473,28 +2563,40 @@ library MatchArrays {
     }
 
     function uints(uint256 a) internal pure returns (uint256[] memory) {
-        uint256[] memory arr = new uint[](1);
+        uint256[] memory arr = new uint256[](1);
         arr[0] = a;
         return arr;
     }
 
-    function uints(uint256 a, uint256 b) internal pure returns (uint256[] memory) {
-        uint256[] memory arr = new uint[](2);
+    function uints(uint256 a, uint256 b)
+        internal
+        pure
+        returns (uint256[] memory)
+    {
+        uint256[] memory arr = new uint256[](2);
         arr[0] = a;
         arr[1] = b;
         return arr;
     }
 
-    function uints(uint256 a, uint256 b, uint256 c) internal pure returns (uint256[] memory) {
-        uint256[] memory arr = new uint[](3);
+    function uints(uint256 a, uint256 b, uint256 c)
+        internal
+        pure
+        returns (uint256[] memory)
+    {
+        uint256[] memory arr = new uint256[](3);
         arr[0] = a;
         arr[1] = b;
         arr[2] = c;
         return arr;
     }
 
-    function uints(uint256 a, uint256 b, uint256 c, uint256 d) internal pure returns (uint256[] memory) {
-        uint256[] memory arr = new uint[](4);
+    function uints(uint256 a, uint256 b, uint256 c, uint256 d)
+        internal
+        pure
+        returns (uint256[] memory)
+    {
+        uint256[] memory arr = new uint256[](4);
         arr[0] = a;
         arr[1] = b;
         arr[2] = c;
@@ -2502,8 +2604,12 @@ library MatchArrays {
         return arr;
     }
 
-    function uints(uint256 a, uint256 b, uint256 c, uint256 d, uint256 e) internal pure returns (uint256[] memory) {
-        uint256[] memory arr = new uint[](5);
+    function uints(uint256 a, uint256 b, uint256 c, uint256 d, uint256 e)
+        internal
+        pure
+        returns (uint256[] memory)
+    {
+        uint256[] memory arr = new uint256[](5);
         arr[0] = a;
         arr[1] = b;
         arr[2] = c;
@@ -2512,12 +2618,15 @@ library MatchArrays {
         return arr;
     }
 
-    function uints(uint256 a, uint256 b, uint256 c, uint256 d, uint256 e, uint256 f)
-        internal
-        pure
-        returns (uint256[] memory)
-    {
-        uint256[] memory arr = new uint[](6);
+    function uints(
+        uint256 a,
+        uint256 b,
+        uint256 c,
+        uint256 d,
+        uint256 e,
+        uint256 f
+    ) internal pure returns (uint256[] memory) {
+        uint256[] memory arr = new uint256[](6);
         arr[0] = a;
         arr[1] = b;
         arr[2] = c;
@@ -2527,12 +2636,16 @@ library MatchArrays {
         return arr;
     }
 
-    function uints(uint256 a, uint256 b, uint256 c, uint256 d, uint256 e, uint256 f, uint256 g)
-        internal
-        pure
-        returns (uint256[] memory)
-    {
-        uint256[] memory arr = new uint[](7);
+    function uints(
+        uint256 a,
+        uint256 b,
+        uint256 c,
+        uint256 d,
+        uint256 e,
+        uint256 f,
+        uint256 g
+    ) internal pure returns (uint256[] memory) {
+        uint256[] memory arr = new uint256[](7);
         arr[0] = a;
         arr[1] = b;
         arr[2] = c;
@@ -2543,8 +2656,12 @@ library MatchArrays {
         return arr;
     }
 
-    function uintsWithMaxLength(uint256 maxLength, uint256 a) internal pure returns (uint256[] memory) {
-        uint256[] memory arr = new uint[](maxLength);
+    function uintsWithMaxLength(uint256 maxLength, uint256 a)
+        internal
+        pure
+        returns (uint256[] memory)
+    {
+        uint256[] memory arr = new uint256[](maxLength);
         assembly {
             mstore(arr, 1)
         }
@@ -2552,8 +2669,12 @@ library MatchArrays {
         return arr;
     }
 
-    function uintsWithMaxLength(uint256 maxLength, uint256 a, uint256 b) internal pure returns (uint256[] memory) {
-        uint256[] memory arr = new uint[](maxLength);
+    function uintsWithMaxLength(uint256 maxLength, uint256 a, uint256 b)
+        internal
+        pure
+        returns (uint256[] memory)
+    {
+        uint256[] memory arr = new uint256[](maxLength);
         assembly {
             mstore(arr, 2)
         }
@@ -2562,12 +2683,13 @@ library MatchArrays {
         return arr;
     }
 
-    function uintsWithMaxLength(uint256 maxLength, uint256 a, uint256 b, uint256 c)
-        internal
-        pure
-        returns (uint256[] memory)
-    {
-        uint256[] memory arr = new uint[](maxLength);
+    function uintsWithMaxLength(
+        uint256 maxLength,
+        uint256 a,
+        uint256 b,
+        uint256 c
+    ) internal pure returns (uint256[] memory) {
+        uint256[] memory arr = new uint256[](maxLength);
         assembly {
             mstore(arr, 3)
         }
@@ -2577,12 +2699,14 @@ library MatchArrays {
         return arr;
     }
 
-    function uintsWithMaxLength(uint256 maxLength, uint256 a, uint256 b, uint256 c, uint256 d)
-        internal
-        pure
-        returns (uint256[] memory)
-    {
-        uint256[] memory arr = new uint[](maxLength);
+    function uintsWithMaxLength(
+        uint256 maxLength,
+        uint256 a,
+        uint256 b,
+        uint256 c,
+        uint256 d
+    ) internal pure returns (uint256[] memory) {
+        uint256[] memory arr = new uint256[](maxLength);
         assembly {
             mstore(arr, 4)
         }
@@ -2593,12 +2717,15 @@ library MatchArrays {
         return arr;
     }
 
-    function uintsWithMaxLength(uint256 maxLength, uint256 a, uint256 b, uint256 c, uint256 d, uint256 e)
-        internal
-        pure
-        returns (uint256[] memory)
-    {
-        uint256[] memory arr = new uint[](maxLength);
+    function uintsWithMaxLength(
+        uint256 maxLength,
+        uint256 a,
+        uint256 b,
+        uint256 c,
+        uint256 d,
+        uint256 e
+    ) internal pure returns (uint256[] memory) {
+        uint256[] memory arr = new uint256[](maxLength);
         assembly {
             mstore(arr, 5)
         }
@@ -2610,12 +2737,16 @@ library MatchArrays {
         return arr;
     }
 
-    function uintsWithMaxLength(uint256 maxLength, uint256 a, uint256 b, uint256 c, uint256 d, uint256 e, uint256 f)
-        internal
-        pure
-        returns (uint256[] memory)
-    {
-        uint256[] memory arr = new uint[](maxLength);
+    function uintsWithMaxLength(
+        uint256 maxLength,
+        uint256 a,
+        uint256 b,
+        uint256 c,
+        uint256 d,
+        uint256 e,
+        uint256 f
+    ) internal pure returns (uint256[] memory) {
+        uint256[] memory arr = new uint256[](maxLength);
         assembly {
             mstore(arr, 6)
         }
@@ -2638,7 +2769,7 @@ library MatchArrays {
         uint256 f,
         uint256 g
     ) internal pure returns (uint256[] memory) {
-        uint256[] memory arr = new uint[](maxLength);
+        uint256[] memory arr = new uint256[](maxLength);
         assembly {
             mstore(arr, 7)
         }
@@ -2652,36 +2783,48 @@ library MatchArrays {
         return arr;
     }
 
-    function allocateUints(uint256 length) internal pure returns (uint256[] memory arr) {
-        arr = new uint[](length);
+    function allocateUints(uint256 length)
+        internal
+        pure
+        returns (uint256[] memory arr)
+    {
+        arr = new uint256[](length);
         assembly {
             mstore(arr, 0)
         }
     }
 
     function ints(int256 a) internal pure returns (int256[] memory) {
-        int256[] memory arr = new int[](1);
+        int256[] memory arr = new int256[](1);
         arr[0] = a;
         return arr;
     }
 
     function ints(int256 a, int256 b) internal pure returns (int256[] memory) {
-        int256[] memory arr = new int[](2);
+        int256[] memory arr = new int256[](2);
         arr[0] = a;
         arr[1] = b;
         return arr;
     }
 
-    function ints(int256 a, int256 b, int256 c) internal pure returns (int256[] memory) {
-        int256[] memory arr = new int[](3);
+    function ints(int256 a, int256 b, int256 c)
+        internal
+        pure
+        returns (int256[] memory)
+    {
+        int256[] memory arr = new int256[](3);
         arr[0] = a;
         arr[1] = b;
         arr[2] = c;
         return arr;
     }
 
-    function ints(int256 a, int256 b, int256 c, int256 d) internal pure returns (int256[] memory) {
-        int256[] memory arr = new int[](4);
+    function ints(int256 a, int256 b, int256 c, int256 d)
+        internal
+        pure
+        returns (int256[] memory)
+    {
+        int256[] memory arr = new int256[](4);
         arr[0] = a;
         arr[1] = b;
         arr[2] = c;
@@ -2689,8 +2832,12 @@ library MatchArrays {
         return arr;
     }
 
-    function ints(int256 a, int256 b, int256 c, int256 d, int256 e) internal pure returns (int256[] memory) {
-        int256[] memory arr = new int[](5);
+    function ints(int256 a, int256 b, int256 c, int256 d, int256 e)
+        internal
+        pure
+        returns (int256[] memory)
+    {
+        int256[] memory arr = new int256[](5);
         arr[0] = a;
         arr[1] = b;
         arr[2] = c;
@@ -2699,8 +2846,12 @@ library MatchArrays {
         return arr;
     }
 
-    function ints(int256 a, int256 b, int256 c, int256 d, int256 e, int256 f) internal pure returns (int256[] memory) {
-        int256[] memory arr = new int[](6);
+    function ints(int256 a, int256 b, int256 c, int256 d, int256 e, int256 f)
+        internal
+        pure
+        returns (int256[] memory)
+    {
+        int256[] memory arr = new int256[](6);
         arr[0] = a;
         arr[1] = b;
         arr[2] = c;
@@ -2710,12 +2861,16 @@ library MatchArrays {
         return arr;
     }
 
-    function ints(int256 a, int256 b, int256 c, int256 d, int256 e, int256 f, int256 g)
-        internal
-        pure
-        returns (int256[] memory)
-    {
-        int256[] memory arr = new int[](7);
+    function ints(
+        int256 a,
+        int256 b,
+        int256 c,
+        int256 d,
+        int256 e,
+        int256 f,
+        int256 g
+    ) internal pure returns (int256[] memory) {
+        int256[] memory arr = new int256[](7);
         arr[0] = a;
         arr[1] = b;
         arr[2] = c;
@@ -2726,8 +2881,12 @@ library MatchArrays {
         return arr;
     }
 
-    function intsWithMaxLength(uint256 maxLength, int256 a) internal pure returns (int256[] memory) {
-        int256[] memory arr = new int[](maxLength);
+    function intsWithMaxLength(uint256 maxLength, int256 a)
+        internal
+        pure
+        returns (int256[] memory)
+    {
+        int256[] memory arr = new int256[](maxLength);
         assembly {
             mstore(arr, 1)
         }
@@ -2735,8 +2894,12 @@ library MatchArrays {
         return arr;
     }
 
-    function intsWithMaxLength(uint256 maxLength, int256 a, int256 b) internal pure returns (int256[] memory) {
-        int256[] memory arr = new int[](maxLength);
+    function intsWithMaxLength(uint256 maxLength, int256 a, int256 b)
+        internal
+        pure
+        returns (int256[] memory)
+    {
+        int256[] memory arr = new int256[](maxLength);
         assembly {
             mstore(arr, 2)
         }
@@ -2750,7 +2913,7 @@ library MatchArrays {
         pure
         returns (int256[] memory)
     {
-        int256[] memory arr = new int[](maxLength);
+        int256[] memory arr = new int256[](maxLength);
         assembly {
             mstore(arr, 3)
         }
@@ -2760,12 +2923,14 @@ library MatchArrays {
         return arr;
     }
 
-    function intsWithMaxLength(uint256 maxLength, int256 a, int256 b, int256 c, int256 d)
-        internal
-        pure
-        returns (int256[] memory)
-    {
-        int256[] memory arr = new int[](maxLength);
+    function intsWithMaxLength(
+        uint256 maxLength,
+        int256 a,
+        int256 b,
+        int256 c,
+        int256 d
+    ) internal pure returns (int256[] memory) {
+        int256[] memory arr = new int256[](maxLength);
         assembly {
             mstore(arr, 4)
         }
@@ -2776,12 +2941,15 @@ library MatchArrays {
         return arr;
     }
 
-    function intsWithMaxLength(uint256 maxLength, int256 a, int256 b, int256 c, int256 d, int256 e)
-        internal
-        pure
-        returns (int256[] memory)
-    {
-        int256[] memory arr = new int[](maxLength);
+    function intsWithMaxLength(
+        uint256 maxLength,
+        int256 a,
+        int256 b,
+        int256 c,
+        int256 d,
+        int256 e
+    ) internal pure returns (int256[] memory) {
+        int256[] memory arr = new int256[](maxLength);
         assembly {
             mstore(arr, 5)
         }
@@ -2793,12 +2961,16 @@ library MatchArrays {
         return arr;
     }
 
-    function intsWithMaxLength(uint256 maxLength, int256 a, int256 b, int256 c, int256 d, int256 e, int256 f)
-        internal
-        pure
-        returns (int256[] memory)
-    {
-        int256[] memory arr = new int[](maxLength);
+    function intsWithMaxLength(
+        uint256 maxLength,
+        int256 a,
+        int256 b,
+        int256 c,
+        int256 d,
+        int256 e,
+        int256 f
+    ) internal pure returns (int256[] memory) {
+        int256[] memory arr = new int256[](maxLength);
         assembly {
             mstore(arr, 6)
         }
@@ -2811,12 +2983,17 @@ library MatchArrays {
         return arr;
     }
 
-    function intsWithMaxLength(uint256 maxLength, int256 a, int256 b, int256 c, int256 d, int256 e, int256 f, int256 g)
-        internal
-        pure
-        returns (int256[] memory)
-    {
-        int256[] memory arr = new int[](maxLength);
+    function intsWithMaxLength(
+        uint256 maxLength,
+        int256 a,
+        int256 b,
+        int256 c,
+        int256 d,
+        int256 e,
+        int256 f,
+        int256 g
+    ) internal pure returns (int256[] memory) {
+        int256[] memory arr = new int256[](maxLength);
         assembly {
             mstore(arr, 7)
         }
@@ -2830,18 +3007,30 @@ library MatchArrays {
         return arr;
     }
 
-    function allocateInts(uint256 length) internal pure returns (int256[] memory arr) {
-        arr = new int[](length);
+    function allocateInts(uint256 length)
+        internal
+        pure
+        returns (int256[] memory arr)
+    {
+        arr = new int256[](length);
         assembly {
             mstore(arr, 0)
         }
     }
 
-    function amountKey(MatchComponent memory component) internal pure returns (uint256) {
+    function amountKey(MatchComponent memory component)
+        internal
+        pure
+        returns (uint256)
+    {
         return component.amount;
     }
 
-    function indexKey(MatchComponent memory component) internal pure returns (uint256) {
+    function indexKey(MatchComponent memory component)
+        internal
+        pure
+        returns (uint256)
+    {
         return (component.orderIndex << 8) | component.itemIndex;
     }
 
@@ -2854,10 +3043,10 @@ library MatchArrays {
     }
 
     // Sorts the array in-place with intro-quicksort.
-    function sort(MatchComponent[] memory a, function(MatchComponent memory) internal pure returns (uint256) accessor)
-        internal
-        pure
-    {
+    function sort(
+        MatchComponent[] memory a,
+        function(MatchComponent memory) internal pure returns (uint256) accessor
+    ) internal pure {
         if (a.length < 2) {
             return;
         }

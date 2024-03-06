@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import { FulfillmentComponent } from "seaport-types/src/lib/ConsiderationStructs.sol";
+import { FulfillmentComponent } from
+    "seaport-types/src/lib/ConsiderationStructs.sol";
 
 import { ArrayLib } from "./ArrayLib.sol";
 
@@ -28,11 +29,10 @@ library FulfillmentComponentLib {
      * @param defaultName the name of the default to clear
      */
     function clear(string memory defaultName) internal {
-        mapping(string => FulfillmentComponent)
-            storage fulfillmentComponentMap = _fulfillmentComponentMap();
-        FulfillmentComponent storage component = fulfillmentComponentMap[
-            defaultName
-        ];
+        mapping(string => FulfillmentComponent) storage fulfillmentComponentMap =
+            _fulfillmentComponentMap();
+        FulfillmentComponent storage component =
+            fulfillmentComponentMap[defaultName];
         clear(component);
     }
 
@@ -65,11 +65,13 @@ library FulfillmentComponentLib {
      *
      * @return item the FulfillmentComponent retrieved from storage
      */
-    function fromDefault(
-        string memory defaultName
-    ) internal view returns (FulfillmentComponent memory item) {
-        mapping(string => FulfillmentComponent)
-            storage fulfillmentComponentMap = _fulfillmentComponentMap();
+    function fromDefault(string memory defaultName)
+        internal
+        view
+        returns (FulfillmentComponent memory item)
+    {
+        mapping(string => FulfillmentComponent) storage fulfillmentComponentMap =
+            _fulfillmentComponentMap();
         item = fulfillmentComponentMap[defaultName];
     }
 
@@ -80,11 +82,13 @@ library FulfillmentComponentLib {
      *
      * @return items the FulfillmentComponents retrieved from storage
      */
-    function fromDefaultMany(
-        string memory defaultName
-    ) internal view returns (FulfillmentComponent[] memory items) {
-        mapping(string => FulfillmentComponent[])
-            storage fulfillmentComponentMap = _fulfillmentComponentsMap();
+    function fromDefaultMany(string memory defaultName)
+        internal
+        view
+        returns (FulfillmentComponent[] memory items)
+    {
+        mapping(string => FulfillmentComponent[]) storage
+            fulfillmentComponentMap = _fulfillmentComponentsMap();
         items = fulfillmentComponentMap[defaultName];
     }
 
@@ -100,11 +104,10 @@ library FulfillmentComponentLib {
         FulfillmentComponent memory fulfillmentComponent,
         string memory defaultName
     ) internal returns (FulfillmentComponent memory _fulfillmentComponent) {
-        mapping(string => FulfillmentComponent)
-            storage fulfillmentComponentMap = _fulfillmentComponentMap();
-        FulfillmentComponent storage component = fulfillmentComponentMap[
-            defaultName
-        ];
+        mapping(string => FulfillmentComponent) storage fulfillmentComponentMap =
+            _fulfillmentComponentMap();
+        FulfillmentComponent storage component =
+            fulfillmentComponentMap[defaultName];
         component.orderIndex = fulfillmentComponent.orderIndex;
         component.itemIndex = fulfillmentComponent.itemIndex;
         return fulfillmentComponent;
@@ -124,16 +127,12 @@ library FulfillmentComponentLib {
         FulfillmentComponent[] memory fulfillmentComponents,
         string memory defaultName
     ) internal returns (FulfillmentComponent[] memory _fulfillmentComponents) {
-        mapping(string => FulfillmentComponent[])
-            storage fulfillmentComponentsMap = _fulfillmentComponentsMap();
-        FulfillmentComponent[] storage components = fulfillmentComponentsMap[
-            defaultName
-        ];
+        mapping(string => FulfillmentComponent[]) storage
+            fulfillmentComponentsMap = _fulfillmentComponentsMap();
+        FulfillmentComponent[] storage components =
+            fulfillmentComponentsMap[defaultName];
         clear(components);
-        StructCopier.setFulfillmentComponents(
-            components,
-            fulfillmentComponents
-        );
+        StructCopier.setFulfillmentComponents(components, fulfillmentComponents);
 
         return fulfillmentComponents;
     }
@@ -145,14 +144,15 @@ library FulfillmentComponentLib {
      *
      * @return copiedComponent the copied FulfillmentComponent
      */
-    function copy(
-        FulfillmentComponent memory component
-    ) internal pure returns (FulfillmentComponent memory) {
-        return
-            FulfillmentComponent({
-                orderIndex: component.orderIndex,
-                itemIndex: component.itemIndex
-            });
+    function copy(FulfillmentComponent memory component)
+        internal
+        pure
+        returns (FulfillmentComponent memory)
+    {
+        return FulfillmentComponent({
+            orderIndex: component.orderIndex,
+            itemIndex: component.itemIndex
+        });
     }
 
     /**
@@ -162,12 +162,13 @@ library FulfillmentComponentLib {
      *
      * @return copiedComponents the copied FulfillmentComponents
      */
-    function copy(
-        FulfillmentComponent[] memory components
-    ) internal pure returns (FulfillmentComponent[] memory) {
-        FulfillmentComponent[] memory copiedItems = new FulfillmentComponent[](
-            components.length
-        );
+    function copy(FulfillmentComponent[] memory components)
+        internal
+        pure
+        returns (FulfillmentComponent[] memory)
+    {
+        FulfillmentComponent[] memory copiedItems =
+            new FulfillmentComponent[](components.length);
         for (uint256 i = 0; i < components.length; i++) {
             copiedItems[i] = copy(components[i]);
         }
@@ -195,8 +196,7 @@ library FulfillmentComponentLib {
         private
         pure
         returns (
-            mapping(string => FulfillmentComponent)
-                storage fulfillmentComponentMap
+            mapping(string => FulfillmentComponent) storage fulfillmentComponentMap
         )
     {
         bytes32 position = FULFILLMENT_COMPONENT_MAP_POSITION;
@@ -216,8 +216,7 @@ library FulfillmentComponentLib {
         private
         pure
         returns (
-            mapping(string => FulfillmentComponent[])
-                storage fulfillmentComponentsMap
+            mapping(string => FulfillmentComponent[]) storage fulfillmentComponentsMap
         )
     {
         bytes32 position = FULFILLMENT_COMPONENTS_MAP_POSITION;

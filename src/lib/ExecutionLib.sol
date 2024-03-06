@@ -23,22 +23,21 @@ library ExecutionLib {
         keccak256("seaport.ExecutionDefaults");
     bytes32 private constant EXECUTIONS_MAP_POSITION =
         keccak256("seaport.ExecutionsDefaults");
-    bytes32 private constant EMPTY_EXECUTION =
-        keccak256(
-            abi.encode(
-                Execution({
-                    item: ReceivedItem({
-                        itemType: ItemType(0),
-                        token: address(0),
-                        identifier: 0,
-                        amount: 0,
-                        recipient: payable(address(0))
-                    }),
-                    offerer: address(0),
-                    conduitKey: bytes32(0)
-                })
-            )
-        );
+    bytes32 private constant EMPTY_EXECUTION = keccak256(
+        abi.encode(
+            Execution({
+                item: ReceivedItem({
+                    itemType: ItemType(0),
+                    token: address(0),
+                    identifier: 0,
+                    amount: 0,
+                    recipient: payable(address(0))
+                }),
+                offerer: address(0),
+                conduitKey: bytes32(0)
+            })
+        )
+    );
 
     using ReceivedItemLib for ReceivedItem;
     using ReceivedItemLib for ReceivedItem[];
@@ -85,9 +84,11 @@ library ExecutionLib {
      *
      * @return item the Execution retrieved from storage
      */
-    function fromDefault(
-        string memory defaultName
-    ) internal view returns (Execution memory item) {
+    function fromDefault(string memory defaultName)
+        internal
+        view
+        returns (Execution memory item)
+    {
         mapping(string => Execution) storage executionMap = _executionMap();
         item = executionMap[defaultName];
 
@@ -103,9 +104,11 @@ library ExecutionLib {
      *
      * @return items the Executions retrieved from storage
      */
-    function fromDefaultMany(
-        string memory defaultName
-    ) internal view returns (Execution[] memory items) {
+    function fromDefaultMany(string memory defaultName)
+        internal
+        view
+        returns (Execution[] memory items)
+    {
         mapping(string => Execution[]) storage executionsMap = _executionsMap();
         items = executionsMap[defaultName];
 
@@ -122,10 +125,10 @@ library ExecutionLib {
      *
      * @return _execution the Execution saved as a default
      */
-    function saveDefault(
-        Execution memory execution,
-        string memory defaultName
-    ) internal returns (Execution memory _execution) {
+    function saveDefault(Execution memory execution, string memory defaultName)
+        internal
+        returns (Execution memory _execution)
+    {
         mapping(string => Execution) storage executionMap = _executionMap();
         executionMap[defaultName] = execution;
         return execution;
@@ -155,15 +158,16 @@ library ExecutionLib {
      *
      * @custom:return copy the copy of the Execution in-memory
      */
-    function copy(
-        Execution memory item
-    ) internal pure returns (Execution memory) {
-        return
-            Execution({
-                item: item.item.copy(),
-                offerer: item.offerer,
-                conduitKey: item.conduitKey
-            });
+    function copy(Execution memory item)
+        internal
+        pure
+        returns (Execution memory)
+    {
+        return Execution({
+            item: item.item.copy(),
+            offerer: item.offerer,
+            conduitKey: item.conduitKey
+        });
     }
 
     /**
@@ -173,9 +177,11 @@ library ExecutionLib {
      *
      * @custom:return copy the copy of the array of Executions in-memory
      */
-    function copy(
-        Execution[] memory items
-    ) internal pure returns (Execution[] memory) {
+    function copy(Execution[] memory items)
+        internal
+        pure
+        returns (Execution[] memory)
+    {
         Execution[] memory copies = new Execution[](items.length);
         for (uint256 i = 0; i < items.length; i++) {
             copies[i] = copy(items[i]);
@@ -189,12 +195,11 @@ library ExecutionLib {
      * @custom:return empty the empty Execution
      */
     function empty() internal pure returns (Execution memory) {
-        return
-            Execution({
-                item: ReceivedItemLib.empty(),
-                offerer: address(0),
-                conduitKey: bytes32(0)
-            });
+        return Execution({
+            item: ReceivedItemLib.empty(),
+            offerer: address(0),
+            conduitKey: bytes32(0)
+        });
     }
 
     /**
@@ -240,10 +245,11 @@ library ExecutionLib {
      *
      * @return _execution the configured Execution
      */
-    function withItem(
-        Execution memory execution,
-        ReceivedItem memory item
-    ) internal pure returns (Execution memory) {
+    function withItem(Execution memory execution, ReceivedItem memory item)
+        internal
+        pure
+        returns (Execution memory)
+    {
         execution.item = item.copy();
         return execution;
     }
@@ -256,10 +262,11 @@ library ExecutionLib {
      *
      * @return _execution the configured Execution
      */
-    function withOfferer(
-        Execution memory execution,
-        address offerer
-    ) internal pure returns (Execution memory) {
+    function withOfferer(Execution memory execution, address offerer)
+        internal
+        pure
+        returns (Execution memory)
+    {
         execution.offerer = offerer;
         return execution;
     }
@@ -272,10 +279,11 @@ library ExecutionLib {
      *
      * @return _execution the configured Execution
      */
-    function withConduitKey(
-        Execution memory execution,
-        bytes32 conduitKey
-    ) internal pure returns (Execution memory) {
+    function withConduitKey(Execution memory execution, bytes32 conduitKey)
+        internal
+        pure
+        returns (Execution memory)
+    {
         execution.conduitKey = conduitKey;
         return execution;
     }

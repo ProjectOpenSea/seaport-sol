@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {FulfillmentComponent} from "../../SeaportStructs.sol";
+import { FulfillmentComponent } from "../../SeaportStructs.sol";
 
 struct MatchComponent {
     uint256 amount;
@@ -15,18 +15,21 @@ library MatchComponentType {
     uint256 private constant AMOUNT_SHL_OFFSET = 16;
     uint256 private constant ORDER_INDEX_SHL_OFFSET = 8;
     uint256 private constant BYTE_MASK = 0xFF;
-    uint256 private constant AMOUNT_MASK = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000;
+    uint256 private constant AMOUNT_MASK =
+        0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000;
     uint256 private constant ORDER_INDEX_MASK = 0xFF00;
     uint256 private constant ITEM_INDEX_MASK = 0xFF;
     uint256 private constant NOT_AMOUNT_MASK = 0xFFFF;
-    uint256 private constant NOT_ORDER_INDEX_MASK = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00FF;
-    uint256 private constant NOT_ITEM_INDEX_MASK = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00;
+    uint256 private constant NOT_ORDER_INDEX_MASK =
+        0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00FF;
+    uint256 private constant NOT_ITEM_INDEX_MASK =
+        0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00;
 
-    function createMatchComponent(uint256 amount, uint8 orderIndex, uint8 itemIndex)
-        internal
-        pure
-        returns (MatchComponent memory component)
-    {
+    function createMatchComponent(
+        uint256 amount,
+        uint8 orderIndex,
+        uint8 itemIndex
+    ) internal pure returns (MatchComponent memory component) {
         component.amount = amount;
         component.orderIndex = orderIndex;
         component.itemIndex = itemIndex;
@@ -38,11 +41,19 @@ library MatchComponentType {
         // }
     }
 
-    function getAmount(MatchComponent memory component) internal pure returns (uint256 amount) {
+    function getAmount(MatchComponent memory component)
+        internal
+        pure
+        returns (uint256 amount)
+    {
         return component.amount;
     }
 
-    function copy(MatchComponent memory component) internal pure returns (MatchComponent memory copy_) {
+    function copy(MatchComponent memory component)
+        internal
+        pure
+        returns (MatchComponent memory copy_)
+    {
         copy_.amount = component.amount;
         copy_.orderIndex = component.orderIndex;
         copy_.itemIndex = component.itemIndex;
@@ -57,7 +68,11 @@ library MatchComponentType {
         newComponent.amount = amount;
     }
 
-    function getOrderIndex(MatchComponent memory component) internal pure returns (uint8 orderIndex) {
+    function getOrderIndex(MatchComponent memory component)
+        internal
+        pure
+        returns (uint8 orderIndex)
+    {
         return component.orderIndex;
     }
 
@@ -70,7 +85,11 @@ library MatchComponentType {
         newComponent.orderIndex = orderIndex;
     }
 
-    function getItemIndex(MatchComponent memory component) internal pure returns (uint8 itemIndex) {
+    function getItemIndex(MatchComponent memory component)
+        internal
+        pure
+        returns (uint8 itemIndex)
+    {
         return component.itemIndex;
     }
 
@@ -91,11 +110,10 @@ library MatchComponentType {
         return (component.amount, component.orderIndex, component.itemIndex);
     }
 
-    function subtractAmount(MatchComponent memory minuend, MatchComponent memory subtrahend)
-        internal
-        pure
-        returns (MatchComponent memory newComponent)
-    {
+    function subtractAmount(
+        MatchComponent memory minuend,
+        MatchComponent memory subtrahend
+    ) internal pure returns (MatchComponent memory newComponent) {
         uint256 minuendAmount = minuend.getAmount();
         uint256 subtrahendAmount = subtrahend.getAmount();
         uint256 newAmount = uint256(minuendAmount - subtrahendAmount);
@@ -119,7 +137,10 @@ library MatchComponentType {
         returns (FulfillmentComponent memory)
     {
         (, uint8 orderIndex, uint8 itemIndex) = component.unpack();
-        return FulfillmentComponent({orderIndex: orderIndex, itemIndex: itemIndex});
+        return FulfillmentComponent({
+            orderIndex: orderIndex,
+            itemIndex: itemIndex
+        });
     }
 
     function toFulfillmentComponents(MatchComponent[] memory components)
@@ -127,31 +148,47 @@ library MatchComponentType {
         pure
         returns (FulfillmentComponent[] memory)
     {
-        FulfillmentComponent[] memory fulfillmentComponents = new FulfillmentComponent[](
-                components.length
-            );
+        FulfillmentComponent[] memory fulfillmentComponents =
+            new FulfillmentComponent[](components.length);
         for (uint256 i = 0; i < components.length; i++) {
             fulfillmentComponents[i] = components[i].toFulfillmentComponent();
         }
         return fulfillmentComponents;
     }
 
-    function toStruct(MatchComponent memory component) internal pure returns (MatchComponent memory) {
+    function toStruct(MatchComponent memory component)
+        internal
+        pure
+        returns (MatchComponent memory)
+    {
         (uint256 amount, uint8 orderIndex, uint8 itemIndex) = component.unpack();
-        return MatchComponent({amount: amount, orderIndex: orderIndex, itemIndex: itemIndex});
+        return MatchComponent({
+            amount: amount,
+            orderIndex: orderIndex,
+            itemIndex: itemIndex
+        });
     }
 
-    function toStructs(MatchComponent[] memory components) internal pure returns (MatchComponent[] memory) {
-        MatchComponent[] memory structs = new MatchComponent[](
-            components.length
-        );
+    function toStructs(MatchComponent[] memory components)
+        internal
+        pure
+        returns (MatchComponent[] memory)
+    {
+        MatchComponent[] memory structs =
+            new MatchComponent[](components.length);
         for (uint256 i = 0; i < components.length; i++) {
             structs[i] = components[i].toStruct();
         }
         return structs;
     }
 
-    function equals(MatchComponent memory left, MatchComponent memory right) internal pure returns (bool) {
-        return left.amount == right.amount && left.orderIndex == right.orderIndex && left.itemIndex == right.itemIndex;
+    function equals(MatchComponent memory left, MatchComponent memory right)
+        internal
+        pure
+        returns (bool)
+    {
+        return left.amount == right.amount
+            && left.orderIndex == right.orderIndex
+            && left.itemIndex == right.itemIndex;
     }
 }

@@ -1,10 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {FulfillmentComponent} from "../SeaportStructs.sol";
+import { FulfillmentComponent } from "../SeaportStructs.sol";
 
 library FulfillmentComponentSortLib {
-    function key(FulfillmentComponent memory component) internal pure returns (uint256) {
+    function key(FulfillmentComponent memory component)
+        internal
+        pure
+        returns (uint256)
+    {
         return (uint256(component.orderIndex) << 8) | component.itemIndex;
     }
 
