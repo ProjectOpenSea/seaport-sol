@@ -1,11 +1,16 @@
 [profile.default]
+solc = "0.8.24"
+evm_version = "cancun"
 src = "src"
 out = "out"
 libs = ["lib", "node_modules"]
 remappings = [
-    'seaport-types/=lib/seaport-types/',
-    'seaport-core/=lib/seaport-core/',
-    'solady/=lib/solady/',
+    "seaport-types/=lib/seaport-types/",
+    "seaport-core/=lib/seaport-core/",
+    "solady/=lib/solady/",
 ]
 
-# See more config options https://github.com/foundry-rs/foundry/tree/master/config
+[fmt]
+line_length = 80
+tab_width = 4
+bracket_spacing = true
