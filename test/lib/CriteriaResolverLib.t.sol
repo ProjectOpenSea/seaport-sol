@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {BaseTest} from "../BaseTest.sol";
-import {CriteriaResolverLib} from "../../src/lib/CriteriaResolverLib.sol";
-import {CriteriaResolver} from "seaport-types/src/lib/ConsiderationStructs.sol";
-import {Side} from "seaport-types/src/lib/ConsiderationEnums.sol";
+import { BaseTest } from "../BaseTest.sol";
+import { CriteriaResolverLib } from "../../src/lib/CriteriaResolverLib.sol";
+import {
+    CriteriaResolver
+} from "seaport-types/src/lib/ConsiderationStructs.sol";
+import { Side } from "seaport-types/src/lib/ConsiderationEnums.sol";
 
 contract CriteriaResolverLibTest is BaseTest {
     using CriteriaResolverLib for CriteriaResolver;
@@ -16,15 +18,17 @@ contract CriteriaResolverLibTest is BaseTest {
         uint256 identifier,
         bytes32[] memory criteriaProof
     ) public {
-        CriteriaResolver memory criteriaResolver = CriteriaResolver({
-            orderIndex: orderIndex == 0 ? 1 : orderIndex,
-            side: Side(side ? 1 : 0),
-            index: index,
-            identifier: identifier,
-            criteriaProof: criteriaProof
-        });
+        CriteriaResolver memory criteriaResolver =
+            CriteriaResolver({
+                orderIndex: orderIndex == 0 ? 1 : orderIndex,
+                side: Side(side ? 1 : 0),
+                index: index,
+                identifier: identifier,
+                criteriaProof: criteriaProof
+            });
         CriteriaResolverLib.saveDefault(criteriaResolver, "default");
-        CriteriaResolver memory defaultCriteriaResolver = CriteriaResolverLib.fromDefault("default");
+        CriteriaResolver memory defaultCriteriaResolver =
+            CriteriaResolverLib.fromDefault("default");
         assertEq(criteriaResolver, defaultCriteriaResolver);
     }
 
@@ -43,9 +47,13 @@ contract CriteriaResolverLibTest is BaseTest {
         uint256 identifier,
         bytes32[] memory criteriaProof
     ) public {
-        CriteriaResolver memory criteriaResolver = CriteriaResolverLib.empty().withOrderIndex(orderIndex).withSide(
-            Side(side ? 1 : 0)
-        ).withIndex(index).withIdentifier(identifier).withCriteriaProof(criteriaProof);
+        CriteriaResolver memory criteriaResolver =
+            CriteriaResolverLib.empty()
+                .withOrderIndex(orderIndex)
+                .withSide(Side(side ? 1 : 0))
+                .withIndex(index)
+                .withIdentifier(identifier)
+                .withCriteriaProof(criteriaProof);
         assertEq(
             criteriaResolver,
             CriteriaResolver({
@@ -59,8 +67,13 @@ contract CriteriaResolverLibTest is BaseTest {
     }
 
     function testCopy() public {
-        CriteriaResolver memory criteriaResolver =
-            CriteriaResolver({orderIndex: 1, side: Side(1), index: 1, identifier: 1, criteriaProof: new bytes32[](0)});
+        CriteriaResolver memory criteriaResolver = CriteriaResolver({
+            orderIndex: 1,
+            side: Side(1),
+            index: 1,
+            identifier: 1,
+            criteriaProof: new bytes32[](0)
+        });
         CriteriaResolver memory copy = criteriaResolver.copy();
         assertEq(criteriaResolver, copy);
         criteriaResolver.index = 2;
@@ -85,7 +98,8 @@ contract CriteriaResolverLibTest is BaseTest {
             });
         }
         CriteriaResolverLib.saveDefaultMany(criteriaResolvers, "default");
-        CriteriaResolver[] memory defaultCriteriaResolvers = CriteriaResolverLib.fromDefaultMany("default");
+        CriteriaResolver[] memory defaultCriteriaResolvers =
+            CriteriaResolverLib.fromDefaultMany("default");
         for (uint256 i = 0; i < 3; i++) {
             assertEq(criteriaResolvers[i], defaultCriteriaResolvers[i]);
         }

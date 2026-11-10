@@ -184,11 +184,7 @@ library OrderLib {
      *
      * @custom:return copiedOrders the copied Order array
      */
-    function copy(Order[] memory items)
-        internal
-        pure
-        returns (Order[] memory)
-    {
+    function copy(Order[] memory items) internal pure returns (Order[] memory) {
         Order[] memory copiedItems = new Order[](items.length);
         for (uint256 i = 0; i < items.length; i++) {
             copiedItems[i] = copy(items[i]);
@@ -332,22 +328,18 @@ library OrderLib {
     function toBasicOrderParameters(
         Order memory order,
         BasicOrderType basicOrderType
-    )
-        internal
-        pure
-        returns (BasicOrderParameters memory basicOrderParameters)
-    {
+    ) internal pure returns (BasicOrderParameters memory basicOrderParameters) {
         basicOrderParameters.considerationToken =
-            order.parameters.consideration[0].token;
+        order.parameters.consideration[0].token;
         basicOrderParameters.considerationIdentifier =
-            order.parameters.consideration[0].identifierOrCriteria;
+        order.parameters.consideration[0].identifierOrCriteria;
         basicOrderParameters.considerationAmount =
-            order.parameters.consideration[0].endAmount;
+        order.parameters.consideration[0].endAmount;
         basicOrderParameters.offerer = payable(order.parameters.offerer);
         basicOrderParameters.zone = order.parameters.zone;
         basicOrderParameters.offerToken = order.parameters.offer[0].token;
         basicOrderParameters.offerIdentifier =
-            order.parameters.offer[0].identifierOrCriteria;
+        order.parameters.offer[0].identifierOrCriteria;
         basicOrderParameters.offerAmount = order.parameters.offer[0].endAmount;
         basicOrderParameters.basicOrderType = basicOrderType;
         basicOrderParameters.startTime = order.parameters.startTime;
@@ -359,8 +351,9 @@ library OrderLib {
         basicOrderParameters.totalOriginalAdditionalRecipients =
             order.parameters.totalOriginalConsiderationItems - 1;
 
-        AdditionalRecipient[] memory additionalRecipients =
-            new AdditionalRecipient[](order.parameters.consideration.length - 1);
+        AdditionalRecipient[] memory additionalRecipients = new AdditionalRecipient[](
+            order.parameters.consideration.length - 1
+        );
         for (uint256 i = 1; i < order.parameters.consideration.length; i++) {
             additionalRecipients[i - 1] = AdditionalRecipient({
                 recipient: order.parameters.consideration[i].recipient,

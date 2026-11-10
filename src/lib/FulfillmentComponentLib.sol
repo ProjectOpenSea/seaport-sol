@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import { FulfillmentComponent } from
-    "seaport-types/src/lib/ConsiderationStructs.sol";
+import {
+    FulfillmentComponent
+} from "seaport-types/src/lib/ConsiderationStructs.sol";
 
 import { ArrayLib } from "./ArrayLib.sol";
 
@@ -29,8 +30,8 @@ library FulfillmentComponentLib {
      * @param defaultName the name of the default to clear
      */
     function clear(string memory defaultName) internal {
-        mapping(string => FulfillmentComponent) storage fulfillmentComponentMap =
-            _fulfillmentComponentMap();
+        mapping(string => FulfillmentComponent) storage
+            fulfillmentComponentMap = _fulfillmentComponentMap();
         FulfillmentComponent storage component =
             fulfillmentComponentMap[defaultName];
         clear(component);
@@ -70,8 +71,8 @@ library FulfillmentComponentLib {
         view
         returns (FulfillmentComponent memory item)
     {
-        mapping(string => FulfillmentComponent) storage fulfillmentComponentMap =
-            _fulfillmentComponentMap();
+        mapping(string => FulfillmentComponent) storage
+            fulfillmentComponentMap = _fulfillmentComponentMap();
         item = fulfillmentComponentMap[defaultName];
     }
 
@@ -104,8 +105,8 @@ library FulfillmentComponentLib {
         FulfillmentComponent memory fulfillmentComponent,
         string memory defaultName
     ) internal returns (FulfillmentComponent memory _fulfillmentComponent) {
-        mapping(string => FulfillmentComponent) storage fulfillmentComponentMap =
-            _fulfillmentComponentMap();
+        mapping(string => FulfillmentComponent) storage
+            fulfillmentComponentMap = _fulfillmentComponentMap();
         FulfillmentComponent storage component =
             fulfillmentComponentMap[defaultName];
         component.orderIndex = fulfillmentComponent.orderIndex;
@@ -195,9 +196,9 @@ library FulfillmentComponentLib {
     function _fulfillmentComponentMap()
         private
         pure
-        returns (
-            mapping(string => FulfillmentComponent) storage fulfillmentComponentMap
-        )
+        returns (mapping(
+                string => FulfillmentComponent
+            ) storage fulfillmentComponentMap)
     {
         bytes32 position = FULFILLMENT_COMPONENT_MAP_POSITION;
         assembly {
@@ -215,9 +216,9 @@ library FulfillmentComponentLib {
     function _fulfillmentComponentsMap()
         private
         pure
-        returns (
-            mapping(string => FulfillmentComponent[]) storage fulfillmentComponentsMap
-        )
+        returns (mapping(
+                string => FulfillmentComponent[]
+            ) storage fulfillmentComponentsMap)
     {
         bytes32 position = FULFILLMENT_COMPONENTS_MAP_POSITION;
         assembly {

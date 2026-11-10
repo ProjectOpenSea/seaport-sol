@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import { AdditionalRecipient } from
-    "seaport-types/src/lib/ConsiderationStructs.sol";
+import {
+    AdditionalRecipient
+} from "seaport-types/src/lib/ConsiderationStructs.sol";
 
 import { StructCopier } from "./StructCopier.sol";
 
@@ -71,8 +72,8 @@ library AdditionalRecipientLib {
         view
         returns (AdditionalRecipient memory item)
     {
-        mapping(string => AdditionalRecipient) storage additionalRecipientMap =
-            _additionalRecipientMap();
+        mapping(string => AdditionalRecipient) storage
+            additionalRecipientMap = _additionalRecipientMap();
         item = additionalRecipientMap[defaultName];
 
         if (keccak256(abi.encode(item)) == EMPTY_ADDITIONAL_RECIPIENT) {
@@ -92,8 +93,8 @@ library AdditionalRecipientLib {
         view
         returns (AdditionalRecipient[] memory items)
     {
-        mapping(string => AdditionalRecipient[]) storage additionalRecipientsMap =
-            _additionalRecipientsMap();
+        mapping(string => AdditionalRecipient[]) storage
+            additionalRecipientsMap = _additionalRecipientsMap();
         items = additionalRecipientsMap[defaultName];
 
         if (items.length == 0) {
@@ -131,8 +132,8 @@ library AdditionalRecipientLib {
         AdditionalRecipient[] memory additionalRecipients,
         string memory defaultName
     ) internal returns (AdditionalRecipient[] memory _additionalRecipients) {
-        mapping(string => AdditionalRecipient[]) storage additionalRecipientsMap =
-            _additionalRecipientsMap();
+        mapping(string => AdditionalRecipient[]) storage
+            additionalRecipientsMap = _additionalRecipientsMap();
         StructCopier.setAdditionalRecipients(
             additionalRecipientsMap[defaultName], additionalRecipients
         );
@@ -196,9 +197,9 @@ library AdditionalRecipientLib {
     function _additionalRecipientMap()
         private
         pure
-        returns (
-            mapping(string => AdditionalRecipient) storage additionalRecipientMap
-        )
+        returns (mapping(
+                string => AdditionalRecipient
+            ) storage additionalRecipientMap)
     {
         bytes32 position = ADDITIONAL_RECIPIENT_MAP_POSITION;
         assembly {
@@ -217,9 +218,9 @@ library AdditionalRecipientLib {
     function _additionalRecipientsMap()
         private
         pure
-        returns (
-            mapping(string => AdditionalRecipient[]) storage additionalRecipientsMap
-        )
+        returns (mapping(
+                string => AdditionalRecipient[]
+            ) storage additionalRecipientsMap)
     {
         bytes32 position = ADDITIONAL_RECIPIENTS_MAP_POSITION;
         assembly {

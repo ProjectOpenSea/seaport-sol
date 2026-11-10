@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import { SeaportInterface } from
-    "seaport-types/src/interfaces/SeaportInterface.sol";
+import {
+    SeaportInterface
+} from "seaport-types/src/interfaces/SeaportInterface.sol";
 import { AmountDeriver } from "seaport-core/src/lib/AmountDeriver.sol";
 import {
     AdvancedOrder,
@@ -494,7 +495,7 @@ contract AmountDeriverHelper is AmountDeriver {
             startTime: startTime,
             endTime: endTime,
             roundUp: false // don't round up offers
-         });
+        });
     }
 
     function _applyFraction(
@@ -515,6 +516,6 @@ contract AmountDeriverHelper is AmountDeriver {
             startTime: startTime,
             endTime: endTime,
             roundUp: true // round up considerations
-         });
+        });
     }
 }

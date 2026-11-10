@@ -21,8 +21,7 @@ library FulfillmentComponentSortLib {
         FulfillmentComponent[] memory a,
         function(FulfillmentComponent memory)
             internal
-            pure
-            returns (uint256) accessor
+            pure returns (uint256) accessor
     ) internal pure {
         if (a.length < 2) {
             return;

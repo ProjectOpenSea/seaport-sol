@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {BaseTest} from "../BaseTest.sol";
-import {OrderParametersLib} from "../../src/lib/OrderParametersLib.sol";
-import {AdditionalRecipientLib} from "../../src/lib/AdditionalRecipientLib.sol";
+import { BaseTest } from "../BaseTest.sol";
+import { OrderParametersLib } from "../../src/lib/OrderParametersLib.sol";
+import {
+    AdditionalRecipientLib
+} from "../../src/lib/AdditionalRecipientLib.sol";
 import {
     OrderParameters,
     OrderParameters,
@@ -11,9 +13,13 @@ import {
     ConsiderationItem,
     AdditionalRecipient
 } from "seaport-types/src/lib/ConsiderationStructs.sol";
-import {ItemType, BasicOrderType, OrderType} from "seaport-types/src/lib/ConsiderationEnums.sol";
-import {OrderParametersLib} from "../../src/lib/OrderParametersLib.sol";
-import {SeaportArrays} from "../../src/lib/SeaportArrays.sol";
+import {
+    ItemType,
+    BasicOrderType,
+    OrderType
+} from "seaport-types/src/lib/ConsiderationEnums.sol";
+import { OrderParametersLib } from "../../src/lib/OrderParametersLib.sol";
+import { SeaportArrays } from "../../src/lib/SeaportArrays.sol";
 
 contract OrderParametersLibTest is BaseTest {
     using OrderParametersLib for OrderParameters;
@@ -32,11 +38,13 @@ contract OrderParametersLibTest is BaseTest {
         dup.zoneHash = blob.zoneHash;
         dup.salt = blob.salt;
         dup.conduitKey = blob.conduitKey;
-        dup.totalOriginalConsiderationItems = blob.totalOriginalConsiderationItems;
+        dup.totalOriginalConsiderationItems =
+        blob.totalOriginalConsiderationItems;
         assertEq(orderParameters, dup);
 
         OrderParametersLib.saveDefault(orderParameters, "default");
-        OrderParameters memory defaultOrderParameters = OrderParametersLib.fromDefault("default");
+        OrderParameters memory defaultOrderParameters =
+            OrderParametersLib.fromDefault("default");
         assertEq(orderParameters, defaultOrderParameters);
     }
 
@@ -70,16 +78,17 @@ contract OrderParametersLibTest is BaseTest {
                     endAmount: 5
                 })
             );
-            ConsiderationItem[] memory consideration = SeaportArrays.ConsiderationItems(
-                ConsiderationItem({
-                    itemType: ItemType(2),
-                    token: address(7),
-                    identifierOrCriteria: 8,
-                    startAmount: 9,
-                    endAmount: 10,
-                    recipient: payable(address(11))
-                })
-            );
+            ConsiderationItem[] memory consideration =
+                SeaportArrays.ConsiderationItems(
+                    ConsiderationItem({
+                        itemType: ItemType(2),
+                        token: address(7),
+                        identifierOrCriteria: 8,
+                        startAmount: 9,
+                        endAmount: 10,
+                        recipient: payable(address(11))
+                    })
+                );
 
             orderParameters = orderParameters.withOffer(offer);
             orderParameters = orderParameters.withConsideration(consideration);
@@ -91,16 +100,23 @@ contract OrderParametersLibTest is BaseTest {
         assertEq(copy.offerer, address(1), "copy changed");
 
         offer[0].identifierOrCriteria = 123;
-        assertEq(copy.offer[0].identifierOrCriteria, 3, "copy offer identifier changed");
+        assertEq(
+            copy.offer[0].identifierOrCriteria,
+            3,
+            "copy offer identifier changed"
+        );
     }
 
-    function testRetrieveDefaultMany(OrderParametersBlob[3] memory blobs) public {
+    function testRetrieveDefaultMany(OrderParametersBlob[3] memory blobs)
+        public
+    {
         OrderParameters[] memory orderParameters = new OrderParameters[](3);
         for (uint256 i = 0; i < 3; i++) {
             orderParameters[i] = _fromBlob(blobs[i]);
         }
         OrderParametersLib.saveDefaultMany(orderParameters, "default");
-        OrderParameters[] memory defaultOrderParameterss = OrderParametersLib.fromDefaultMany("default");
+        OrderParameters[] memory defaultOrderParameterss =
+            OrderParametersLib.fromDefaultMany("default");
         for (uint256 i = 0; i < 3; i++) {
             assertEq(orderParameters[i], defaultOrderParameterss[i]);
         }

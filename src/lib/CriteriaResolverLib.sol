@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import { CriteriaResolver } from
-    "seaport-types/src/lib/ConsiderationStructs.sol";
+import {
+    CriteriaResolver
+} from "seaport-types/src/lib/ConsiderationStructs.sol";
 
 import { Side } from "seaport-types/src/lib/ConsiderationEnums.sol";
 
@@ -228,9 +229,9 @@ library CriteriaResolverLib {
     function _criteriaResolverMap()
         private
         pure
-        returns (
-            mapping(string => CriteriaResolver) storage criteriaResolverMap
-        )
+        returns (mapping(
+                string => CriteriaResolver
+            ) storage criteriaResolverMap)
     {
         bytes32 position = CRITERIA_RESOLVER_MAP_POSITION;
         assembly {
@@ -248,9 +249,9 @@ library CriteriaResolverLib {
     function _criteriaResolversMap()
         private
         pure
-        returns (
-            mapping(string => CriteriaResolver[]) storage criteriaResolversMap
-        )
+        returns (mapping(
+                string => CriteriaResolver[]
+            ) storage criteriaResolversMap)
     {
         bytes32 position = CRITERIA_RESOLVERS_MAP_POSITION;
         assembly {

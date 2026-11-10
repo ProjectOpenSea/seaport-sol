@@ -160,8 +160,8 @@ library OrderComponentsLib {
         view
         returns (OrderComponents[] memory items)
     {
-        mapping(string => OrderComponents[]) storage orderComponentsArrayMap =
-            _orderComponentsArrayMap();
+        mapping(string => OrderComponents[]) storage
+            orderComponentsArrayMap = _orderComponentsArrayMap();
         items = orderComponentsArrayMap[defaultName];
 
         if (items.length == 0) {
@@ -261,9 +261,9 @@ library OrderComponentsLib {
     function _orderComponentsArrayMap()
         private
         pure
-        returns (
-            mapping(string => OrderComponents[]) storage orderComponentsArrayMap
-        )
+        returns (mapping(
+                string => OrderComponents[]
+            ) storage orderComponentsArrayMap)
     {
         bytes32 position = ORDER_COMPONENTS_ARRAY_MAP_POSITION;
         assembly {
@@ -480,6 +480,6 @@ library OrderComponentsLib {
         parameters.salt = components.salt;
         parameters.conduitKey = components.conduitKey;
         parameters.totalOriginalConsiderationItems =
-            components.consideration.length;
+        components.consideration.length;
     }
 }

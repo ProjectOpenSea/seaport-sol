@@ -26,8 +26,10 @@ library FulfillAvailableLayout {
         AggregatableConsideration memory token,
         FulfillAvailableHelperStorageLayout storage layout
     ) internal view returns (bool) {
-        return layout.considerationMap[token.recipient][token.contractAddress][token
-            .tokenId].length > 0;
+        return layout.considerationMap[
+                    token.recipient
+                ][token.contractAddress][token.tokenId]
+                .length > 0;
     }
 
     /**
@@ -37,8 +39,10 @@ library FulfillAvailableLayout {
         AggregatableOffer memory offer,
         FulfillAvailableHelperStorageLayout storage layout
     ) internal view returns (bool) {
-        return layout.offerMap[offer.contractAddress][offer.tokenId][offer
-            .offerer][offer.conduitKey].length > 0;
+        return layout.offerMap[
+                    offer.contractAddress
+                ][offer.tokenId][offer.offerer][offer.conduitKey]
+                .length > 0;
     }
 
     /**
@@ -90,17 +94,15 @@ library FulfillAvailableLayout {
     function getMap(bytes32 key)
         internal
         view
-        returns (
-            mapping(
+        returns (mapping(
                 address /*offererOrRecipient*/
                     => mapping(
-                        address /*tokenContract*/
-                            => mapping(
-                                uint256 /*identifier*/ => MatchComponent[] /*components*/
-                            )
+                    address /*tokenContract*/
+                        => mapping(
+                        uint256 /*identifier*/ => MatchComponent[] /*components*/
                     )
-                ) storage map
-        )
+                )
+            ) storage map)
     {
         bytes32 counterKey = FULFILL_AVAILABLE_COUNTER_KEY;
         assembly {

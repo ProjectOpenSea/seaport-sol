@@ -1,17 +1,24 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {BaseTest} from "../BaseTest.sol";
-import {SpentItemLib} from "../../src/lib/SpentItemLib.sol";
-import {SpentItem} from "seaport-types/src/lib/ConsiderationStructs.sol";
-import {ItemType} from "seaport-types/src/lib/ConsiderationEnums.sol";
+import { BaseTest } from "../BaseTest.sol";
+import { SpentItemLib } from "../../src/lib/SpentItemLib.sol";
+import { SpentItem } from "seaport-types/src/lib/ConsiderationStructs.sol";
+import { ItemType } from "seaport-types/src/lib/ConsiderationEnums.sol";
 
 contract SpentItemLibTest is BaseTest {
     using SpentItemLib for SpentItem;
 
-    function testRetrieveDefault(uint8 itemType, address token, uint256 identifier, uint256 amount) public {
+    function testRetrieveDefault(
+        uint8 itemType,
+        address token,
+        uint256 identifier,
+        uint256 amount
+    ) public {
         itemType = uint8(bound(itemType, 0, 5));
-        SpentItem memory spentItem = SpentItem(ItemType(itemType), token, identifier, amount == 0 ? 1 : amount);
+        SpentItem memory spentItem = SpentItem(
+            ItemType(itemType), token, identifier, amount == 0 ? 1 : amount
+        );
         SpentItemLib.saveDefault(spentItem, "default");
         SpentItem memory defaultSpentItem = SpentItemLib.fromDefault("default");
         assertEq(spentItem, defaultSpentItem);
@@ -25,12 +32,26 @@ contract SpentItemLibTest is BaseTest {
         SpentItemLib.fromDefaultMany("nonexistent");
     }
 
-    function testComposeEmpty(uint8 itemType, address token, uint256 identifier, uint256 amount) public {
+    function testComposeEmpty(
+        uint8 itemType,
+        address token,
+        uint256 identifier,
+        uint256 amount
+    ) public {
         itemType = uint8(bound(itemType, 0, 5));
-        SpentItem memory spentItem = SpentItemLib.empty().withItemType(ItemType(itemType)).withToken(token)
-            .withIdentifier(identifier).withAmount(amount);
+        SpentItem memory spentItem = SpentItemLib.empty()
+            .withItemType(ItemType(itemType))
+            .withToken(token)
+            .withIdentifier(identifier)
+            .withAmount(amount);
         assertEq(
-            spentItem, SpentItem({itemType: ItemType(itemType), token: token, identifier: identifier, amount: amount})
+            spentItem,
+            SpentItem({
+                itemType: ItemType(itemType),
+                token: token,
+                identifier: identifier,
+                amount: amount
+            })
         );
     }
 
@@ -51,10 +72,13 @@ contract SpentItemLibTest is BaseTest {
         SpentItem[] memory spentItems = new SpentItem[](3);
         for (uint256 i = 0; i < 3; i++) {
             itemType[i] = uint8(bound(itemType[i], 0, 5));
-            spentItems[i] = SpentItem(ItemType(itemType[i]), token[i], identifier[i], amount[i]);
+            spentItems[i] = SpentItem(
+                ItemType(itemType[i]), token[i], identifier[i], amount[i]
+            );
         }
         SpentItemLib.saveDefaultMany(spentItems, "default");
-        SpentItem[] memory defaultSpentItems = SpentItemLib.fromDefaultMany("default");
+        SpentItem[] memory defaultSpentItems =
+            SpentItemLib.fromDefaultMany("default");
         for (uint256 i = 0; i < 3; i++) {
             assertEq(spentItems[i], defaultSpentItems[i]);
         }

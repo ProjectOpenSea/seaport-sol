@@ -137,10 +137,11 @@ library MatchComponentType {
         returns (FulfillmentComponent memory)
     {
         (, uint8 orderIndex, uint8 itemIndex) = component.unpack();
-        return FulfillmentComponent({
-            orderIndex: orderIndex,
-            itemIndex: itemIndex
-        });
+        return
+            FulfillmentComponent({
+                orderIndex: orderIndex,
+                itemIndex: itemIndex
+            });
     }
 
     function toFulfillmentComponents(MatchComponent[] memory components)

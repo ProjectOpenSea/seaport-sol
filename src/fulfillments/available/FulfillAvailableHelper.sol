@@ -73,9 +73,7 @@ contract FulfillAvailableHelper {
      * @return offer
      * @return consideration
      */
-    function getNaiveFulfillmentComponents(
-        OrderParameters[] memory orderParameters
-    )
+    function getNaiveFulfillmentComponents(OrderParameters[] memory orderParameters)
         public
         pure
         returns (
@@ -112,10 +110,10 @@ contract FulfillAvailableHelper {
             }
             // do the same for consideration
             for (uint256 j; j < parameters.consideration.length; j++) {
-                consideration[considerationIndex] = SeaportArrays
-                    .FulfillmentComponents(
-                    FulfillmentComponent({ orderIndex: i, itemIndex: j })
-                );
+                consideration[considerationIndex] =
+                    SeaportArrays.FulfillmentComponents(
+                        FulfillmentComponent({ orderIndex: i, itemIndex: j })
+                    );
                 ++considerationIndex;
             }
         }
@@ -167,10 +165,10 @@ contract FulfillAvailableHelper {
             }
             // do the same for consideration
             for (uint256 j; j < order.consideration.length; j++) {
-                consideration[considerationIndex] = SeaportArrays
-                    .FulfillmentComponents(
-                    FulfillmentComponent({ orderIndex: i, itemIndex: j })
-                );
+                consideration[considerationIndex] =
+                    SeaportArrays.FulfillmentComponents(
+                        FulfillmentComponent({ orderIndex: i, itemIndex: j })
+                    );
                 ++considerationIndex;
             }
         }
@@ -262,17 +260,20 @@ contract FulfillAvailableHelper {
         for (uint256 i; i < layout.offerEnumeration.length; ++i) {
             AggregatableOffer memory token = layout.offerEnumeration[i];
 
-            offer[i] = layout.offerMap[token.contractAddress][token.tokenId][token
-                .offerer][token.conduitKey];
+            offer[i] = layout.offerMap[
+                token.contractAddress
+            ][token.tokenId][token.offerer][token.conduitKey];
         }
         // do the same for considerations
-        consideration =
-            new FulfillmentComponent[][](layout.considerationEnumeration.length);
+        consideration = new FulfillmentComponent[][](
+            layout.considerationEnumeration.length
+        );
         for (uint256 i; i < layout.considerationEnumeration.length; ++i) {
             AggregatableConsideration memory token =
                 layout.considerationEnumeration[i];
-            consideration[i] = layout.considerationMap[token.recipient][token
-                .contractAddress][token.tokenId];
+            consideration[i] = layout.considerationMap[
+                token.recipient
+            ][token.contractAddress][token.tokenId];
         }
         return (offer, consideration);
     }
@@ -318,17 +319,15 @@ contract FulfillAvailableHelper {
                 tokenId: item.identifierOrCriteria
             });
             // if it does not exist in the map, add it to our enumeration
-            if (
-                !FulfillAvailableLayout.aggregatableOfferExists(
+            if (!FulfillAvailableLayout.aggregatableOfferExists(
                     aggregatableOffer, layout
-                )
-            ) {
+                )) {
                 layout.offerEnumeration.push(aggregatableOffer);
             }
             // update mapping with this component
-            layout.offerMap[aggregatableOffer.contractAddress][aggregatableOffer
-                .tokenId][aggregatableOffer.offerer][aggregatableOffer.conduitKey]
-                .push(component);
+            layout.offerMap[aggregatableOffer.contractAddress][aggregatableOffer.tokenId][aggregatableOffer.offerer][aggregatableOffer.conduitKey].push(
+                component
+            );
         }
     }
 
@@ -357,16 +356,15 @@ contract FulfillAvailableHelper {
                 tokenId: item.identifierOrCriteria
             });
             // if it does not exist in the map, add it to our enumeration
-            if (
-                !FulfillAvailableLayout.aggregatableConsiderationExists(
+            if (!FulfillAvailableLayout.aggregatableConsiderationExists(
                     token, layout
-                )
-            ) {
+                )) {
                 layout.considerationEnumeration.push(token);
             }
             // update mapping with this component
-            layout.considerationMap[token.recipient][token.contractAddress][token
-                .tokenId].push(component);
+            layout.considerationMap[token.recipient][token.contractAddress][token.tokenId].push(
+                component
+            );
         }
     }
 }

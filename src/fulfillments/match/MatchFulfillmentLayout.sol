@@ -65,17 +65,15 @@ library MatchFulfillmentLayout {
     function getMap(bytes32 key)
         internal
         view
-        returns (
-            mapping(
+        returns (mapping(
                 address /*offererOrRecipient*/
                     => mapping(
-                        address /*tokenContract*/
-                            => mapping(
-                                uint256 /*identifier*/ => MatchComponent[] /*components*/
-                            )
+                    address /*tokenContract*/
+                        => mapping(
+                        uint256 /*identifier*/ => MatchComponent[] /*components*/
                     )
-                ) storage map
-        )
+                )
+            ) storage map)
     {
         bytes32 counterKey = MATCH_FULFILLMENT_COUNTER_KEY;
         assembly {

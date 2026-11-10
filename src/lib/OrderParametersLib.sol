@@ -163,8 +163,8 @@ library OrderParametersLib {
         view
         returns (OrderParameters[] memory items)
     {
-        mapping(string => OrderParameters[]) storage orderParametersArrayMap =
-            _orderParametersArrayMap();
+        mapping(string => OrderParameters[]) storage
+            orderParametersArrayMap = _orderParametersArrayMap();
         items = orderParametersArrayMap[defaultName];
 
         if (items.length == 0) {
@@ -264,9 +264,9 @@ library OrderParametersLib {
     function _orderParametersArrayMap()
         private
         pure
-        returns (
-            mapping(string => OrderParameters[]) storage orderParametersArrayMap
-        )
+        returns (mapping(
+                string => OrderParameters[]
+            ) storage orderParametersArrayMap)
     {
         bytes32 position = ORDER_PARAMETERS_ARRAY_MAP_POSITION;
         assembly {
@@ -478,7 +478,7 @@ library OrderParametersLib {
         uint256 totalOriginalConsiderationItems
     ) internal pure returns (OrderParameters memory) {
         parameters.totalOriginalConsiderationItems =
-            totalOriginalConsiderationItems;
+        totalOriginalConsiderationItems;
         return parameters;
     }
 
@@ -782,18 +782,17 @@ library OrderParametersLib {
                 // Multiply by iszero(iszero(totalBeforeDivision)) to ensure
                 // amount is set to zero if totalBeforeDivision is zero,
                 // as intermediate overflow can occur if it is zero.
-                amount :=
-                    mul(
-                        iszero(iszero(totalBeforeDivision)),
-                        // Subtract 1 from the numerator and add 1 to the result if
-                        // roundUp is true to get the proper rounding direction.
-                        // Division is performed with no zero check as duration
-                        // cannot be zero as long as startTime < endTime.
-                        add(
-                            div(sub(totalBeforeDivision, roundUp), duration),
-                            roundUp
-                        )
+                amount := mul(
+                    iszero(iszero(totalBeforeDivision)),
+                    // Subtract 1 from the numerator and add 1 to the result if
+                    // roundUp is true to get the proper rounding direction.
+                    // Division is performed with no zero check as duration
+                    // cannot be zero as long as startTime < endTime.
+                    add(
+                        div(sub(totalBeforeDivision, roundUp), duration),
+                        roundUp
                     )
+                )
             }
 
             // Return the current amount.

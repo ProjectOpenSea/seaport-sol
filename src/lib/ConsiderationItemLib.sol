@@ -112,8 +112,8 @@ library ConsiderationItemLib {
         view
         returns (ConsiderationItem[] memory items)
     {
-        mapping(string => ConsiderationItem[]) storage considerationItemsMap =
-            _considerationItemsMap();
+        mapping(string => ConsiderationItem[]) storage
+            considerationItemsMap = _considerationItemsMap();
         items = considerationItemsMap[defaultsName];
 
         if (items.length == 0) {
@@ -235,9 +235,9 @@ library ConsiderationItemLib {
     function _considerationItemMap()
         private
         pure
-        returns (
-            mapping(string => ConsiderationItem) storage considerationItemMap
-        )
+        returns (mapping(
+                string => ConsiderationItem
+            ) storage considerationItemMap)
     {
         bytes32 position = CONSIDERATION_ITEM_MAP_POSITION;
         assembly {
@@ -255,9 +255,9 @@ library ConsiderationItemLib {
     function _considerationItemsMap()
         private
         pure
-        returns (
-            mapping(string => ConsiderationItem[]) storage considerationItemsMap
-        )
+        returns (mapping(
+                string => ConsiderationItem[]
+            ) storage considerationItemsMap)
     {
         bytes32 position = CONSIDERATION_ITEMS_MAP_POSITION;
         assembly {

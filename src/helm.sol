@@ -52,7 +52,10 @@ library helm {
     function logOrderComponents(
         OrderComponents memory oc,
         uint256 i // indent
-    ) internal view {
+    )
+        internal
+        view
+    {
         console.log(gStr(i, "OrderComponents: {"));
         console.log(gStr(i + 1, "offerer", oc.offerer));
         console.log(gStr(i + 1, "zone", oc.zone));
@@ -83,7 +86,10 @@ library helm {
     function logOfferItem(
         OfferItem memory oi,
         uint256 i // indent
-    ) internal view {
+    )
+        internal
+        view
+    {
         console.log(gStr(i, "OfferItem: {"));
         console.log(gStr(i + 1, "itemType", _itemTypeStr(oi.itemType)));
         console.log(gStr(i + 1, "token", oi.token));
@@ -113,7 +119,10 @@ library helm {
     function logConsiderationItem(
         ConsiderationItem memory ci,
         uint256 i // indent
-    ) internal view {
+    )
+        internal
+        view
+    {
         console.log(gStr(i, "ConsiderationItem: {"));
         console.log(gStr(i + 1, "itemType", _itemTypeStr(ci.itemType)));
         console.log(gStr(i + 1, "token", ci.token));
@@ -140,7 +149,10 @@ library helm {
     function logSpentItem(
         SpentItem memory si,
         uint256 i // indent
-    ) internal view {
+    )
+        internal
+        view
+    {
         console.log(gStr(i, "SpentItem: {"));
         console.log(gStr(i + 1, "itemType", _itemTypeStr(si.itemType)));
         console.log(gStr(i + 1, "token", si.token));
@@ -164,7 +176,10 @@ library helm {
     function logReceivedItem(
         ReceivedItem memory ri,
         uint256 i // indent
-    ) internal view {
+    )
+        internal
+        view
+    {
         console.log(gStr(i, "ReceivedItem: {"));
         console.log(gStr(i + 1, "itemType", _itemTypeStr(ri.itemType)));
         console.log(gStr(i + 1, "token", ri.token));
@@ -174,10 +189,7 @@ library helm {
         console.log(gStr(i, "}"));
     }
 
-    function log(BasicOrderParameters memory basicOrderParameters)
-        public
-        view
-    {
+    function log(BasicOrderParameters memory basicOrderParameters) public view {
         logBasicOrderParameters(basicOrderParameters, 0);
     }
 
@@ -195,7 +207,10 @@ library helm {
     function logBasicOrderParameters(
         BasicOrderParameters memory bop,
         uint256 i // indent
-    ) internal view {
+    )
+        internal
+        view
+    {
         console.log(gStr(i, "BasicOrderParameters: {"));
         console.log(gStr(i + 1, "considerationToken", bop.considerationToken));
         console.log(
@@ -252,7 +267,10 @@ library helm {
     function logAdditionalRecipient(
         AdditionalRecipient memory ar,
         uint256 i // indent
-    ) internal view {
+    )
+        internal
+        view
+    {
         console.log(gStr(i, "AdditionalRecipient: {"));
         console.log(gStr(i + 1, "recipient", ar.recipient));
         console.log(gStr(i + 1, "amount", ar.amount));
@@ -274,7 +292,10 @@ library helm {
     function logOrderParameters(
         OrderParameters memory op,
         uint256 i // indent
-    ) internal view {
+    )
+        internal
+        view
+    {
         console.log(gStr(i, "OrderParameters: {"));
         console.log(gStr(i + 1, "offerer", op.offerer));
         console.log(gStr(i + 1, "zone", op.zone));
@@ -308,7 +329,10 @@ library helm {
         console.log(gStr(0, "]"));
     }
 
-    function logOrder(Order memory order, uint256 i /* indent */ )
+    function logOrder(
+        Order memory order,
+        uint256 i /* indent */
+    )
         internal
         view
     {
@@ -333,7 +357,10 @@ library helm {
     function logAdvancedOrder(
         AdvancedOrder memory advancedOrder,
         uint256 i // indent
-    ) internal view {
+    )
+        internal
+        view
+    {
         console.log(gStr(i, "AdvancedOrder: {"));
         logOrderParameters(advancedOrder.parameters, i + 1);
         console.log(gStr(i + 1, "numerator", advancedOrder.numerator));
@@ -358,7 +385,10 @@ library helm {
     function logCriteriaResolver(
         CriteriaResolver memory cr,
         uint256 i // indent
-    ) internal view {
+    )
+        internal
+        view
+    {
         console.log(gStr(i, "CriteriaResolver: {"));
         console.log(gStr(i + 1, "orderIndex", cr.orderIndex));
         console.log(gStr(i + 1, "side", _sideStr(cr.side)));
@@ -385,7 +415,10 @@ library helm {
     function logFulfillment(
         Fulfillment memory f,
         uint256 i // indent
-    ) internal view {
+    )
+        internal
+        view
+    {
         console.log(gStr(i, "Fulfillment: {"));
         console.log(gStr(i + 1, "offerComponents: ["));
         for (uint256 j = 0; j < f.offerComponents.length; j++) {
@@ -400,10 +433,7 @@ library helm {
         console.log(gStr(i, "}"));
     }
 
-    function log(FulfillmentComponent memory fulfillmentComponent)
-        public
-        view
-    {
+    function log(FulfillmentComponent memory fulfillmentComponent) public view {
         logFulfillmentComponent(fulfillmentComponent, 0);
     }
 
@@ -421,7 +451,10 @@ library helm {
     function logFulfillmentComponent(
         FulfillmentComponent memory fc,
         uint256 i // indent
-    ) internal view {
+    )
+        internal
+        view
+    {
         console.log(gStr(i, "FulfillmentComponent: {"));
         console.log(gStr(i + 1, "orderIndex", fc.orderIndex));
         console.log(gStr(i + 1, "itemIndex", fc.itemIndex));
@@ -443,7 +476,10 @@ library helm {
     function logExecution(
         Execution memory execution,
         uint256 i // indent
-    ) internal view {
+    )
+        internal
+        view
+    {
         console.log(gStr(i, "Execution: {"));
         logReceivedItem(execution.item, i + 1);
         console.log(gStr(i + 1, "offerer", execution.offerer));
@@ -466,7 +502,10 @@ library helm {
     function logZoneParameters(
         ZoneParameters memory zp,
         uint256 i // indent
-    ) internal view {
+    )
+        internal
+        view
+    {
         console.log(gStr(i, "ZoneParameters: {"));
         console.log(gStr(i + 1, "orderHash", zp.orderHash));
         console.log(gStr(i + 1, "fulfiller", zp.fulfiller));
@@ -499,7 +538,11 @@ library helm {
 
     function generateIndentString(
         uint256 i // indent
-    ) public pure returns (string memory) {
+    )
+        public
+        pure
+        returns (string memory)
+    {
         string memory indentString = "";
         for (uint256 j = 0; j < i; j++) {
             indentString = string.concat(indentString, "    ");
@@ -511,7 +554,11 @@ library helm {
         // generateString
         uint256 i, // indent
         string memory stringToIndent
-    ) public pure returns (string memory) {
+    )
+        public
+        pure
+        returns (string memory)
+    {
         string memory indentString = generateIndentString(i);
         return string.concat(indentString, stringToIndent);
     }
@@ -531,7 +578,11 @@ library helm {
         uint256 i, // indent
         string memory labelString,
         uint256 value
-    ) public pure returns (string memory) {
+    )
+        public
+        pure
+        returns (string memory)
+    {
         string memory indentString = generateIndentString(i);
         return string.concat(
             indentString,
@@ -543,7 +594,11 @@ library helm {
         uint256 i, // indent
         string memory labelString,
         address value
-    ) public pure returns (string memory) {
+    )
+        public
+        pure
+        returns (string memory)
+    {
         string memory indentString = generateIndentString(i);
         return string.concat(
             indentString,
@@ -555,7 +610,11 @@ library helm {
         uint256 i, // indent
         string memory labelString,
         bytes32 value
-    ) public pure returns (string memory) {
+    )
+        public
+        pure
+        returns (string memory)
+    {
         string memory indentString = generateIndentString(i);
         return string.concat(
             indentString,
@@ -569,7 +628,11 @@ library helm {
         uint256 i, // indent
         string memory labelString,
         bytes memory value
-    ) public pure returns (string memory) {
+    )
+        public
+        pure
+        returns (string memory)
+    {
         string memory indentString = generateIndentString(i);
         return string.concat(
             indentString,
@@ -581,7 +644,10 @@ library helm {
     //                              Log Arrays                                //
     ////////////////////////////////////////////////////////////////////////////
 
-    function logOffer(OfferItem[] memory offer, uint256 i /* indent */ )
+    function logOffer(
+        OfferItem[] memory offer,
+        uint256 i /* indent */
+    )
         public
         view
     {

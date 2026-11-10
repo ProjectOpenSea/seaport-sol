@@ -38,9 +38,8 @@ library FulfillmentLib {
         // clear all fields
         FulfillmentComponent[] memory components;
         _fulfillment.offerComponents.setFulfillmentComponents(components);
-        _fulfillment.considerationComponents.setFulfillmentComponents(
-            components
-        );
+        _fulfillment.considerationComponents
+            .setFulfillmentComponents(components);
     }
 
     /**

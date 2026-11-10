@@ -250,8 +250,7 @@ library BasicOrderParametersLib {
             salt: item.salt,
             offererConduitKey: item.offererConduitKey,
             fulfillerConduitKey: item.fulfillerConduitKey,
-            totalOriginalAdditionalRecipients: item
-                .totalOriginalAdditionalRecipients,
+            totalOriginalAdditionalRecipients: item.totalOriginalAdditionalRecipients,
             additionalRecipients: item.additionalRecipients.copy(),
             signature: item.signature
         });
@@ -266,9 +265,9 @@ library BasicOrderParametersLib {
     function _orderParametersMap()
         private
         pure
-        returns (
-            mapping(string => BasicOrderParameters) storage orderParametersMap
-        )
+        returns (mapping(
+                string => BasicOrderParameters
+            ) storage orderParametersMap)
     {
         bytes32 position = BASIC_ORDER_PARAMETERS_MAP_POSITION;
         assembly {
@@ -286,9 +285,9 @@ library BasicOrderParametersLib {
     function _orderParametersArrayMap()
         private
         pure
-        returns (
-            mapping(string => BasicOrderParameters[]) storage orderParametersArrayMap
-        )
+        returns (mapping(
+                string => BasicOrderParameters[]
+            ) storage orderParametersArrayMap)
     {
         bytes32 position = BASIC_ORDER_PARAMETERS_ARRAY_MAP_POSITION;
         assembly {
