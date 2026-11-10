@@ -18,3 +18,22 @@ remappings = [
 line_length = 80
 tab_width = 4
 bracket_spacing = true
+int_types = "preserve"
+number_underscore = "preserve"
+quote_style = "double"
+prefer_compact = "none"
+
+[lint]
+lint_on_build = false
+# These helpers run in Foundry tests and scripts and are never deployed, so
+# lints about validator-controlled timestamps, gas griefing through external
+# calls or reverts in loops, and relying on zero-initialized locals don't
+# apply. Intentional truncating casts (packing MatchComponent) and rounding
+# (AmountDeriverHelper) are marked inline. CI runs
+# `forge lint --deny warnings` with everything else enabled.
+exclude_lints = [
+    "block-timestamp",
+    "calls-loop",
+    "require-revert-in-loop",
+    "uninitialized-local",
+]
