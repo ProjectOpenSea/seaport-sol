@@ -4,7 +4,11 @@ evm_version = "cancun"
 src = "src"
 out = "out"
 libs = ["lib", "node_modules"]
+# The testRetrieveNonexistentDefault tests expect reverts from internal
+# library calls, which Foundry 1.0+ rejects unless this is set.
+allow_internal_expect_revert = true
 remappings = [
+    "forge-std/=lib/forge-std/src/",
     "seaport-types/=lib/seaport-types/",
     "seaport-core/=lib/seaport-core/",
     "solady/=lib/solady/",

@@ -173,13 +173,6 @@ contract BaseTest is Test {
         }
     }
 
-    function assertEq(bytes32[] memory a, bytes32[] memory b) internal {
-        assertEq(a.length, b.length, "length");
-        for (uint256 i = 0; i < a.length; i++) {
-            assertEq(a[i], b[i]);
-        }
-    }
-
     function assertEq(Execution memory a, Execution memory b) internal {
         assertEq(a.item, b.item);
         assertEq(a.offerer, b.offerer, "offerer");
