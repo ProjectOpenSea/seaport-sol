@@ -212,8 +212,11 @@ contract MatchFulfillmentHelper is AmountDeriverHelper {
             SpentItem memory item = offer[j];
             MatchComponent memory component =
                 MatchComponentType.createMatchComponent({
+                    // forge-lint: disable-next-line(unsafe-typecast)
                     amount: uint240(item.amount),
+                    // forge-lint: disable-next-line(unsafe-typecast)
                     orderIndex: uint8(orderIndex),
+                    // forge-lint: disable-next-line(unsafe-typecast)
                     itemIndex: uint8(j)
                 });
             AggregatableOfferer memory aggregatableOfferer = AggregatableOfferer({
@@ -275,8 +278,11 @@ contract MatchFulfillmentHelper is AmountDeriverHelper {
             // TODO: use receivedItem here?
             MatchComponent memory component =
                 MatchComponentType.createMatchComponent({
+                    // forge-lint: disable-next-line(unsafe-typecast)
                     amount: uint240(item.amount),
+                    // forge-lint: disable-next-line(unsafe-typecast)
                     orderIndex: uint8(orderIndex),
+                    // forge-lint: disable-next-line(unsafe-typecast)
                     itemIndex: uint8(j)
                 });
             // create enumeration struct

@@ -501,7 +501,9 @@ library FulfillmentGeneratorLib {
                 ] =
                     MatchComponent({
                         amount: amount,
+                        // forge-lint: disable-next-line(unsafe-typecast)
                         orderIndex: uint8(item.orderIndex),
+                        // forge-lint: disable-next-line(unsafe-typecast)
                         itemIndex: uint8(item.itemIndex)
                     });
             } else if (
@@ -531,7 +533,9 @@ library FulfillmentGeneratorLib {
                 unspentOfferComponents[totalUnspentOfferComponents++] =
                     MatchComponent({
                         amount: amount,
+                        // forge-lint: disable-next-line(unsafe-typecast)
                         orderIndex: uint8(item.orderIndex),
+                        // forge-lint: disable-next-line(unsafe-typecast)
                         itemIndex: uint8(item.itemIndex)
                     });
             }

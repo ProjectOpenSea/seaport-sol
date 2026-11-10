@@ -448,6 +448,8 @@ contract AmountDeriverHelper is AmountDeriver {
             (numerator > duration) ? numerator : duration;
 
         uint256 absoluteMax = type(uint256).max / overflowBottleneck;
+        // Rounds each amount down to a multiple of the denominator.
+        // forge-lint: disable-start(divide-before-multiply)
         uint256 fractionCompatibleMax =
             (absoluteMax / denominator) * denominator;
 
@@ -457,6 +459,7 @@ contract AmountDeriverHelper is AmountDeriver {
 
         newEndAmount = originalEndAmount % fractionCompatibleMax;
         newEndAmount = (newEndAmount / denominator) * denominator;
+        // forge-lint: disable-end(divide-before-multiply)
         newEndAmount = (newEndAmount == 0) ? denominator : newEndAmount;
 
         if (newStartAmount == 0 && newEndAmount == 0) {

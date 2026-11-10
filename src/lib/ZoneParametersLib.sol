@@ -297,8 +297,11 @@ library ZoneParametersLib {
         bytes32 orderHash,
         SeaportInterface seaport
     ) internal view returns (bool) {
+        // The first return value, isValidated, isn't needed.
+        // forge-lint: disable-start(unused-return)
         (, bool isCancelled, uint256 totalFilled, uint256 totalSize) =
             seaport.getOrderStatus(orderHash);
+        // forge-lint: disable-end(unused-return)
 
         bool isRevertingContractOrder = false;
         if (order.orderType == OrderType.CONTRACT) {
