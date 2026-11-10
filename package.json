@@ -3,7 +3,10 @@
   "version": "1.6.0",
   "description": "Convenience libraries for working with Seaport",
   "main": "src/",
-  "repository": "https://github.com/ProjectOpenSea/seaport-sol.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ProjectOpenSea/seaport-sol.git"
+  },
   "author": "OpenSea",
   "license": "MIT",
   "files": [
