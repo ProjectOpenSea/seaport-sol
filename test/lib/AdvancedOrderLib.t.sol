@@ -1,20 +1,27 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {BaseTest} from "../BaseTest.sol";
-import {AdvancedOrderLib} from "../../src/lib/AdvancedOrderLib.sol";
-import {AdvancedOrder, OrderParameters} from "seaport-types/src/lib/ConsiderationStructs.sol";
-import {ItemType} from "seaport-types/src/lib/ConsiderationEnums.sol";
-import {OrderParametersLib} from "../../src/lib/OrderParametersLib.sol";
+import { BaseTest } from "../BaseTest.sol";
+import { AdvancedOrderLib } from "../../src/lib/AdvancedOrderLib.sol";
+import {
+    AdvancedOrder,
+    OrderParameters
+} from "seaport-types/src/lib/ConsiderationStructs.sol";
+import { ItemType } from "seaport-types/src/lib/ConsiderationEnums.sol";
+import { OrderParametersLib } from "../../src/lib/OrderParametersLib.sol";
 
 contract AdvancedOrderLibTest is BaseTest {
     using AdvancedOrderLib for AdvancedOrder;
     using OrderParametersLib for OrderParameters;
 
-    function testRetrieveDefault(uint120 numerator, uint120 denominator, bytes memory signature, bytes memory extraData)
-        public
-    {
-        OrderParameters memory orderParameters = OrderParametersLib.empty().withOfferer(address(1234));
+    function testRetrieveDefault(
+        uint120 numerator,
+        uint120 denominator,
+        bytes memory signature,
+        bytes memory extraData
+    ) public {
+        OrderParameters memory orderParameters =
+            OrderParametersLib.empty().withOfferer(address(1234));
         AdvancedOrder memory advancedOrder = AdvancedOrder({
             parameters: orderParameters,
             numerator: numerator,
@@ -23,7 +30,8 @@ contract AdvancedOrderLibTest is BaseTest {
             extraData: extraData
         });
         AdvancedOrderLib.saveDefault(advancedOrder, "default");
-        AdvancedOrder memory defaultAdvancedOrder = AdvancedOrderLib.fromDefault("default");
+        AdvancedOrder memory defaultAdvancedOrder =
+            AdvancedOrderLib.fromDefault("default");
         assertEq(advancedOrder, defaultAdvancedOrder);
     }
 
@@ -35,11 +43,18 @@ contract AdvancedOrderLibTest is BaseTest {
         AdvancedOrderLib.fromDefaultMany("nonexistent");
     }
 
-    function testComposeEmpty(uint120 numerator, uint120 denominator, bytes memory signature, bytes memory extraData)
-        public
-    {
-        AdvancedOrder memory advancedOrder = AdvancedOrderLib.empty().withParameters(OrderParametersLib.empty())
-            .withNumerator(numerator).withDenominator(denominator).withSignature(signature).withExtraData(extraData);
+    function testComposeEmpty(
+        uint120 numerator,
+        uint120 denominator,
+        bytes memory signature,
+        bytes memory extraData
+    ) public {
+        AdvancedOrder memory advancedOrder = AdvancedOrderLib.empty()
+            .withParameters(OrderParametersLib.empty())
+            .withNumerator(numerator)
+            .withDenominator(denominator)
+            .withSignature(signature)
+            .withExtraData(extraData);
         assertEq(
             advancedOrder,
             AdvancedOrder({
@@ -65,7 +80,8 @@ contract AdvancedOrderLibTest is BaseTest {
         advancedOrder.numerator = 2;
         assertEq(copy.numerator, 1);
 
-        advancedOrder.parameters = OrderParametersLib.empty().withOfferer(address(1234));
+        advancedOrder.parameters =
+            OrderParametersLib.empty().withOfferer(address(1234));
         assertEq(copy.parameters.offerer, address(0));
     }
 
@@ -78,7 +94,8 @@ contract AdvancedOrderLibTest is BaseTest {
         AdvancedOrder[] memory advancedOrders = new AdvancedOrder[](3);
         for (uint256 i = 0; i < 3; i++) {
             advancedOrders[i] = AdvancedOrder({
-                parameters: OrderParametersLib.empty().withOfferer(address(1234)),
+                parameters: OrderParametersLib.empty()
+                    .withOfferer(address(1234)),
                 numerator: numerator[i],
                 denominator: denominator[i],
                 signature: signature[i],
@@ -86,7 +103,8 @@ contract AdvancedOrderLibTest is BaseTest {
             });
         }
         AdvancedOrderLib.saveDefaultMany(advancedOrders, "default");
-        AdvancedOrder[] memory defaultAdvancedOrders = AdvancedOrderLib.fromDefaultMany("default");
+        AdvancedOrder[] memory defaultAdvancedOrders =
+            AdvancedOrderLib.fromDefaultMany("default");
         for (uint256 i = 0; i < 3; i++) {
             assertEq(advancedOrders[i], defaultAdvancedOrders[i]);
         }

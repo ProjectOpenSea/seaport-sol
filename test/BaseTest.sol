@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {Test} from "forge-std/Test.sol";
+import { Test } from "forge-std/Test.sol";
 
 import {
     AdditionalRecipient,
@@ -18,13 +18,16 @@ import {
     SpentItem
 } from "seaport-types/src/lib/ConsiderationStructs.sol";
 
-import {ItemType, OrderType} from "seaport-types/src/lib/ConsiderationEnums.sol";
+import {
+    ItemType,
+    OrderType
+} from "seaport-types/src/lib/ConsiderationEnums.sol";
 
-import {OrderComponentsLib} from "../src/lib/OrderComponentsLib.sol";
+import { OrderComponentsLib } from "../src/lib/OrderComponentsLib.sol";
 
-import {OrderParametersLib} from "../src/lib/OrderParametersLib.sol";
+import { OrderParametersLib } from "../src/lib/OrderParametersLib.sol";
 
-import {OrderLib} from "../src/lib/OrderLib.sol";
+import { OrderLib } from "../src/lib/OrderLib.sol";
 
 contract BaseTest is Test {
     using OrderComponentsLib for OrderComponents;
@@ -50,7 +53,11 @@ contract BaseTest is Test {
         bytes signature;
     }
 
-    function _fromBlob(OrderBlob memory orderBlob) internal view returns (Order memory order) {
+    function _fromBlob(OrderBlob memory orderBlob)
+        internal
+        view
+        returns (Order memory order)
+    {
         order = OrderLib.empty();
         order.parameters = _fromBlob(orderBlob.parameters);
         order.signature = orderBlob.signature;
@@ -68,20 +75,30 @@ contract BaseTest is Test {
         }
     }
 
-    function setUp() public virtual {}
+    function setUp() public virtual { }
 
     function assertEq(OfferItem memory a, OfferItem memory b) internal {
         assertEq(uint8(a.itemType), uint8(b.itemType), "itemType");
         assertEq(a.token, b.token, "token");
-        assertEq(a.identifierOrCriteria, b.identifierOrCriteria, "identifierOrCriteria");
+        assertEq(
+            a.identifierOrCriteria,
+            b.identifierOrCriteria,
+            "identifierOrCriteria"
+        );
         assertEq(a.startAmount, b.startAmount, "startAmount");
         assertEq(a.endAmount, b.endAmount, "endAmount");
     }
 
-    function assertEq(ConsiderationItem memory a, ConsiderationItem memory b) internal {
+    function assertEq(ConsiderationItem memory a, ConsiderationItem memory b)
+        internal
+    {
         assertEq(uint8(a.itemType), uint8(b.itemType), "itemType");
         assertEq(a.token, b.token, "token");
-        assertEq(a.identifierOrCriteria, b.identifierOrCriteria, "identifierOrCriteria");
+        assertEq(
+            a.identifierOrCriteria,
+            b.identifierOrCriteria,
+            "identifierOrCriteria"
+        );
         assertEq(a.startAmount, b.startAmount, "startAmount");
         assertEq(a.endAmount, b.endAmount, "endAmount");
         assertEq(a.recipient, b.recipient, "recipient");
@@ -94,14 +111,19 @@ contract BaseTest is Test {
         }
     }
 
-    function assertEq(ConsiderationItem[] memory a, ConsiderationItem[] memory b) internal {
+    function assertEq(
+        ConsiderationItem[] memory a,
+        ConsiderationItem[] memory b
+    ) internal {
         assertEq(a.length, b.length, "length");
         for (uint256 i = 0; i < a.length; i++) {
             assertEq(a[i], b[i]);
         }
     }
 
-    function assertEq(OrderParameters memory a, OrderParameters memory b) internal {
+    function assertEq(OrderParameters memory a, OrderParameters memory b)
+        internal
+    {
         assertEq(a.offerer, b.offerer, "offerer");
         assertEq(a.zone, b.zone, "zone");
         assertEq(a.offer, b.offer);
@@ -113,7 +135,9 @@ contract BaseTest is Test {
         assertEq(a.salt, b.salt, "salt");
         assertEq(a.conduitKey, b.conduitKey, "conduitKey");
         assertEq(
-            a.totalOriginalConsiderationItems, b.totalOriginalConsiderationItems, "totalOriginalConsiderationItems"
+            a.totalOriginalConsiderationItems,
+            b.totalOriginalConsiderationItems,
+            "totalOriginalConsiderationItems"
         );
     }
 
@@ -131,12 +155,18 @@ contract BaseTest is Test {
         }
     }
 
-    function assertEq(AdditionalRecipient memory a, AdditionalRecipient memory b) internal {
+    function assertEq(
+        AdditionalRecipient memory a,
+        AdditionalRecipient memory b
+    ) internal {
         assertEq(a.amount, b.amount, "amount");
         assertEq(a.recipient, b.recipient, "recipient");
     }
 
-    function assertEq(AdditionalRecipient[] memory a, AdditionalRecipient[] memory b) internal {
+    function assertEq(
+        AdditionalRecipient[] memory a,
+        AdditionalRecipient[] memory b
+    ) internal {
         assertEq(a.length, b.length, "length");
         for (uint256 i = 0; i < a.length; i++) {
             assertEq(a[i], b[i]);
@@ -151,14 +181,18 @@ contract BaseTest is Test {
         assertEq(a.recipient, b.recipient, "recipient");
     }
 
-    function assertEq(ReceivedItem[] memory a, ReceivedItem[] memory b) internal {
+    function assertEq(ReceivedItem[] memory a, ReceivedItem[] memory b)
+        internal
+    {
         assertEq(a.length, b.length, "length");
         for (uint256 i = 0; i < a.length; i++) {
             assertEq(a[i], b[i]);
         }
     }
 
-    function assertEq(CriteriaResolver memory a, CriteriaResolver memory b) internal {
+    function assertEq(CriteriaResolver memory a, CriteriaResolver memory b)
+        internal
+    {
         assertEq(a.orderIndex, b.orderIndex, "orderIndex");
         assertEq(uint8(a.side), uint8(b.side), "side");
         assertEq(a.index, b.index, "index");
@@ -166,14 +200,9 @@ contract BaseTest is Test {
         assertEq(a.criteriaProof, b.criteriaProof);
     }
 
-    function assertEq(CriteriaResolver[] memory a, CriteriaResolver[] memory b) internal {
-        assertEq(a.length, b.length, "length");
-        for (uint256 i = 0; i < a.length; i++) {
-            assertEq(a[i], b[i]);
-        }
-    }
-
-    function assertEq(bytes32[] memory a, bytes32[] memory b) internal {
+    function assertEq(CriteriaResolver[] memory a, CriteriaResolver[] memory b)
+        internal
+    {
         assertEq(a.length, b.length, "length");
         for (uint256 i = 0; i < a.length; i++) {
             assertEq(a[i], b[i]);
@@ -197,12 +226,18 @@ contract BaseTest is Test {
         return ItemType(bound(_itemType, 0, 5));
     }
 
-    function assertEq(FulfillmentComponent memory a, FulfillmentComponent memory b) internal {
+    function assertEq(
+        FulfillmentComponent memory a,
+        FulfillmentComponent memory b
+    ) internal {
         assertEq(a.orderIndex, b.orderIndex, "orderIndex");
         assertEq(a.itemIndex, b.itemIndex, "itemIndex");
     }
 
-    function assertEq(FulfillmentComponent[] memory a, FulfillmentComponent[] memory b) internal {
+    function assertEq(
+        FulfillmentComponent[] memory a,
+        FulfillmentComponent[] memory b
+    ) internal {
         assertEq(a.length, b.length, "length");
         for (uint256 i = 0; i < a.length; i++) {
             assertEq(a[i], b[i]);
@@ -256,13 +291,25 @@ contract BaseTest is Test {
         uint256 counter;
     }
 
-    function _fromBlob(OfferItemBlob memory blob) internal view returns (OfferItem memory) {
+    function _fromBlob(OfferItemBlob memory blob)
+        internal
+        view
+        returns (OfferItem memory)
+    {
         return OfferItem(
-            toItemType(blob._itemType), blob.token, blob.identifierOrCriteria, blob.startAmount, blob.endAmount
+            toItemType(blob._itemType),
+            blob.token,
+            blob.identifierOrCriteria,
+            blob.startAmount,
+            blob.endAmount
         );
     }
 
-    function _fromBlob(ConsiderationItemBlob memory blob) internal view returns (ConsiderationItem memory) {
+    function _fromBlob(ConsiderationItemBlob memory blob)
+        internal
+        view
+        returns (ConsiderationItem memory)
+    {
         return ConsiderationItem(
             toItemType(blob._itemType),
             blob.token,
@@ -273,7 +320,11 @@ contract BaseTest is Test {
         );
     }
 
-    function _fromBlobs(OfferItemBlob[] memory blob) internal view returns (OfferItem[] memory) {
+    function _fromBlobs(OfferItemBlob[] memory blob)
+        internal
+        view
+        returns (OfferItem[] memory)
+    {
         OfferItem[] memory items = new OfferItem[](blob.length);
         for (uint256 i = 0; i < blob.length; i++) {
             items[i] = _fromBlob(blob[i]);
@@ -281,7 +332,11 @@ contract BaseTest is Test {
         return items;
     }
 
-    function _fromBlobs(ConsiderationItemBlob[] memory blob) internal view returns (ConsiderationItem[] memory) {
+    function _fromBlobs(ConsiderationItemBlob[] memory blob)
+        internal
+        view
+        returns (ConsiderationItem[] memory)
+    {
         ConsiderationItem[] memory items = new ConsiderationItem[](blob.length);
         for (uint256 i = 0; i < blob.length; i++) {
             items[i] = _fromBlob(blob[i]);
@@ -289,12 +344,17 @@ contract BaseTest is Test {
         return items;
     }
 
-    function _fromBlob(OrderComponentsBlob memory blob) internal view returns (OrderComponents memory) {
+    function _fromBlob(OrderComponentsBlob memory blob)
+        internal
+        view
+        returns (OrderComponents memory)
+    {
         OrderComponents memory components = OrderComponentsLib.empty();
         components = components.withOfferer(blob.offerer);
         components = components.withZone(blob.zone);
         components = components.withOffer(_fromBlobs(blob.offer));
-        components = components.withConsideration(_fromBlobs(blob.consideration));
+        components =
+            components.withConsideration(_fromBlobs(blob.consideration));
         components = components.withOrderType(toOrderType(blob._orderType));
         components = components.withStartTime(blob.startTime);
         components = components.withEndTime(blob.endTime);
@@ -305,23 +365,32 @@ contract BaseTest is Test {
         return components;
     }
 
-    function _fromBlob(OrderParametersBlob memory blob) internal view returns (OrderParameters memory) {
+    function _fromBlob(OrderParametersBlob memory blob)
+        internal
+        view
+        returns (OrderParameters memory)
+    {
         OrderParameters memory parameters = OrderParametersLib.empty();
         parameters = parameters.withOfferer(blob.offerer);
         parameters = parameters.withZone(blob.zone);
         parameters = parameters.withOffer(_fromBlobs(blob.offer));
-        parameters = parameters.withConsideration(_fromBlobs(blob.consideration));
+        parameters =
+            parameters.withConsideration(_fromBlobs(blob.consideration));
         parameters = parameters.withOrderType(toOrderType(blob._orderType));
         parameters = parameters.withStartTime(blob.startTime);
         parameters = parameters.withEndTime(blob.endTime);
         parameters = parameters.withZoneHash(blob.zoneHash);
         parameters = parameters.withSalt(blob.salt);
         parameters = parameters.withConduitKey(blob.conduitKey);
-        parameters = parameters.withTotalOriginalConsiderationItems(blob.totalOriginalConsiderationItems);
+        parameters = parameters.withTotalOriginalConsiderationItems(
+            blob.totalOriginalConsiderationItems
+        );
         return parameters;
     }
 
-    function assertEq(OrderComponents memory a, OrderComponents memory b) internal {
+    function assertEq(OrderComponents memory a, OrderComponents memory b)
+        internal
+    {
         assertEq(a.offerer, b.offerer, "offerer");
         assertEq(a.zone, b.zone, "zone");
         assertEq(a.offer, b.offer);

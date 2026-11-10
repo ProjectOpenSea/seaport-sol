@@ -408,34 +408,30 @@ library AdvancedOrderLib {
     function toBasicOrderParameters(
         AdvancedOrder memory advancedOrder,
         BasicOrderType basicOrderType
-    )
-        internal
-        pure
-        returns (BasicOrderParameters memory basicOrderParameters)
-    {
+    ) internal pure returns (BasicOrderParameters memory basicOrderParameters) {
         basicOrderParameters.considerationToken =
-            advancedOrder.parameters.consideration[0].token;
+        advancedOrder.parameters.consideration[0].token;
         basicOrderParameters.considerationIdentifier =
-            advancedOrder.parameters.consideration[0].identifierOrCriteria;
+        advancedOrder.parameters.consideration[0].identifierOrCriteria;
         basicOrderParameters.considerationAmount =
-            advancedOrder.parameters.consideration[0].endAmount;
+        advancedOrder.parameters.consideration[0].endAmount;
         basicOrderParameters.offerer = payable(advancedOrder.parameters.offerer);
         basicOrderParameters.zone = advancedOrder.parameters.zone;
         basicOrderParameters.offerToken =
-            advancedOrder.parameters.offer[0].token;
+        advancedOrder.parameters.offer[0].token;
         basicOrderParameters.offerIdentifier =
-            advancedOrder.parameters.offer[0].identifierOrCriteria;
+        advancedOrder.parameters.offer[0].identifierOrCriteria;
         basicOrderParameters.offerAmount =
-            advancedOrder.parameters.offer[0].endAmount;
+        advancedOrder.parameters.offer[0].endAmount;
         basicOrderParameters.basicOrderType = basicOrderType;
         basicOrderParameters.startTime = advancedOrder.parameters.startTime;
         basicOrderParameters.endTime = advancedOrder.parameters.endTime;
         basicOrderParameters.zoneHash = advancedOrder.parameters.zoneHash;
         basicOrderParameters.salt = advancedOrder.parameters.salt;
         basicOrderParameters.offererConduitKey =
-            advancedOrder.parameters.conduitKey;
+        advancedOrder.parameters.conduitKey;
         basicOrderParameters.fulfillerConduitKey =
-            advancedOrder.parameters.conduitKey;
+        advancedOrder.parameters.conduitKey;
         basicOrderParameters.totalOriginalAdditionalRecipients =
             advancedOrder.parameters.totalOriginalConsiderationItems - 1;
 
@@ -447,7 +443,9 @@ library AdvancedOrderLib {
             i < advancedOrder.parameters.consideration.length;
             i++
         ) {
-            additionalRecipients[i - 1] = AdditionalRecipient({
+            additionalRecipients[
+                i - 1
+            ] = AdditionalRecipient({
                 recipient: advancedOrder.parameters.consideration[i].recipient,
                 amount: advancedOrder.parameters.consideration[i].startAmount
             });
@@ -691,7 +689,7 @@ library AdvancedOrderLib {
     ) internal view returns (bytes32 orderHash) {
         // Get the OrderComponents from the OrderParameters.
         OrderComponents memory components =
-            (order.parameters.toOrderComponents(counter));
+        (order.parameters.toOrderComponents(counter));
 
         // Get the length of the consideration array (which might have
         // additional consideration items set as tips).
@@ -704,7 +702,7 @@ library AdvancedOrderLib {
 
         // Get a reference to the consideration array.
         ConsiderationItem[] memory considerationSansTips =
-            (components.consideration);
+        (components.consideration);
 
         // Set proper length of the considerationSansTips array.
         assembly {
@@ -749,11 +747,10 @@ library AdvancedOrderLib {
         bytes32 orderHash,
         UnavailableReason unavailableReason
     ) internal view returns (OrderDetails memory) {
-        (SpentItem[] memory offer, ReceivedItem[] memory consideration) = order
-            .parameters
+        (SpentItem[] memory offer, ReceivedItem[] memory consideration) = order.parameters
             .getSpentAndReceivedItems(
-            order.numerator, order.denominator, orderIndex, resolvers
-        );
+                order.numerator, order.denominator, orderIndex, resolvers
+            );
 
         return OrderDetails({
             offerer: order.parameters.offerer,

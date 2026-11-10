@@ -46,8 +46,10 @@ library SeaportEnumsLib {
 
             // If route > 2, receivedItemType is route - 2. If route is 2,
             // the receivedItemType is ERC20 (1). Otherwise, it is Eth (0).
-            considerationType :=
-                add(mul(sub(route, 2), gt(route, 2)), eq(route, 2))
+            considerationType := add(
+                mul(sub(route, 2), gt(route, 2)),
+                eq(route, 2)
+            )
 
             // If route > 3, offeredItemType is ERC20 (1). Route is 2 or 3,
             // offeredItemType = route. Route is 0 or 1, it is route + 2.

@@ -28,8 +28,10 @@ library MatchFulfillmentLib {
         AggregatableConsideration memory token,
         MatchFulfillmentStorageLayout storage layout
     ) internal view returns (bool) {
-        return layout.considerationMap[token.recipient][token.contractAddress][token
-            .tokenId].length > 0;
+        return layout.considerationMap[
+                    token.recipient
+                ][token.contractAddress][token.tokenId]
+                .length > 0;
     }
 
     /**
@@ -41,8 +43,10 @@ library MatchFulfillmentLib {
         AggregatableOfferer memory offerer,
         MatchFulfillmentStorageLayout storage layout
     ) internal view returns (bool) {
-        return layout.offerMap[token][tokenId][offerer.offerer][offerer
-            .conduitKey].length > 0;
+        return layout.offerMap[
+                    token
+                ][tokenId][offerer.offerer][offerer.conduitKey]
+                .length > 0;
     }
 
     function processConsiderationComponent(
@@ -67,8 +71,7 @@ library MatchFulfillmentLib {
 
         MatchArrays.appendUnsafe(
             params.considerationFulfillmentComponents,
-            considerationComponents[params.considerationItemIndex]
-                .toFulfillmentComponent()
+            considerationComponents[params.considerationItemIndex].toFulfillmentComponent()
         );
     }
 
@@ -90,7 +93,7 @@ library MatchFulfillmentLib {
             considerationComponent = considerationComponent.setAmount(0);
             offerComponents[params.offerItemIndex] = offerComponent;
             considerationComponents[params.considerationItemIndex] =
-                considerationComponent;
+            considerationComponent;
             // note that this offerItemIndex should be included when consolidating
             params.midCredit = true;
         } else {
@@ -101,7 +104,7 @@ library MatchFulfillmentLib {
             offerComponent = offerComponent.setAmount(0);
 
             considerationComponents[params.considerationItemIndex] =
-                considerationComponent;
+            considerationComponent;
 
             offerComponents[params.offerItemIndex] = offerComponent;
             ++params.offerItemIndex;
@@ -109,12 +112,10 @@ library MatchFulfillmentLib {
             params.midCredit = false;
         }
         // an offer component may have already been added if it was not depleted by an earlier consideration item
-        if (
-            !previouslyAdded(
+        if (!previouslyAdded(
                 params.offerFulfillmentComponents,
                 offerComponent.toFulfillmentComponent()
-            )
-        ) {
+            )) {
             MatchArrays.appendUnsafe(
                 params.offerFulfillmentComponents,
                 offerComponent.toFulfillmentComponent()
@@ -159,9 +160,9 @@ library MatchFulfillmentLib {
         FulfillmentComponent[] memory offerFulfillmentComponents =
             MatchArrays.allocateFulfillmentComponents(offerComponents.length);
         FulfillmentComponent[] memory considerationFulfillmentComponents =
-        MatchArrays.allocateFulfillmentComponents(
-            considerationComponents.length
-        );
+            MatchArrays.allocateFulfillmentComponents(
+                considerationComponents.length
+            );
         // iterate over consideration components
         ProcessComponentParams memory params = ProcessComponentParams({
             offerFulfillmentComponents: offerFulfillmentComponents,

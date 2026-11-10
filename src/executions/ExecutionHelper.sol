@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import { AmountDeriverHelper } from "../lib/fulfillment/AmountDeriverHelper.sol";
+import {
+    AmountDeriverHelper
+} from "../lib/fulfillment/AmountDeriverHelper.sol";
 
 import { AdvancedOrderLib } from "../lib/AdvancedOrderLib.sol";
 
@@ -23,7 +25,8 @@ import {
 import { ItemType, Side } from "seaport-types/src/lib/ConsiderationEnums.sol";
 
 import {
-    FulfillmentDetails, OrderDetails
+    FulfillmentDetails,
+    OrderDetails
 } from "../fulfillments/lib/Structs.sol";
 
 import { UnavailableReason } from "../SpaceEnums.sol";
@@ -72,8 +75,8 @@ library ExecutionHelper {
         bool[] memory availableOrders = new bool[](orderDetails.length);
 
         for (uint256 i = 0; i < orderDetails.length; ++i) {
-            availableOrders[i] =
-                orderDetails[i].unavailableReason == UnavailableReason.AVAILABLE;
+            availableOrders[i] = orderDetails[i].unavailableReason
+                == UnavailableReason.AVAILABLE;
         }
 
         implicitExecutionsPre =
@@ -466,7 +469,9 @@ library ExecutionHelper {
             for (uint256 i = 1; i < orderDetails.consideration.length; i++) {
                 ReceivedItem memory item = orderDetails.consideration[i];
                 implicitExecutions[executionIndex++] = Execution({
-                    offerer: item.itemType == ItemType.NATIVE ? seaport : fulfiller,
+                    offerer: item.itemType == ItemType.NATIVE
+                        ? seaport
+                        : fulfiller,
                     conduitKey: fulfillerConduitKey,
                     item: item
                 });
@@ -489,7 +494,9 @@ library ExecutionHelper {
                 }
                 ReceivedItem memory item = orderDetails.consideration[0];
                 implicitExecutions[executionIndex++] = Execution({
-                    offerer: item.itemType == ItemType.NATIVE ? seaport : fulfiller,
+                    offerer: item.itemType == ItemType.NATIVE
+                        ? seaport
+                        : fulfiller,
                     conduitKey: fulfillerConduitKey,
                     item: item
                 });
@@ -710,8 +717,9 @@ library ExecutionHelper {
                     component.itemIndex
                         < considerationOrderDetails.consideration.length
                 ) {
-                    ReceivedItem memory item = considerationOrderDetails
-                        .consideration[component.itemIndex];
+                    ReceivedItem memory item = considerationOrderDetails.consideration[
+                        component.itemIndex
+                    ];
 
                     aggregatedAmount += item.amount;
 
@@ -953,8 +961,8 @@ library ExecutionHelper {
 
         // aggregate & zero-out the amounts of each offer item
         uint256 aggregatedConsiderationAmount;
-        for (uint256 j = 0; j < fulfillment.considerationComponents.length; j++)
-        {
+        for (
+            uint256 j = 0; j < fulfillment.considerationComponents.length; j++) {
             FulfillmentComponent memory component =
                 fulfillment.considerationComponents[j];
 
@@ -979,18 +987,20 @@ library ExecutionHelper {
 
         FulfillmentComponent memory firstConsiderationComponent =
             fulfillment.considerationComponents[0];
-        ReceivedItem memory item = fulfillmentDetails.orders[firstConsiderationComponent
-            .orderIndex].consideration[firstConsiderationComponent.itemIndex];
+        ReceivedItem memory item = fulfillmentDetails.orders[
+                firstConsiderationComponent.orderIndex
+            ]
+            .consideration[firstConsiderationComponent.itemIndex];
 
         // put back any extra (TODO: put it on first *in-range* item)
         uint256 amount = aggregatedOfferAmount;
         if (aggregatedOfferAmount > aggregatedConsiderationAmount) {
-            sourceOrder.offer[firstOfferComponent.itemIndex].amount +=
-                (aggregatedOfferAmount - aggregatedConsiderationAmount);
+            sourceOrder.offer[firstOfferComponent.itemIndex].amount += (aggregatedOfferAmount
+                    - aggregatedConsiderationAmount);
             amount = aggregatedConsiderationAmount;
         } else if (aggregatedOfferAmount < aggregatedConsiderationAmount) {
-            item.amount +=
-                (aggregatedConsiderationAmount - aggregatedOfferAmount);
+            item.amount += (aggregatedConsiderationAmount
+                    - aggregatedOfferAmount);
         }
 
         // Return an empty execution if aggregated amount equals zero.
@@ -1043,8 +1053,7 @@ library ExecutionHelper {
         );
 
         if (excessNativeTokens > 0) {
-            implicitExecutionsPost[implicitExecutionsPost.length - 1] =
-            Execution({
+            implicitExecutionsPost[implicitExecutionsPost.length - 1] = Execution({
                 offerer: fulfillmentDetails.seaport,
                 conduitKey: bytes32(0),
                 item: ReceivedItem({

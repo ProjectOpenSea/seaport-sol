@@ -1,11 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {BaseTest} from "../BaseTest.sol";
-import {FulfillmentLib, FulfillmentComponentLib} from "../../src/lib/FulfillmentLib.sol";
-import {Fulfillment, FulfillmentComponent} from "seaport-types/src/lib/ConsiderationStructs.sol";
-import {ItemType} from "seaport-types/src/lib/ConsiderationEnums.sol";
-import {SeaportArrays} from "../../src/lib/SeaportArrays.sol";
+import { BaseTest } from "../BaseTest.sol";
+import {
+    FulfillmentLib,
+    FulfillmentComponentLib
+} from "../../src/lib/FulfillmentLib.sol";
+import {
+    Fulfillment,
+    FulfillmentComponent
+} from "seaport-types/src/lib/ConsiderationStructs.sol";
+import { ItemType } from "seaport-types/src/lib/ConsiderationEnums.sol";
+import { SeaportArrays } from "../../src/lib/SeaportArrays.sol";
 
 contract FulfillmentLibTest is BaseTest {
     using FulfillmentLib for Fulfillment;
@@ -15,10 +21,13 @@ contract FulfillmentLibTest is BaseTest {
         FulfillmentComponent[] memory offerComponents,
         FulfillmentComponent[] memory considerationComponents
     ) public {
-        Fulfillment memory fulfillment =
-            Fulfillment({offerComponents: offerComponents, considerationComponents: considerationComponents});
+        Fulfillment memory fulfillment = Fulfillment({
+            offerComponents: offerComponents,
+            considerationComponents: considerationComponents
+        });
         FulfillmentLib.saveDefault(fulfillment, "default");
-        Fulfillment memory defaultFulfillment = FulfillmentLib.fromDefault("default");
+        Fulfillment memory defaultFulfillment =
+            FulfillmentLib.fromDefault("default");
         assertEq(fulfillment, defaultFulfillment);
     }
 
@@ -26,21 +35,31 @@ contract FulfillmentLibTest is BaseTest {
         FulfillmentComponent[] memory offerComponents,
         FulfillmentComponent[] memory considerationComponents
     ) public {
-        Fulfillment memory fulfillment = FulfillmentLib.empty().withOfferComponents(offerComponents)
+        Fulfillment memory fulfillment = FulfillmentLib.empty()
+            .withOfferComponents(offerComponents)
             .withConsiderationComponents(considerationComponents);
         assertEq(
             fulfillment,
-            Fulfillment({offerComponents: offerComponents, considerationComponents: considerationComponents})
+            Fulfillment({
+                offerComponents: offerComponents,
+                considerationComponents: considerationComponents
+            })
         );
     }
 
     function testCopy() public {
         FulfillmentComponent[] memory offerComponents =
-            SeaportArrays.FulfillmentComponents(FulfillmentComponent({orderIndex: 1, itemIndex: 1}));
+            SeaportArrays.FulfillmentComponents(
+                FulfillmentComponent({ orderIndex: 1, itemIndex: 1 })
+            );
         FulfillmentComponent[] memory considerationComponents =
-            SeaportArrays.FulfillmentComponents(FulfillmentComponent({orderIndex: 2, itemIndex: 2}));
-        Fulfillment memory fulfillment =
-            Fulfillment({offerComponents: offerComponents, considerationComponents: considerationComponents});
+            SeaportArrays.FulfillmentComponents(
+                FulfillmentComponent({ orderIndex: 2, itemIndex: 2 })
+            );
+        Fulfillment memory fulfillment = Fulfillment({
+            offerComponents: offerComponents,
+            considerationComponents: considerationComponents
+        });
         Fulfillment memory copy = fulfillment.copy();
         assertEq(fulfillment, copy);
         fulfillment.considerationComponents = offerComponents;
@@ -53,11 +72,14 @@ contract FulfillmentLibTest is BaseTest {
     ) public {
         Fulfillment[] memory fulfillments = new Fulfillment[](3);
         for (uint256 i = 0; i < 3; i++) {
-            fulfillments[i] =
-                Fulfillment({offerComponents: offerComponents[i], considerationComponents: considerationComponents[i]});
+            fulfillments[i] = Fulfillment({
+                offerComponents: offerComponents[i],
+                considerationComponents: considerationComponents[i]
+            });
         }
         FulfillmentLib.saveDefaultMany(fulfillments, "default");
-        Fulfillment[] memory defaultFulfillments = FulfillmentLib.fromDefaultMany("default");
+        Fulfillment[] memory defaultFulfillments =
+            FulfillmentLib.fromDefaultMany("default");
         for (uint256 i = 0; i < 3; i++) {
             assertEq(fulfillments[i], defaultFulfillments[i]);
         }

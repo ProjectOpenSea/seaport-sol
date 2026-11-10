@@ -7,31 +7,26 @@ on:
       - dev
 
 permissions:
-    contents: write
+  contents: write
 
-jobs: 
+# Pushes to the same branch tag in order, so the newest commit keeps the tag.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
   tag-commit:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Get current date
-        run: echo "::set-output name=date::$(date +%y-%m-%d)"
-        id: date
-      - name: Get branch name
-        run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
-        id: branch
-      - name: Create tag string
-        run: echo "::set-output name=tag::${{ steps.date.outputs.date }}-${{ steps.branch.outputs.branch }}"
-        id: tag
-      - name: Delete tag if exists
-        run: |
-          if git rev-parse --verify --quiet ${{ steps.tag.outputs.tag }}; then
-            git tag -d ${{ steps.tag.outputs.tag }}
-            git push --delete origin ${{ steps.tag.outputs.tag }}
-          fi
+      # Moves the tag to this commit if an earlier push today already set it.
       - name: Tag commit with YY-MM-DD-branchname
+        env:
+          BRANCH: ${{ github.ref_name }}
         run: |
-          git tag ${{ steps.tag.outputs.tag }}
-          git push --tags --force 
+          tag="$(date +%y-%m-%d)-$BRANCH"
+          git tag --force "$tag"
+          git push --force origin "refs/tags/$tag"

@@ -283,7 +283,9 @@ library MatchArrays {
         assembly {
             let oldLength := mload(arr)
             returndatacopy(
-                returndatasize(), returndatasize(), gt(newLength, oldLength)
+                returndatasize(),
+                returndatasize(),
+                gt(newLength, oldLength)
             )
             mstore(arr, newLength)
             _arr := arr
@@ -926,7 +928,9 @@ library MatchArrays {
         assembly {
             let oldLength := mload(arr)
             returndatacopy(
-                returndatasize(), returndatasize(), gt(newLength, oldLength)
+                returndatasize(),
+                returndatasize(),
+                gt(newLength, oldLength)
             )
             mstore(arr, newLength)
             _arr := arr
@@ -1564,7 +1568,9 @@ library MatchArrays {
         assembly {
             let oldLength := mload(arr)
             returndatacopy(
-                returndatasize(), returndatasize(), gt(newLength, oldLength)
+                returndatasize(),
+                returndatasize(),
+                gt(newLength, oldLength)
             )
             mstore(arr, newLength)
             _arr := arr
@@ -2200,7 +2206,9 @@ library MatchArrays {
         assembly {
             let oldLength := mload(arr)
             returndatacopy(
-                returndatasize(), returndatasize(), gt(newLength, oldLength)
+                returndatasize(),
+                returndatasize(),
+                gt(newLength, oldLength)
             )
             mstore(arr, newLength)
             _arr := arr

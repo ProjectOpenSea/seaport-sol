@@ -1,4 +1,4 @@
-# Compiler files
+# Foundry
 cache/
 out/
 
@@ -12,5 +12,11 @@ docs/
 
 # Dotenv file
 .env
-.*
+
+# Pinned lint tools from scripts/install-tools.sh
+.tools/
+
 node_modules
+.DS_Store
+.vscode/
+.idea/

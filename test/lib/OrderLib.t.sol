@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {BaseTest} from "../BaseTest.sol";
-import {OrderLib} from "../../src/lib/OrderLib.sol";
-import {Order, OrderParameters} from "seaport-types/src/lib/ConsiderationStructs.sol";
-import {ItemType} from "seaport-types/src/lib/ConsiderationEnums.sol";
-import {OrderParametersLib} from "../../src/lib/OrderParametersLib.sol";
+import { BaseTest } from "../BaseTest.sol";
+import { OrderLib } from "../../src/lib/OrderLib.sol";
+import {
+    Order,
+    OrderParameters
+} from "seaport-types/src/lib/ConsiderationStructs.sol";
+import { ItemType } from "seaport-types/src/lib/ConsiderationEnums.sol";
+import { OrderParametersLib } from "../../src/lib/OrderParametersLib.sol";
 
 contract OrderLibTest is BaseTest {
     using OrderParametersLib for OrderParameters;
@@ -13,7 +16,10 @@ contract OrderLibTest is BaseTest {
 
     function testRetrieveDefault(OrderBlob memory orderBlob) public {
         Order memory order = _fromBlob(orderBlob);
-        Order memory dup = Order({parameters: _fromBlob(orderBlob.parameters), signature: orderBlob.signature});
+        Order memory dup = Order({
+            parameters: _fromBlob(orderBlob.parameters),
+            signature: orderBlob.signature
+        });
         assertEq(order, dup);
         OrderLib.saveDefault(order, "default");
         Order memory defaultOrder = OrderLib.fromDefault("default");
@@ -29,8 +35,9 @@ contract OrderLibTest is BaseTest {
     }
 
     function testCopy() public {
-        OrderParameters memory parameters = OrderParametersLib.empty().withOfferer(address(123));
-        Order memory order = Order({parameters: parameters, signature: "abc"});
+        OrderParameters memory parameters =
+            OrderParametersLib.empty().withOfferer(address(123));
+        Order memory order = Order({ parameters: parameters, signature: "abc" });
         Order memory copy = order.copy();
         assertEq(order, copy);
         order.signature = "abcd";

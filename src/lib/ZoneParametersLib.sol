@@ -23,7 +23,9 @@ import {
 
 import { SeaportInterface } from "../SeaportInterface.sol";
 
-import { GettersAndDerivers } from "seaport-core/src/lib/GettersAndDerivers.sol";
+import {
+    GettersAndDerivers
+} from "seaport-core/src/lib/GettersAndDerivers.sol";
 
 import { UnavailableReason } from "../SpaceEnums.sol";
 
@@ -87,8 +89,7 @@ library ZoneParametersLib {
         bytes32 orderHash =
             advancedOrder.getTipNeutralizedOrderHash(seaportInterface, counter);
 
-        (SpentItem[] memory spentItems, ReceivedItem[] memory receivedItems) =
-        orderParameters.getSpentAndReceivedItems(
+        (SpentItem[] memory spentItems, ReceivedItem[] memory receivedItems) = orderParameters.getSpentAndReceivedItems(
             advancedOrder.numerator,
             advancedOrder.denominator,
             0,
@@ -146,8 +147,7 @@ library ZoneParametersLib {
         bytes32 orderHash =
             advancedOrder.getTipNeutralizedOrderHash(seaportInterface, counter);
 
-        (SpentItem[] memory spentItems, ReceivedItem[] memory receivedItems) =
-        orderParameters.getSpentAndReceivedItems(
+        (SpentItem[] memory spentItems, ReceivedItem[] memory receivedItems) = orderParameters.getSpentAndReceivedItems(
             advancedOrder.numerator,
             advancedOrder.denominator,
             0,
@@ -238,8 +238,10 @@ library ZoneParametersLib {
             maximumFulfilled: zoneParametersStruct.maximumFulfilled,
             orderDetails: new OrderDetails[](
                 zoneParametersStruct.advancedOrders.length
-                ),
-            orderHashes: new bytes32[](zoneParametersStruct.advancedOrders.length)
+            ),
+            orderHashes: new bytes32[](
+                zoneParametersStruct.advancedOrders.length
+            )
         });
     }
 
@@ -251,13 +253,13 @@ library ZoneParametersLib {
         bytes32[] memory orderHashes =
             details.advancedOrders.getOrderHashes(zoneParametersStruct.seaport);
 
-        details.orderDetails = zoneParametersStruct
-            .advancedOrders
-            .getOrderDetails(
-            zoneParametersStruct.criteriaResolvers,
-            orderHashes,
-            unavailableReasons
-        );
+        details.orderDetails =
+            zoneParametersStruct.advancedOrders
+                .getOrderDetails(
+                    zoneParametersStruct.criteriaResolvers,
+                    orderHashes,
+                    unavailableReasons
+                );
     }
 
     function _applyOrderHashes(ZoneDetails memory details, address seaport)
@@ -295,8 +297,11 @@ library ZoneParametersLib {
         bytes32 orderHash,
         SeaportInterface seaport
     ) internal view returns (bool) {
+        // The first return value, isValidated, isn't needed.
+        // forge-lint: disable-start(unused-return)
         (, bool isCancelled, uint256 totalFilled, uint256 totalSize) =
             seaport.getOrderStatus(orderHash);
+        // forge-lint: disable-end(unused-return)
 
         bool isRevertingContractOrder = false;
         if (order.orderType == OrderType.CONTRACT) {
@@ -304,12 +309,10 @@ library ZoneParametersLib {
                 .failureReasons(orderHash) != 0;
         }
 
-        return (
-            block.timestamp >= order.endTime
+        return (block.timestamp >= order.endTime
                 || block.timestamp < order.startTime || isCancelled
                 || isRevertingContractOrder
-                || (totalFilled >= totalSize && totalSize > 0)
-        );
+                || (totalFilled >= totalSize && totalSize > 0));
     }
 
     function _finalizeZoneParameters(

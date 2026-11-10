@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {BaseTest} from "../BaseTest.sol";
-import {ExecutionLib} from "../../src/lib/ExecutionLib.sol";
-import {Execution, ReceivedItem} from "seaport-types/src/lib/ConsiderationStructs.sol";
-import {ItemType} from "seaport-types/src/lib/ConsiderationEnums.sol";
-import {ReceivedItemLib} from "../../src/lib/ReceivedItemLib.sol";
+import { BaseTest } from "../BaseTest.sol";
+import { ExecutionLib } from "../../src/lib/ExecutionLib.sol";
+import {
+    Execution,
+    ReceivedItem
+} from "seaport-types/src/lib/ConsiderationStructs.sol";
+import { ItemType } from "seaport-types/src/lib/ConsiderationEnums.sol";
+import { ReceivedItemLib } from "../../src/lib/ReceivedItemLib.sol";
 
 contract ExecutionLibTest is BaseTest {
     using ExecutionLib for Execution;
@@ -18,7 +21,11 @@ contract ExecutionLibTest is BaseTest {
         address payable recipient;
     }
 
-    function testRetrieveDefault(ReceivedItemBlob memory blob, address offerer, bytes32 conduitKey) public {
+    function testRetrieveDefault(
+        ReceivedItemBlob memory blob,
+        address offerer,
+        bytes32 conduitKey
+    ) public {
         ReceivedItem memory receivedItem = ReceivedItem({
             itemType: toItemType(blob.itemType),
             token: blob.token,
@@ -26,7 +33,11 @@ contract ExecutionLibTest is BaseTest {
             amount: blob.amount == 0 ? 1 : blob.amount,
             recipient: blob.recipient
         });
-        Execution memory execution = Execution({item: receivedItem, offerer: offerer, conduitKey: conduitKey});
+        Execution memory execution = Execution({
+            item: receivedItem,
+            offerer: offerer,
+            conduitKey: conduitKey
+        });
         ExecutionLib.saveDefault(execution, "default");
         Execution memory defaultExecution = ExecutionLib.fromDefault("default");
         assertEq(execution, defaultExecution);
@@ -40,7 +51,11 @@ contract ExecutionLibTest is BaseTest {
         ExecutionLib.fromDefaultMany("nonexistent");
     }
 
-    function _fromBlob(ReceivedItemBlob memory blob) internal view returns (ReceivedItem memory) {
+    function _fromBlob(ReceivedItemBlob memory blob)
+        internal
+        view
+        returns (ReceivedItem memory)
+    {
         return ReceivedItem({
             itemType: toItemType(blob.itemType),
             token: blob.token,
@@ -50,11 +65,24 @@ contract ExecutionLibTest is BaseTest {
         });
     }
 
-    function testComposeEmpty(ReceivedItemBlob memory blob, address offerer, bytes32 conduitKey) public {
+    function testComposeEmpty(
+        ReceivedItemBlob memory blob,
+        address offerer,
+        bytes32 conduitKey
+    ) public {
         ReceivedItem memory receivedItem = _fromBlob(blob);
-        Execution memory execution =
-            ExecutionLib.empty().withItem(receivedItem).withOfferer(offerer).withConduitKey(conduitKey);
-        assertEq(execution, Execution({item: receivedItem, offerer: offerer, conduitKey: conduitKey}));
+        Execution memory execution = ExecutionLib.empty()
+            .withItem(receivedItem)
+            .withOfferer(offerer)
+            .withConduitKey(conduitKey);
+        assertEq(
+            execution,
+            Execution({
+                item: receivedItem,
+                offerer: offerer,
+                conduitKey: conduitKey
+            })
+        );
     }
 
     function testCopy() public {
@@ -83,10 +111,15 @@ contract ExecutionLibTest is BaseTest {
         Execution[] memory executions = new Execution[](3);
         for (uint256 i = 0; i < 3; i++) {
             ReceivedItem memory item = _fromBlob(blob[i]);
-            executions[i] = Execution({item: item, offerer: offerer[i], conduitKey: conduitKey[i]});
+            executions[i] = Execution({
+                item: item,
+                offerer: offerer[i],
+                conduitKey: conduitKey[i]
+            });
         }
         ExecutionLib.saveDefaultMany(executions, "default");
-        Execution[] memory defaultExecutions = ExecutionLib.fromDefaultMany("default");
+        Execution[] memory defaultExecutions =
+            ExecutionLib.fromDefaultMany("default");
         for (uint256 i = 0; i < 3; i++) {
             assertEq(executions[i], defaultExecutions[i]);
         }

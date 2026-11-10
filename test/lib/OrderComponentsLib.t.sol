@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {BaseTest} from "../BaseTest.sol";
-import {OrderComponentsLib} from "../../src/lib/OrderComponentsLib.sol";
-import {AdditionalRecipientLib} from "../../src/lib/AdditionalRecipientLib.sol";
+import { BaseTest } from "../BaseTest.sol";
+import { OrderComponentsLib } from "../../src/lib/OrderComponentsLib.sol";
+import {
+    AdditionalRecipientLib
+} from "../../src/lib/AdditionalRecipientLib.sol";
 import {
     OrderComponents,
     OrderParameters,
@@ -11,9 +13,13 @@ import {
     ConsiderationItem,
     AdditionalRecipient
 } from "seaport-types/src/lib/ConsiderationStructs.sol";
-import {ItemType, BasicOrderType, OrderType} from "seaport-types/src/lib/ConsiderationEnums.sol";
-import {OrderParametersLib} from "../../src/lib/OrderParametersLib.sol";
-import {SeaportArrays} from "../../src/lib/SeaportStructLib.sol";
+import {
+    ItemType,
+    BasicOrderType,
+    OrderType
+} from "seaport-types/src/lib/ConsiderationEnums.sol";
+import { OrderParametersLib } from "../../src/lib/OrderParametersLib.sol";
+import { SeaportArrays } from "../../src/lib/SeaportStructLib.sol";
 
 contract OrderComponentsLibTest is BaseTest {
     using OrderComponentsLib for OrderComponents;
@@ -36,7 +42,8 @@ contract OrderComponentsLibTest is BaseTest {
         assertEq(orderComponents, dup);
 
         OrderComponentsLib.saveDefault(orderComponents, "default");
-        OrderComponents memory defaultOrderComponents = OrderComponentsLib.fromDefault("default");
+        OrderComponents memory defaultOrderComponents =
+            OrderComponentsLib.fromDefault("default");
         assertEq(orderComponents, defaultOrderComponents);
     }
 
@@ -71,16 +78,17 @@ contract OrderComponentsLibTest is BaseTest {
                     endAmount: 5
                 })
             );
-            ConsiderationItem[] memory consideration = SeaportArrays.ConsiderationItems(
-                ConsiderationItem({
-                    itemType: ItemType(2),
-                    token: address(7),
-                    identifierOrCriteria: 8,
-                    startAmount: 9,
-                    endAmount: 10,
-                    recipient: payable(address(11))
-                })
-            );
+            ConsiderationItem[] memory consideration =
+                SeaportArrays.ConsiderationItems(
+                    ConsiderationItem({
+                        itemType: ItemType(2),
+                        token: address(7),
+                        identifierOrCriteria: 8,
+                        startAmount: 9,
+                        endAmount: 10,
+                        recipient: payable(address(11))
+                    })
+                );
 
             orderComponents = orderComponents.withOffer(offer);
             orderComponents = orderComponents.withConsideration(consideration);
@@ -92,16 +100,23 @@ contract OrderComponentsLibTest is BaseTest {
         assertEq(copy.offerer, address(1), "copy changed");
 
         offer[0].identifierOrCriteria = 123;
-        assertEq(copy.offer[0].identifierOrCriteria, 3, "copy offer identifier changed");
+        assertEq(
+            copy.offer[0].identifierOrCriteria,
+            3,
+            "copy offer identifier changed"
+        );
     }
 
-    function testRetrieveDefaultMany(OrderComponentsBlob[3] memory blobs) public {
+    function testRetrieveDefaultMany(OrderComponentsBlob[3] memory blobs)
+        public
+    {
         OrderComponents[] memory orderComponents = new OrderComponents[](3);
         for (uint256 i = 0; i < 3; i++) {
             orderComponents[i] = _fromBlob(blobs[i]);
         }
         OrderComponentsLib.saveDefaultMany(orderComponents, "default");
-        OrderComponents[] memory defaultOrderComponentss = OrderComponentsLib.fromDefaultMany("default");
+        OrderComponents[] memory defaultOrderComponentss =
+            OrderComponentsLib.fromDefaultMany("default");
         for (uint256 i = 0; i < 3; i++) {
             assertEq(orderComponents[i], defaultOrderComponentss[i]);
         }

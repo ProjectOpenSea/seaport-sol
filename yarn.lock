@@ -2,14 +2,14 @@
 # yarn lockfile v1
 
 
-seaport-core@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/seaport-core/-/seaport-core-0.0.1.tgz#99db0b605d0fbbfd43ca7a4724e64374ce47f6d4"
-  integrity sha512-fgdSIC0ru8xK+fdDfF4bgTFH8ssr6EwbPejC2g/JsWzxy+FvG7JfaX57yn/eIv6hoscgZL87Rm+kANncgwLH3A==
+seaport-core@1.6.6:
+  version "1.6.6"
+  resolved "https://registry.yarnpkg.com/seaport-core/-/seaport-core-1.6.6.tgz#c599ffbfaccab8e031bd702a67ed5fc48d256802"
+  integrity sha512-BNOg9EizHcLXN27UMKPB+2ewwcRnZkuNV8lRawKORnlpHI7SlCXhLkvCT+SHL/s5W8sJbnq2ef/SCvNB0r+KKA==
   dependencies:
-    seaport-types "^0.0.1"
+    seaport-types "1.6.3"
 
-seaport-types@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/seaport-types/-/seaport-types-0.0.1.tgz#e2a32fe8641853d7dadb1b0232d911d88ccc3f1a"
-  integrity sha512-m7MLa7sq3YPwojxXiVvoX1PM9iNVtQIn7AdEtBnKTwgxPfGRWUlbs/oMgetpjT/ZYTmv3X5/BghOcstWYvKqRA==
+seaport-types@1.6.3:
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/seaport-types/-/seaport-types-1.6.3.tgz#b9993864517d4f9ecccc6b6daf6ef3f52a114e58"
+  integrity sha512-Rm9dTTEUKmXqMgc5TiRtfX/sFOX6SjKkT9l/spTdRknplYh5tmJ0fMJzbE60pCzV1/Izq0cCua6uvWszo6zOAQ==

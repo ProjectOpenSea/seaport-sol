@@ -103,7 +103,7 @@ library StructCopier {
         dest.offererConduitKey = src.offererConduitKey;
         dest.fulfillerConduitKey = src.fulfillerConduitKey;
         dest.totalOriginalAdditionalRecipients =
-            src.totalOriginalAdditionalRecipients;
+        src.totalOriginalAdditionalRecipients;
         setAdditionalRecipients(
             dest.additionalRecipients, src.additionalRecipients
         );
@@ -312,7 +312,7 @@ library StructCopier {
         dest.salt = src.salt;
         dest.conduitKey = src.conduitKey;
         dest.totalOriginalConsiderationItems =
-            src.totalOriginalConsiderationItems;
+        src.totalOriginalConsiderationItems;
     }
 
     function setOfferItems(OfferItem[] storage dest, OfferItem[] memory src)
@@ -391,8 +391,8 @@ library StructCopier {
         FulfillmentComponent[][] storage dest,
         FulfillmentComponent[] memory src
     ) internal {
-        FulfillmentComponent[] storage _tempFulfillmentComponents =
-            _getTempFulfillmentComponents();
+        FulfillmentComponent[] storage
+            _tempFulfillmentComponents = _getTempFulfillmentComponents();
         setFulfillmentComponents(_tempFulfillmentComponents, src);
         dest.push(_tempFulfillmentComponents);
     }

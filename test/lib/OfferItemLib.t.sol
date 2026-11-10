@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {BaseTest} from "../BaseTest.sol";
-import {OfferItemLib} from "../../src/lib/OfferItemLib.sol";
-import {OfferItem} from "seaport-types/src/lib/ConsiderationStructs.sol";
-import {ItemType} from "seaport-types/src/lib/ConsiderationEnums.sol";
+import { BaseTest } from "../BaseTest.sol";
+import { OfferItemLib } from "../../src/lib/OfferItemLib.sol";
+import { OfferItem } from "seaport-types/src/lib/ConsiderationStructs.sol";
+import { ItemType } from "seaport-types/src/lib/ConsiderationEnums.sol";
 
 contract OfferItemLibTest is BaseTest {
     using OfferItemLib for OfferItem;
@@ -37,12 +37,20 @@ contract OfferItemLibTest is BaseTest {
         OfferItemLib.fromDefaultMany("nonexistent");
     }
 
-    function testComposeEmpty(uint8 itemType, address token, uint256 identifier, uint256 startAmount, uint256 endAmount)
-        public
-    {
+    function testComposeEmpty(
+        uint8 itemType,
+        address token,
+        uint256 identifier,
+        uint256 startAmount,
+        uint256 endAmount
+    ) public {
         ItemType _itemType = ItemType(bound(itemType, 0, 5));
-        OfferItem memory offerItem = OfferItemLib.empty().withEndAmount(endAmount).withStartAmount(startAmount)
-            .withIdentifierOrCriteria(identifier).withToken(token).withItemType(_itemType);
+        OfferItem memory offerItem = OfferItemLib.empty()
+            .withEndAmount(endAmount)
+            .withStartAmount(startAmount)
+            .withIdentifierOrCriteria(identifier)
+            .withToken(token)
+            .withItemType(_itemType);
         assertEq(
             offerItem,
             OfferItem({
@@ -56,8 +64,13 @@ contract OfferItemLibTest is BaseTest {
     }
 
     function testCopy() public {
-        OfferItem memory offerItem =
-            OfferItem({itemType: ItemType(1), token: address(1), identifierOrCriteria: 1, startAmount: 1, endAmount: 1});
+        OfferItem memory offerItem = OfferItem({
+            itemType: ItemType(1),
+            token: address(1),
+            identifierOrCriteria: 1,
+            startAmount: 1,
+            endAmount: 1
+        });
         OfferItem memory copy = offerItem.copy();
         assertEq(offerItem, copy);
         offerItem.itemType = ItemType(2);
@@ -83,7 +96,8 @@ contract OfferItemLibTest is BaseTest {
             });
         }
         OfferItemLib.saveDefaultMany(offerItems, "default");
-        OfferItem[] memory defaultOfferItems = OfferItemLib.fromDefaultMany("default");
+        OfferItem[] memory defaultOfferItems =
+            OfferItemLib.fromDefaultMany("default");
         for (uint256 i = 0; i < 3; i++) {
             assertEq(offerItems[i], defaultOfferItems[i]);
         }

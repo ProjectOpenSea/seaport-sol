@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-import {BaseTest} from "../BaseTest.sol";
-import {ConsiderationItemLib} from "../../src/lib/ConsiderationItemLib.sol";
-import {ConsiderationItem} from "seaport-types/src/lib/ConsiderationStructs.sol";
-import {ItemType} from "seaport-types/src/lib/ConsiderationEnums.sol";
+import { BaseTest } from "../BaseTest.sol";
+import { ConsiderationItemLib } from "../../src/lib/ConsiderationItemLib.sol";
+import {
+    ConsiderationItem
+} from "seaport-types/src/lib/ConsiderationStructs.sol";
+import { ItemType } from "seaport-types/src/lib/ConsiderationEnums.sol";
 
 contract ConsiderationItemLibTest is BaseTest {
     using ConsiderationItemLib for ConsiderationItem;
@@ -27,7 +29,8 @@ contract ConsiderationItemLibTest is BaseTest {
             recipient: recipient
         });
         ConsiderationItemLib.saveDefault(considerationItem, "default");
-        ConsiderationItem memory defaultConsiderationItem = ConsiderationItemLib.fromDefault("default");
+        ConsiderationItem memory defaultConsiderationItem =
+            ConsiderationItemLib.fromDefault("default");
         assertEq(considerationItem, defaultConsiderationItem);
     }
 
@@ -48,9 +51,13 @@ contract ConsiderationItemLibTest is BaseTest {
         address payable recipient
     ) public {
         ItemType _itemType = ItemType(bound(itemType, 0, 5));
-        ConsiderationItem memory considerationItem = ConsiderationItemLib.empty().withRecipient(recipient).withEndAmount(
-            endAmount
-        ).withStartAmount(startAmount).withIdentifierOrCriteria(identifier).withToken(token).withItemType(_itemType);
+        ConsiderationItem memory considerationItem = ConsiderationItemLib.empty()
+            .withRecipient(recipient)
+            .withEndAmount(endAmount)
+            .withStartAmount(startAmount)
+            .withIdentifierOrCriteria(identifier)
+            .withToken(token)
+            .withItemType(_itemType);
         assertEq(
             considerationItem,
             ConsiderationItem({
@@ -87,9 +94,8 @@ contract ConsiderationItemLibTest is BaseTest {
         uint256[3] memory endAmount,
         address payable[3] memory recipient
     ) public {
-        ConsiderationItem[] memory considerationItems = new ConsiderationItem[](
-            3
-        );
+        ConsiderationItem[] memory
+            considerationItems = new ConsiderationItem[](3);
         for (uint256 i = 0; i < 3; i++) {
             itemType[i] = uint8(bound(itemType[i], 0, 5));
             considerationItems[i] = ConsiderationItem({
@@ -102,7 +108,8 @@ contract ConsiderationItemLibTest is BaseTest {
             });
         }
         ConsiderationItemLib.saveDefaultMany(considerationItems, "default");
-        ConsiderationItem[] memory defaultConsiderationItems = ConsiderationItemLib.fromDefaultMany("default");
+        ConsiderationItem[] memory defaultConsiderationItems =
+            ConsiderationItemLib.fromDefaultMany("default");
         for (uint256 i = 0; i < 3; i++) {
             assertEq(considerationItems[i], defaultConsiderationItems[i]);
         }
